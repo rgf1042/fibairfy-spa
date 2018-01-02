@@ -1,6 +1,16 @@
 <template>
   <b-container>
     <b-row>
+      <b-col class="pt-1">
+        <b-alert variant="danger"
+             dismissible
+             :show="alert.show"
+             @dismissed="alert.show=false">
+              {{alert.message}}
+        </b-alert>
+      </b-col>
+    </b-row>
+    <b-row>
       <b-col cols="4" class="pt-4">
         <h1>fiberfy</h1>
       </b-col>
@@ -40,18 +50,23 @@ export default {
         username: '',
         password: ''
       },
+      alert: {
+        show: false,
+        message: ''
+      },
       show: true
     }
   },
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      this.$http.post('http://localhost:1337/auth/login', this.form).then(response => {
-        // success callback
+      this.$store.dispatch('login', this.form).then(response => {
         alert(JSON.stringify(response))
-      }, response => {
-        // error callback
-        alert(JSON.stringify(response))
+      }, error => {
+        if (error.body.message) {
+          this.alert.message = error.body.message
+          this.alert.show = true
+        }
       })
     }
   }
