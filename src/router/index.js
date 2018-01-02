@@ -1,7 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
+// Components
 import Login from '@/components/Login'
 import FiberMap from '@/components/FiberMap'
+
+// Import navbars
+import GeneralNavbar from '@/components/shared/general-navbar'
+import LoginNavbar from '@/components/shared/login-navbar'
+// import BackNavbar from '@/components/shared/back-navbar'
 
 Vue.use(Router)
 
@@ -10,17 +17,30 @@ export default new Router({
     {
       path: '/',
       name: 'Login',
-      component: Login
+      components: {
+        navbar: LoginNavbar,
+        view: Login
+      }
     },
     {
-      path: '/login',
+      path: '/',
       name: 'Login',
-      component: Login
+      components: {
+        navbar: LoginNavbar,
+        view: Login
+      }
     },
     {
       path: '/map',
       name: 'Map',
-      component: FiberMap
+      components: {
+        navbar: GeneralNavbar,
+        view: FiberMap
+      },
+      props: {
+        navbar: {'mapActive': true},
+        view: false
+      }
     }
   ]
 })

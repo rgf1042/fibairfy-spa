@@ -61,7 +61,7 @@ export default {
     onSubmit (evt) {
       evt.preventDefault()
       this.$store.dispatch('login', this.form).then(response => {
-        alert(JSON.stringify(response))
+        this.$router.push('Map')
       }, error => {
         if (error.body.message) {
           this.alert.message = error.body.message
