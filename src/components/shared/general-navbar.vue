@@ -1,15 +1,11 @@
 <template>
   <b-navbar toggleable="md" type="dark" variant="info">
-
     <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-
     <b-navbar-brand href="#">fiberfy</b-navbar-brand>
-
     <b-collapse is-nav id="nav_collapse">
-
       <b-navbar-nav>
-        <b-nav-item href="#" :active="mapActive">Mapa</b-nav-item>
-        <b-nav-item href="#" :active="projectsActive">Projectes</b-nav-item>
+        <b-nav-item href="#" :active="mapActive" to="Map">Mapa</b-nav-item>
+        <b-nav-item href="#" :active="projectsActive" to="Projects">Projectes</b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->

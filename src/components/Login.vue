@@ -60,7 +60,7 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      this.$store.dispatch('login', this.form).then(response => {
+      this.$store.dispatch('user/login', this.form).then(response => {
         this.$router.push('Map')
       }, error => {
         if (error.body.message) {

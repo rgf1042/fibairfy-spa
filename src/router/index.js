@@ -4,6 +4,7 @@ import Router from 'vue-router'
 // Components
 import Login from '@/components/Login'
 import FiberMap from '@/components/FiberMap'
+import Projects from '@/components/Projects'
 
 // Import navbars
 import GeneralNavbar from '@/components/shared/general-navbar'
@@ -39,6 +40,18 @@ export default new Router({
       },
       props: {
         navbar: {'mapActive': true},
+        view: false
+      }
+    },
+    {
+      path: '/projects',
+      name: 'Projects',
+      components: {
+        navbar: GeneralNavbar,
+        view: Projects
+      },
+      props: {
+        navbar: {'projectsActive': true},
         view: false
       }
     }
