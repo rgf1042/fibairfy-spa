@@ -14,6 +14,16 @@ import 'leaflet/dist/leaflet.css'
 // require('../node_modules/leaflet/dist/leaflet.css')
 Vue.use(BootstrapVue)
 Vue.use(VueResource)
+
+Vue.http.interceptors.push(function (request, next) {
+  // modify headers
+  if (store.state.user.user.token) {
+    request.headers.set('Authorization', 'Bearer ' + store.state.user.user.token)
+  }
+  // continue to next interceptor
+  next()
+})
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
