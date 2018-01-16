@@ -7,19 +7,23 @@ Vue.use(VueResource)
 export default {
   namespaced: true,
   state: {
-    user: {
+    current {
       id: 0,
       name: '',
-      token: ''
+      pos {
+        lat: 0,
+        long: 0
+      },
+      zoom: 0
     }
   },
   mutations: {
-    setToken (state, token) {
-      state.user.token = token
-    }
+    setCurrentProject (state, curremt) {
+      state.current = current
+    },
   },
   actions: {
-    login (context, form) {
+    setCurrent (context, current) {
       return new Promise((resolve, reject) => {
         // Do something here... lets say, a http call using vue-resource
         Vue.http.post('http://localhost:1337/auth/login', form).then(response => {
@@ -36,6 +40,9 @@ export default {
           reject(error)
         })
       })
+    },
+    updateCurrent (context, form) {
+
     }
   }
 }
