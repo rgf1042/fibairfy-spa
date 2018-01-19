@@ -1,3 +1,4 @@
+var webpack = require('webpack')
 var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
@@ -8,6 +9,14 @@ function resolve (dir) {
 }
 
 module.exports = {
+  plugins: [
+    new webpack.DefinePlugin({
+      'fiberfy.constants': {
+        'BASE_URL': JSON.stringify('http://localhost:1337'),
+        'API_VERSION': JSON.stringify('/api/v1')
+      }
+    })
+  ],
   entry: {
     app: './src/main.js'
   },

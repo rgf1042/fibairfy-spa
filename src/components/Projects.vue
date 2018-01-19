@@ -43,19 +43,16 @@ export default {
   },
   methods: {
     activateProject (index) {
-      // console.log(JSON.stringify(id))
-      // let item = this.projects.find(item => item.id === id)
       let item = this.projects[index]
-      // console.log(JSON.stringify(item))
-      //this.deactivateCurrentProject(index)
-      //this.$set(item, 'activated', true)
-      // this.projects[item.id].activated = true
       this.current = item.id
-    },
-    deactivateCurrentProject (index) {
-      /*let item = this.projects[index]
-      // let item = this.projects.find(item => item.id === this.current)
-      if (item) this.$set(item, 'activated', false)*/
+      this.$store.dispatch('projects/setCurrent', this.current).then(response => {
+      }, error => {
+        /* if (error.body.message) {
+          this.alert.message = error.body.message
+          this.alert.show = true
+        } */
+        console.log(error)
+      })
     }
   }
 }

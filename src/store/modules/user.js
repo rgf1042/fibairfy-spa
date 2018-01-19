@@ -28,7 +28,7 @@ export default {
     login (context, form) {
       return new Promise((resolve, reject) => {
         // Do something here... lets say, a http call using vue-resource
-        Vue.http.post('http://localhost:1337/auth/login', form).then(response => {
+        Vue.http.post(fiberfy.constants.BASE_URL + '/auth/login', form).then(response => {
           // success callback
           if (response.body.flag) {
             context.commit('setToken', response.body.token)
