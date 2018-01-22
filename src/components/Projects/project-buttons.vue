@@ -26,6 +26,7 @@ export default {
   },
   methods: {
     activate (evt) {
+      evt.preventDefault()
       this.$emit('activate-project', Number(this.project.id))
     }
   }

@@ -10,21 +10,26 @@ export default {
     current: {
       id: 0,
       name: '',
-      pos: {
-        lat: 0,
-        long: 0
-      },
+      latitude: 0.0,
+      longitude: 0.0,
       zoom: 0,
       sites: [],
       paths: []
-    }
+    },
+    list: []
   },
   mutations: {
     setCurrentProject (state, current) {
       state.current = current
     },
+    setListProjects (state, list) {
+      state.list = list
+    },
     addNewSite (state, site) {
       state.current.sites.push(site)
+    },
+    addNewPath (state, path) {
+      state.current.paths.push(path)
     }
   },
   actions: {
@@ -36,10 +41,8 @@ export default {
           let project = {
             id: response.body.id,
             name: response.body.name,
-            pos: {
-              lat: response.body.latitude,
-              long: response.body.longitude
-            },
+            latitude: response.body.latitude,
+            longitude: response.body.longitude,
             zoom: response.body.zoom,
             sites: [],
             paths: []
@@ -52,12 +55,19 @@ export default {
               delete response.body[x].project
               context.commit('addNewSite', response.body[x])
             }
+            Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/path/?project=' + id).then(response => {
+              for (let x in response.body) {
+                delete response.body[x].project
+                context.commit('addNewPath', response.body[x])
+              }
+            }, error => {
+              reject(error)
+            })
             resolve(response)
           }, error => {
             reject(error)
           })
 
-          resolve(response)  // Let the calling function know that http is done. You may send some data back
         }, error => {
           // http failed, let the calling function know that action did not work out
           reject(error)
@@ -66,7 +76,20 @@ export default {
     },
     updateCurrent (context, form) {
 
+    },
+    loadProjectsList (context) {
+      return new Promise((resolve, reject) => {
+        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/').then(response => {
+          // success callback
+          context.commit('setListProjects', response.body)
+          resolve(response)
+        }, error => {
+          // http failed, let the calling function know that action did not work out
+          reject(error)
+        })
+      })
     }
+
   }
 }
 /* eslint-enable */
