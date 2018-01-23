@@ -9,17 +9,20 @@
       <p>{{project.name}}</p>
       <project-buttons v-on:activate-project="activateProject(index)" :projectId="project.id" :current="current"></project-buttons>
     </b-row>
+    <project-adder v-on:add-project="addProject($event)"></project-adder>
   </b-container>
 </template>
 
 <script>
 /* eslint-disable */
 import ProjectButtons from '@/components/Projects/project-buttons'
+import ProjectAdder from '@/components/Projects/project-adder'
 
 export default {
   name: 'Projects',
   components: {
-    'project-buttons': ProjectButtons
+    'project-buttons': ProjectButtons,
+    'project-adder': ProjectAdder
   },
   mounted () {
 
@@ -41,6 +44,12 @@ export default {
           this.alert.message = error.body.message
           this.alert.show = true
         } */
+        console.log(error)
+      })
+    },
+    addProject (name) {
+      this.$store.dispatch('projects/addNewProject', name).then(response => {
+      }, error => {
         console.log(error)
       })
     }

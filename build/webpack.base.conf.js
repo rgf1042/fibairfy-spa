@@ -13,7 +13,11 @@ module.exports = {
     new webpack.DefinePlugin({
       'fiberfy.constants': {
         'BASE_URL': JSON.stringify('http://localhost:1337'),
-        'API_VERSION': JSON.stringify('/api/v1')
+        'API_VERSION': JSON.stringify('/api/v1'),
+        'PROJECT_DEFAULT_NAME': JSON.stringify('default'),
+        'PROJECT_DEFAULT_LATITUDE': JSON.stringify('41.66060124302088'),
+        'PROJECT_DEFAULT_LONGITUDE': JSON.stringify('1.571044921875'),
+        'PROJECT_DEFAULT_ZOOM': JSON.stringify('8')
       }
     })
   ],

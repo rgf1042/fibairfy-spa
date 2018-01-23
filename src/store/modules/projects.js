@@ -25,6 +25,9 @@ export default {
     setListProjects (state, list) {
       state.list = list
     },
+    addNewProject (state, project) {
+      state.list.push(project)
+    },
     addNewSite (state, site) {
       state.current.sites.push(site)
     },
@@ -85,6 +88,27 @@ export default {
           resolve(response)
         }, error => {
           // http failed, let the calling function know that action did not work out
+          reject(error)
+        })
+      })
+    },
+    addNewProject (context, name) {
+      return new Promise((resolve, reject) => {
+        let project = {
+          name: name,
+          status: 'define',
+          latitude: fiberfy.constants.PROJECT_DEFAULT_LATITUDE,
+          longitude: fiberfy.constants.PROJECT_DEFAULT_LONGITUDE,
+          zoom: fiberfy.constants.PROJECT_DEFAULT_ZOOM
+        }
+        Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/', project).then(response => {
+          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/' + response.body.project).then(response => {
+            context.commit('addNewProject', response.body)
+            resolve(response)
+          }, error => {
+            reject(error)
+          })
+        }, error => {
           reject(error)
         })
       })
