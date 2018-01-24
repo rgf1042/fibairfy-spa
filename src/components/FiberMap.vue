@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     setStatus (status) {
-      this.status = staus
+      this.status = status
     },
     setLayer (layer) {
       this.layerActive = layer
