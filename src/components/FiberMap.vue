@@ -1,30 +1,36 @@
 <template>
-  <div id="map"></div>
+  <b-container>
+    <leaflet-map :status="status" :layerActive="layerActive"></leaflet-map>
+    <map-controls v-on:set-status="setStatus($event)" v-on:set-layer="setLayer($event)" :status="status" :layerActive="layerActive"></map-controls>
+  </b-container>
 </template>
 
 <script>
 /* eslint-disable */
 import L from 'leaflet'
+import LeafletMap from '@/components/FiberMap/leaflet-map'
+import MapControls from '@/components/FiberMap/map-controls'
 
 export default {
   name: 'FiberMap',
+  components: {
+    'leaflet-map': LeafletMap,
+    'map-controls': MapControls
+  },
   data () {
     return {
-
+      status: '',
+      layerActive: 'civil'
     }
   },
-  mounted () {
-    this.map = L.map('map')
-    var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-  	var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-  	var osm = new L.TileLayer(osmUrl, {attribution: osmAttrib})
-
-  	// start the map in South-East England
-  	this.map.setView(new L.LatLng(51.3, 0.7),9)
-  	this.map.addLayer(osm)
+  methods: {
+    setStatus (status) {
+      this.status = staus
+    },
+    setLayer (layer) {
+      this.layerActive = layer
+    }
   }
+
 }
 </script>
-<style scoped>
-  #map { height: 800px; }
-</style>

@@ -65,6 +65,7 @@
     "karma-spec-reporter": "0.0.31",
     "karma-webpack": "^2.0.2",
     "leaflet": "^1.2.0",
+    "leaflet-search": "^2.7.0",
     "mocha": "^3.2.0",
     "nightwatch": "^0.9.12",
     "opn": "^5.1.0",
