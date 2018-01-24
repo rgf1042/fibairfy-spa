@@ -733,6 +733,11 @@ Mapa.prototype.changeMenu = function(option) {
   this.changeColor(option)
 } */
 
+Mapa.prototype.setLayerActive = function (layer) {
+  this.layerActive = layer
+  this.changeColor(layer)
+}
+
 Mapa.prototype.changeColor = function (option) {
   var status = option === 'infra' ? 'grey' : 'normal'
   // Canviem els color a tots els llocs.

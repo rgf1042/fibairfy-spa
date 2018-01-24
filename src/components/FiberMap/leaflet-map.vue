@@ -20,7 +20,7 @@ export default {
   },
   watch: {
     layerActive: function (newVal, oldVal) { // watch it
-      map.changeColor(newVal)
+      map.setLayerActive(newVal)
       console.log('Prop changed: ', newVal, ' | was: ', oldVal)
     }
   }
