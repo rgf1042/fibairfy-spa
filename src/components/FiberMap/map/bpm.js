@@ -1057,10 +1057,10 @@ Mapa.prototype.haveFibers = function(id) {
     }
   }
   return false
-}
+} */
 Mapa.prototype.setIconInSiteById = function(id, status, type) {
-  for (idx_site in this.sites) {
-    site = this.sites[idx_site]
+  for (let idx_site in this.sites) {
+    let site = this.sites[idx_site]
     if (site.id === id) {
       site.changeTypeIcon(status, type)
       break
