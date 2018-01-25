@@ -1,6 +1,10 @@
 import VueResource from 'vue-resource'
 import Vue from 'vue'
 
+// Internal modules
+import SitesModule from './projects/sites'
+import PathsModule from './projects/paths'
+
 Vue.use(VueResource)
 
 /* eslint-disable */
@@ -12,11 +16,14 @@ export default {
       name: '',
       latitude: 0.0,
       longitude: 0.0,
-      zoom: 0,
-      sites: [],
-      paths: []
+      zoom: 0
     },
     list: []
+  },
+  getters : {
+    currentId: state => {
+      return state.current.id
+    }
   },
   mutations: {
     setCurrentProject (state, current) {
@@ -27,12 +34,6 @@ export default {
     },
     addNewProject (state, project) {
       state.list.push(project)
-    },
-    addNewSite (state, site) {
-      state.current.sites.push(site)
-    },
-    addNewPath (state, path) {
-      state.current.paths.push(path)
     }
   },
   actions: {
@@ -46,31 +47,20 @@ export default {
             name: response.body.name,
             latitude: response.body.latitude,
             longitude: response.body.longitude,
-            zoom: response.body.zoom,
-            sites: [],
-            paths: []
+            zoom: response.body.zoom
           }
           context.commit('setCurrentProject', project)
 
           // We load sites
-          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/site/?project=' + id).then(response => {
-            for (let x in response.body) {
-              delete response.body[x].project
-              context.commit('addNewSite', response.body[x])
-            }
-            Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/path/?project=' + id).then(response => {
-              for (let x in response.body) {
-                delete response.body[x].project
-                context.commit('addNewPath', response.body[x])
-              }
+          context.dispatch('loadSites').then(response => {
+            context.dispatch('loadPaths').then(response => {
+              resolve(response)
             }, error => {
               reject(error)
             })
-            resolve(response)
           }, error => {
             reject(error)
           })
-
         }, error => {
           // http failed, let the calling function know that action did not work out
           reject(error)
@@ -112,22 +102,11 @@ export default {
           reject(error)
         })
       })
-    },
-    addNewSite (context, site) {
-      return new Promise((resolve, reject) => {
-        Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/site/', site).then(response => {
-          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/site/' + response.body.id).then(response => {
-            context.commit('addNewSite', response.body)
-            resolve(response)
-          }, error => {
-            reject(error)
-          })
-        }, error => {
-          reject(error)
-        })
-      })
     }
-
+  },
+  modules: {
+    sites: SitesModule,
+    paths: PathsModule
   }
 }
 /* eslint-enable */

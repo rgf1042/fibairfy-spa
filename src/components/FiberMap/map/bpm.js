@@ -621,7 +621,7 @@ Mapa.prototype.load = function () {
   this.fibers = []
 
   // Carreguem les caixes.
-  let sites = this.vue.$store.state.projects.current.sites
+  let sites = this.vue.$store.state.projects.sites.sites
   for (let x in sites) {
     let site = new Site(sites[x].id, sites[x].name, L.latLng(sites[x].latitude, sites[x].longitude), sites[x].type, that)
     this.sites.push(site)
