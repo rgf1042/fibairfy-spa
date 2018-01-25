@@ -112,6 +112,20 @@ export default {
           reject(error)
         })
       })
+    },
+    addNewSite (context, site) {
+      return new Promise((resolve, reject) => {
+        Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/site/', site).then(response => {
+          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/site/' + response.body.id).then(response => {
+            context.commit('addNewSite', response.body)
+            resolve(response)
+          }, error => {
+            reject(error)
+          })
+        }, error => {
+          reject(error)
+        })
+      })
     }
 
   }

@@ -29,6 +29,7 @@ export default {
     },
     setLayer (layer) {
       this.layerActive = layer
+      this.status = ''
     }
   }
 

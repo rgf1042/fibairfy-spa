@@ -22,6 +22,9 @@ export default {
     layerActive: function (newVal, oldVal) { // watch it
       map.setLayerActive(newVal)
       console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+    },
+    status: function (newVal, oldVal) {
+      map.setStatus(newVal)
     }
   }
 }

@@ -20,6 +20,25 @@ var Site = function (id, name, latlng, type, m) {
   this.actualFusionSite = null // L'última grup de dades d'una fusió
 }
 
+Site.prototype.save = function () {
+  let site = {
+    name: this.name,
+    project: this.map_parent.active_project.id,
+    latitude: this.latlng.lat,
+    longitude: this.latlng.lng,
+    type: this.type,
+    status: this.status
+  }
+  this.map_parent.vue.$store.dispatch('projects/addNewSite', site).then(response => {
+
+  }, error => {
+    this.clear();
+    this.map_parent.deleteSiteById(this.id);
+    alert("There was a problem. Please, try again.");
+    console.log(error)
+  })
+}
+
 /* Site.prototype.save = function (){
   var that = this;
   strUrl = this.map_parent.serverUrl + "/site";
@@ -84,12 +103,11 @@ Site.prototype.delete = function(){
   } else {
     alert('It is not possible. This site has paths or boxes.');
   }
-}
-Site.prototype.clear = function(){
+} */
+Site.prototype.clear = function () {
   if (this.marker)
-    this.map_parent.map.removeLayer(this.marker);
-};
- */
+    this.map_parent.map.removeLayer(this.marker)
+}
 Site.prototype.draw = function () {
   var that = this
   this.marker = L.marker(this.latlng)
@@ -104,8 +122,8 @@ Site.prototype.draw = function () {
     })
     .addTo(that.map_parent.map)
   this.changeTypeIcon()
-  /* if (!this.id)
-    this.save(); */
+  if (!this.id)
+    this.save()
 }
 
 Site.prototype.changeTypeIcon = function (status, type) {

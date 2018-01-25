@@ -377,6 +377,9 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
 
   // this.loadProjects()
 }
+Mapa.prototype.setStatus = function (status) {
+  this.status = status
+}
 Mapa.prototype.rollTiles = function () {
   this.tilesIndex = (this.tilesIndex + 1) % this.tiles.length
   this.tileLayer(this.tiles[this.tilesIndex])
@@ -1090,17 +1093,17 @@ Mapa.prototype.getPath = function(id) {
   }
   return null
 }
-
-Mapa.prototype.deleteSiteById = function(id) {
-  for (idx_site in this.sites) {
-    site = this.sites[idx_site]
+*/
+Mapa.prototype.deleteSiteById = function (id) {
+  for (let idx_site in this.sites) {
+    let site = this.sites[idx_site]
     if (site.id === id) {
       delete this.sites[idx_site]
       break
     }
   }
 }
-
+/*
 Mapa.prototype.deletePathById = function(id) {
   for (idx_path in this.paths) {
     path = this.paths[idx_path]
