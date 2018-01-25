@@ -4,7 +4,7 @@ import L from 'leaflet'
 // Internal modules
 import Site from './site'
 // var Box = require('./box')
-// var Path = require('./path')
+import Path from './path'
 // var Fiber = require('./fiber')
 // var Pfusion = require('./pfusion')
 // var Projecte = require('./projecte')
@@ -626,6 +626,21 @@ Mapa.prototype.load = function () {
     let site = new Site(sites[x].id, sites[x].name, L.latLng(sites[x].latitude, sites[x].longitude), sites[x].type, that)
     this.sites.push(site)
   }
+  let paths = this.vue.$store.state.projects.paths.paths
+
+  // Carreguem els paths.
+  for (let x in paths) {
+    let path = new Path(
+      paths[x].id,
+      paths[x].name,
+      paths[x].first.id,
+      paths[x].last.id,
+      JSON.parse(paths[x].intermedial),
+      paths[x].type,
+      that
+    )
+    this.paths.push(path)
+  }
   // ...
   /*
   $.getJSON(strUrl, function(data) {
@@ -705,6 +720,10 @@ Mapa.prototype.redraw = function () {
   // Pintem tots les caixes
   for (let x in this.sites) {
     this.sites[x].draw()
+  }
+  // Pintem els trams
+  for (let x in this.paths) {
+    this.paths[x].draw()
   }
   /* $.each(this.paths, function(index, path) {
     path.draw()
@@ -1103,10 +1122,10 @@ Mapa.prototype.deleteSiteById = function (id) {
     }
   }
 }
-/*
+
 Mapa.prototype.deletePathById = function(id) {
-  for (idx_path in this.paths) {
-    path = this.paths[idx_path]
+  for (let idx_path in this.paths) {
+    let path = this.paths[idx_path]
     if (path.id === id) {
       delete this.paths[idx_path]
       break

@@ -1,6 +1,6 @@
 /* eslint-disable */
 // var Box = require('./box');
-// var Path = require('./path');
+import Path from './path'
 // var Fiber = require('./fiber');
 import L from 'leaflet'
 // =====================
@@ -213,52 +213,52 @@ Site.prototype.onSiteMouseOut = function (e) {
     }
   }
 }
-/*
+
 Site.prototype.onSiteClick = function (e){
   switch(this.map_parent.status){
     case "path":
       // Hi ha algun path actiu?
       if ((this.map_parent.active_path) && (this.map_parent.active_path.first_site)){
         // Sí
-        console.log('tancar tram.');
-        this.map_parent.active_path.setEndSite(this);
+        console.log('tancar tram.')
+        this.map_parent.active_path.setEndSite(this)
       } else {
         // No n'hi ha cap actiu, el creem.
-        console.log('inici tram.');
-        this.changeTypeIcon('active');
-        this.map_parent.active_path = new Path(null, null, null, null, new Array(), this.map_parent.type_path_default, this.map_parent);
-        this.map_parent.active_path.setFirstSite(this);
+        console.log('inici tram.')
+        this.changeTypeIcon('active')
+        this.map_parent.active_path = new Path(null, null, null, null, new Array(), this.map_parent.type_path_default, this.map_parent)
+        this.map_parent.active_path.setFirstSite(this)
       }
-      break;
+      break
     case "split":
-      alert("No es pot fer un split a un Lloc!");
-      break;
+      alert("No es pot fer un split a un Lloc!")
+      break
     case "site":
       // Anem a editar el site
-      this.siteDefine();
-      break;
+      // this.siteDefine()
+      break
     case "box":
-      this.boxDefine();
-      break;
+      // this.boxDefine()
+      break
     case "fiber":
       // Hi ha alguna fibra activa?
-      if ((this.map_parent.active_fiber) && (this.map_parent.active_fiber.first_site)){
+      /* if ((this.map_parent.active_fiber) && (this.map_parent.active_fiber.first_site)) {
         // Sí
-        this.map_parent.active_fiber.addSite(this);
+        this.map_parent.active_fiber.addSite(this)
       } else {
         // No n'hi ha cap actiu, el creem.
-        console.log('inici fibra.');
-        this.changeTypeIcon('over');
-        this.map_parent.active_fiber = new Fiber(null, null, null, null, new Array(), null, this.map_parent.type_path_default, this.map_parent);
-        this.map_parent.active_fiber.setFirstSite(this);
-      }
+        console.log('inici fibra.')
+        this.changeTypeIcon('over')
+        this.map_parent.active_fiber = new Fiber(null, null, null, null, new Array(), null, this.map_parent.type_path_default, this.map_parent)
+        this.map_parent.active_fiber.setFirstSite(this)
+      } */
       break;
     case "":
-      if (this.map_parent.layerActive == 'civil') this.siteDefine();
-      else this.boxDefine();
+      if (this.map_parent.layerActive === 'civil') this.siteDefine()
+      else this.boxDefine()
     }
 };
-
+/*
 // Pagina de Site
 Site.prototype.siteDefine = function() {
   var that = this;
