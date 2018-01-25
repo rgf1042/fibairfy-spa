@@ -291,6 +291,11 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
     }
   })
 
+  this.map.on('move', function (e) {
+    let ll = that.map.getCenter()
+    that.vue.$store.dispatch('projects/map/setLocation', { latitude: ll.lat, longitude: ll.lng})
+  })
+
   this.tileLayer()
 
   // Info:

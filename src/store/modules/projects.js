@@ -4,6 +4,7 @@ import Vue from 'vue'
 // Internal modules
 import SitesModule from './projects/sites'
 import PathsModule from './projects/paths'
+import MapModule from './projects/map'
 
 Vue.use(VueResource)
 
@@ -106,7 +107,8 @@ export default {
   },
   modules: {
     sites: SitesModule,
-    paths: PathsModule
+    paths: PathsModule,
+    map: MapModule
   }
 }
 /* eslint-enable */

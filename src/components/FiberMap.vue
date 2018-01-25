@@ -1,8 +1,8 @@
 <template>
-  <b-container>
+  <div>
     <leaflet-map :status="status" :layerActive="layerActive"></leaflet-map>
     <map-controls v-on:set-status="setStatus($event)" v-on:set-layer="setLayer($event)" :status="status" :layerActive="layerActive"></map-controls>
-  </b-container>
+  </div>
 </template>
 
 <script>
