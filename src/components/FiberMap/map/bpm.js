@@ -148,6 +148,8 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   // Active project
   this.active_project = this.vue.$store.state.projects.current // Apliquem el projecte actual amb el store de Vue
 
+  // Map details
+  this.map_data = this.vue.$store.state.projects.map // Apliquem el projecte actual amb el store de Vue
   // Llista de Trams fets al mapa.
   this.paths = new Array()
 
@@ -294,6 +296,11 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   this.map.on('move', function (e) {
     let ll = that.map.getCenter()
     that.vue.$store.dispatch('projects/map/setLocation', { latitude: ll.lat, longitude: ll.lng})
+  })
+
+  this.map.on('zoom', function (e) {
+    let zoom = that.map.getZoom()
+    that.vue.$store.dispatch('projects/map/setZoom', zoom)
   })
 
   this.tileLayer()
@@ -706,8 +713,8 @@ Mapa.prototype.load = function () {
     : that.project_default_zoom
 
   that.map.setView(
-    L.latLng(that.active_project.latitude, that.active_project.longitude),
-    that.active_project.zoom
+    L.latLng(that.map_data.latitude, that.map_data.longitude),
+    that.map_data.zoom
   )
   that.clearLayers()
   that.redraw()

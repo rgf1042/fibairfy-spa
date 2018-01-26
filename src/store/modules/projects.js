@@ -51,7 +51,8 @@ export default {
             zoom: response.body.zoom
           }
           context.commit('setCurrentProject', project)
-
+          context.dispatch('map/setLocation', { latitude: project.latitude, longitude: project.longitude })
+          context.dispatch('map/setZoom', project.zoom)
           // We load sites
           context.dispatch('loadSites').then(response => {
             context.dispatch('loadPaths').then(response => {

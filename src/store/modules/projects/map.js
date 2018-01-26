@@ -8,7 +8,8 @@ export default {
   namespaced: true,
   state: {
     latitude: 0.0,
-    longitude: 0.0
+    longitude: 0.0,
+    zoom: 1
   },
   getters : {
     currentLocation: state => {
@@ -21,12 +22,18 @@ export default {
     },
     setLongitude (state, longitude) {
       state.longitude = longitude
+    },
+    setZoom (state, zoom) {
+      state.zoom = zoom
     }
   },
   actions: {
     setLocation (context, location) {
       context.commit('setLatitude', location.latitude)
       context.commit('setLongitude', location.longitude)
+    },
+    setZoom (context, zoom) {
+      context.commit('setZoom', zoom)
     }
   }
 }
