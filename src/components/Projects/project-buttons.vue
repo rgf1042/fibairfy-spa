@@ -1,7 +1,7 @@
 <template>
   <b-button-group>
     <b-button variant="success" :disabled="this.isActivated" v-on:click="activate">Activar</b-button>
-    <b-button variant="info" :disabled="!this.isActivated">Guardar Pos.</b-button>
+    <b-button variant="info" :disabled="!this.isActivated" v-on:click="savePos">Guardar Pos.</b-button>
     <b-button variant="danger" :disabled="this.isActivated">Eliminar</b-button>
   </b-button-group>
 </template>
@@ -28,6 +28,10 @@ export default {
     activate (evt) {
       evt.preventDefault()
       this.$emit('activate-project', Number(this.project.id))
+    },
+    savePos (evt) {
+      evt.preventDefault()
+      this.$emit('save-pos')
     }
   }
 }

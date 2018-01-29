@@ -7,12 +7,14 @@
     </b-row>
     <b-row v-for="(project, index) in list" :key="project.id" v-if="list">
       <p>{{project.name}}</p>
-      <project-buttons v-on:activate-project="activateProject(index)" :projectId="project.id" :current="current"></project-buttons>
+      <project-buttons v-on:activate-project="activateProject(index)"
+        v-on:save-pos="savePos"
+        :projectId="project.id" :current="current">
+      </project-buttons>
     </b-row>
     <project-adder v-on:add-project="addProject($event)"></project-adder>
   </b-container>
 </template>
-
 <script>
 /* eslint-disable */
 import ProjectButtons from '@/components/Projects/project-buttons'
@@ -39,6 +41,16 @@ export default {
     activateProject (index) {
       // let item = this.list[index]
       this.$store.dispatch('projects/setCurrent', this.$store.state.projects.list[index].id).then(response => {
+      }, error => {
+        /* if (error.body.message) {
+          this.alert.message = error.body.message
+          this.alert.show = true
+        } */
+        console.log(error)
+      })
+    },
+    savePos () {
+      this.$store.dispatch('projects/savePos').then(response => {
       }, error => {
         /* if (error.body.message) {
           this.alert.message = error.body.message

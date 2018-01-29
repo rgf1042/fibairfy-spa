@@ -13,7 +13,7 @@ export default {
   },
   getters : {
     currentLocation: state => {
-      return { latitude: state.latitude, longitude: state.longitude }
+      return { latitude: state.latitude, longitude: state.longitude, zoom: state.zoom }
     }
   },
   mutations: {

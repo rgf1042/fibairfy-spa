@@ -33,6 +33,15 @@ export default {
     setListProjects (state, list) {
       state.list = list
     },
+    setLatitude (state, latitude) {
+      state.current.latitude = latitude
+    },
+    setLongitude (state, longitude) {
+      state.current.longitude = longitude
+    },
+    setZoom (state, zoom) {
+      state.current.zoom = zoom
+    },
     addNewProject (state, project) {
       state.list.push(project)
     }
@@ -100,6 +109,19 @@ export default {
           }, error => {
             reject(error)
           })
+        }, error => {
+          reject(error)
+        })
+      })
+    },
+    savePos (context) {
+      return new Promise((resolve, reject) => {
+        let loc = context.getters['map/currentLocation']
+        Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/' + context.getters.currentId, loc).then(response => {
+          context.commit('setLatitude', loc.latitude)
+          context.commit('setLongitude', loc.longitude)
+          context.commit('setZoom', loc.zoom)
+          resolve(response)
         }, error => {
           reject(error)
         })
