@@ -24,6 +24,9 @@ export default {
   getters : {
     currentId: state => {
       return state.current.id
+    },
+    findIndexById: state => id => {
+      return state.list.findIndex(item => item.id === id)
     }
   },
   mutations: {
@@ -44,6 +47,9 @@ export default {
     },
     addNewProject (state, project) {
       state.list.push(project)
+    },
+    deleteListProject (state, index) {
+      state.list.splice(index, 1) // Eliminem un element
     }
   },
   actions: {
@@ -109,6 +115,17 @@ export default {
           }, error => {
             reject(error)
           })
+        }, error => {
+          reject(error)
+        })
+      })
+    },
+    deleteProject (context, project) {
+      return new Promise((resolve, reject) => {
+        Vue.http.delete(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/' + project).then(response => {
+          let index = context.getters.findIndexById(project)
+          context.commit('deleteListProject', index)
+          resolve(response)
         }, error => {
           reject(error)
         })

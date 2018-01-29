@@ -9,6 +9,7 @@
       <p>{{project.name}}</p>
       <project-buttons v-on:activate-project="activateProject(index)"
         v-on:save-pos="savePos"
+        v-on:delete-project="deleteProject($event)"
         :projectId="project.id" :current="current">
       </project-buttons>
     </b-row>
@@ -61,6 +62,12 @@ export default {
     },
     addProject (name) {
       this.$store.dispatch('projects/addNewProject', name).then(response => {
+      }, error => {
+        console.log(error)
+      })
+    },
+    deleteProject (project) {
+      this.$store.dispatch('projects/deleteProject', project).then(response => {
       }, error => {
         console.log(error)
       })
