@@ -27,6 +27,9 @@ export default {
     },
     findIndexById: state => id => {
       return state.list.findIndex(item => item.id === id)
+    },
+    findProjectById: state => id => {
+      return state.list.find(item => item.id === id)
     }
   },
   mutations: {
@@ -142,6 +145,11 @@ export default {
         }, error => {
           reject(error)
         })
+      })
+    },
+    findProjectById (context, id) {
+      return new Promise((resolve, reject) => {
+        resolve(context.getters.findProjectById(id))
       })
     }
   },

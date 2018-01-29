@@ -1,5 +1,17 @@
 <template>
   <b-container fluid>
+  <div>
+  <!-- Modal Component -->
+  <b-modal id="modal-delete-project" ref="deleteModalRef"
+    @ok="deleteProject"
+    @cancel="noDeleteProject"
+    @esc="noDeleteProject"
+    @backdrop="noDeleteProject"
+    @headerclose="noDeleteProject"
+    title="Esborrar projecte">
+    <p class="my-4">Segur que vol esborrar el projecte: {{deleted.name}}</p>
+  </b-modal>
+  </div>
     <b-row>
       <b-col class="pt-2">
         <p>Projects</p>
@@ -9,7 +21,7 @@
       <p>{{project.name}}</p>
       <project-buttons v-on:activate-project="activateProject(index)"
         v-on:save-pos="savePos"
-        v-on:delete-project="deleteProject($event)"
+        v-on:delete-project="questionDeleteProject($event)"
         :projectId="project.id" :current="current">
       </project-buttons>
     </b-row>
@@ -29,6 +41,13 @@ export default {
   },
   mounted () {
 
+  },
+  data () {
+    return {
+      deleted: {
+        id: 0
+      }
+    }
   },
   computed: {
     current() {
@@ -66,8 +85,20 @@ export default {
         console.log(error)
       })
     },
-    deleteProject (project) {
-      this.$store.dispatch('projects/deleteProject', project).then(response => {
+    questionDeleteProject (id) {
+      this.$store.dispatch('projects/findProjectById', id).then(response => {
+        let project = response
+        this.deleted = project // Marquem id a esborrar
+        this.$refs.deleteModalRef.show()
+      })
+    },
+    noDeleteProject () {
+      this.deleted = {}
+      this.$refs.deleteModalRef.hide()
+    },
+    deleteProject () {
+      this.$store.dispatch('projects/deleteProject', this.deleted.id).then(response => {
+        this.deleted = {} // Esborrem referencia
       }, error => {
         console.log(error)
       })
