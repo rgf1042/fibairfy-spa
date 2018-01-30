@@ -254,7 +254,7 @@ Site.prototype.onSiteClick = function (e){
       } */
       break;
     case "":
-      if (this.map_parent.layerActive === 'civil') this.siteDefine()
+      if (this.map_parent.layerActive === 'civil') this.map_parent.vue.$emit('edit-site', Number(this.id))
       else this.boxDefine()
     }
 };

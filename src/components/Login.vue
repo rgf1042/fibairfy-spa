@@ -15,7 +15,7 @@
         <h1>fiberfy</h1>
       </b-col>
     </b-row>
-      <b-form @submit="onSubmit" v-if="show">
+      <b-form @submit="onSubmit">
         <b-form-group id="usernameInputGroup"
                       label="Username:"
                       label-for="usernameInput">
@@ -53,8 +53,7 @@ export default {
       alert: {
         show: false,
         message: ''
-      },
-      show: true
+      }
     }
   },
   methods: {

@@ -8,6 +8,11 @@ export default {
   state: {
     sites: []
   },
+  getters: {
+    findSiteById: state => id => {
+      return state.sites.find(item => item.id === id)
+    }
+  },
   mutations: {
     addNewSite (state, site) {
       state.sites.push(site)
@@ -39,6 +44,11 @@ export default {
         }, error => {
           reject(error)
         })
+      })
+    },
+    findSiteById (context, id) {
+      return new Promise((resolve, reject) => {
+        resolve(context.getters.findSiteById(id))
       })
     }
   }

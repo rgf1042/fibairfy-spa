@@ -1,6 +1,6 @@
 <template>
   <div>
-    <leaflet-map :status="status" :layerActive="layerActive"></leaflet-map>
+    <leaflet-map :status="status" :layerActive="layerActive" v-on:edit-site="editSite($event)"></leaflet-map>
     <map-controls v-on:set-status="setStatus($event)" v-on:set-layer="setLayer($event)" :status="status" :layerActive="layerActive"></map-controls>
   </div>
 </template>
@@ -30,6 +30,9 @@ export default {
     setLayer (layer) {
       this.layerActive = layer
       this.status = ''
+    },
+    editSite (id) {
+      this.$router.push({ name: 'SiteEdit', params: { id: id }})
     }
   }
 

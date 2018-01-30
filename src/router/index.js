@@ -5,11 +5,12 @@ import Router from 'vue-router'
 import Login from '@/components/Login'
 import FiberMap from '@/components/FiberMap'
 import Projects from '@/components/Projects'
+import SiteEdit from '@/components/SiteEdit'
 
 // Import navbars
 import GeneralNavbar from '@/components/shared/general-navbar'
 import LoginNavbar from '@/components/shared/login-navbar'
-// import BackNavbar from '@/components/shared/back-navbar'
+import BackNavbar from '@/components/shared/back-navbar'
 
 Vue.use(Router)
 
@@ -53,6 +54,14 @@ export default new Router({
       props: {
         navbar: {'projectsActive': true},
         view: false
+      }
+    },
+    {
+      path: '/site/:id',
+      name: 'SiteEdit',
+      components: {
+        navbar: BackNavbar,
+        view: SiteEdit
       }
     }
   ]
