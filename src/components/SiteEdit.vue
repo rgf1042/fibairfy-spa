@@ -29,7 +29,7 @@
         <b-form-group id="typeInputGroup"
                       label="Tipus:"
                       label-for="typeInput">
-          <b-form-select id="typeInput" v-model="typeSelected" :options="types" class="mb-3" />
+          <b-form-select id="typeInput" v-model="form.typeSelected" :options="types" class="mb-3" />
         </b-form-group>
         <b-form-group id="observationsInputGroup"
                       label="Observacions:"
@@ -52,11 +52,9 @@ export default {
   data () {
     return {
       id: 0,
-      typeSelected: '',
-      types: [],
       form: {
         name: '',
-        type: '',
+        typeSelected: '',
         observations: ''
       },
       alert: {
@@ -70,13 +68,18 @@ export default {
       let site = response
       this.id = site.id
       this.form.name = site.name
-      this.form.type = site.type
+      this.form.typeSelected = site.type
       this.form.observations = site.observations
     }, error => {
       this.alert.message = error
       this.alert.show = true
       console.log(error)
     })
+  },
+  computed: {
+    types () {
+      return this.$store.state.projects.sites.types
+    }
   },
   methods: {
     onSubmit (evt) {

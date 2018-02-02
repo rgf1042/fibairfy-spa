@@ -6,7 +6,16 @@ Vue.use(VueResource)
 /* eslint-disable */
 export default {
   state: {
-    sites: []
+    sites: [],
+    types: [
+      'Arqueta',
+      'Poste',
+      'Cambra',
+      'Armari',
+      'Poe',
+      'Ganxo',
+      'Salt'
+    ]
   },
   getters: {
     findSiteById: state => id => {

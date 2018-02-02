@@ -64,16 +64,9 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   this.project_default_longitude = 1.571044921875
   this.project_default_zoom = 8 */
 
-  // Llistat tancat? (TODO: Passar-ho a una taula.)
-  this.type_site = [
-    'Arqueta',
-    'Poste',
-    'Cambra',
-    'Armari',
-    'Poe',
-    'Ganxo',
-    'Salt'
-  ]
+  // Llistat des de modul sites vuex
+  this.type_site = this.vue.$store.state.projects.sites.types
+
   this.type_site_icon = []
   this.type_site_icon_over = []
   this.type_site_icon_active = []
