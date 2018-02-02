@@ -315,10 +315,12 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   }
 
   this.info.update = function (msg) {
-    if (typeof msg !== 'undefined') this._div.innerHTML = msg
-
-    if (msg !== '') L.DomUtil.removeClass(this._div, 'hide')
-    else L.DomUtil.addClass(this._div, 'hide')
+    if (typeof msg !== 'undefined') {
+      this._div.innerHTML = msg
+      if (msg !== '') this._div.removeAttribute('hidden')
+      else this._div.setAttribute('hidden', true)
+    }
+    else this._div.setAttribute('hidden', true)
   }
 
   this.info.addTo(this.map)

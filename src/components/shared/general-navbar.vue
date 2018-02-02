@@ -13,7 +13,7 @@
         <b-nav-item-dropdown right>
           <!-- Using button-content slot -->
           <template slot="button-content">
-            <em>Usuari</em>
+            <em>{{user}}</em>
           </template>
           <b-dropdown-item href="#">Perfil</b-dropdown-item>
           <b-dropdown-item href="#">Logout</b-dropdown-item>
@@ -25,17 +25,11 @@
 <script>
 export default {
   name: 'general-navbar',
-  props: ['mapActive', 'projectsActive']
-  /* data () {
-    return {
-      active: {
-        map: false,
-        projects: false
-      },
+  props: ['mapActive', 'projectsActive'],
+  computed: {
+    user () {
+      return this.$store.state.user.user.name
     }
-  },
-  mounted () {
-    this.
-  } */
+  }
 }
 </script>
