@@ -896,7 +896,7 @@ Mapa.prototype.onClick = function (e) {
     case 'site':
       var mysite = new Site(
         null,
-        'site' + Math.floor(Math.random() * 1000),
+        'site' + Math.floor(Math.random() * 100000),
         e.latlng,
         this.type_site_default,
         this

@@ -30,7 +30,7 @@ Site.prototype.save = function () {
     status: this.status
   }
   this.map_parent.vue.$store.dispatch('projects/addNewSite', site).then(response => {
-
+    this.id = response.body.id
   }, error => {
     this.clear();
     this.map_parent.deleteSiteById(this.id);
@@ -235,7 +235,7 @@ Site.prototype.onSiteClick = function (e){
       break
     case "site":
       // Anem a editar el site
-      // this.siteDefine()
+      this.map_parent.vue.$emit('edit-site', Number(this.id))
       break
     case "box":
       // this.boxDefine()

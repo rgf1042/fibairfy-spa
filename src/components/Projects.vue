@@ -17,7 +17,7 @@
         <p>Projects</p>
       </b-col>
     </b-row>
-    <b-row v-for="(project, index) in list" :key="project.id" v-if="list">
+    <b-row class="pt-2" v-for="(project, index) in list" :key="project.id" v-if="list">
       <b-col sm="2">
         <span>{{project.name}}</span>
         <span v-if="!project.writable">(Només lectura)</span>
@@ -30,7 +30,7 @@
         </project-buttons>
       </b-col>
     </b-row>
-    <project-adder v-on:add-project="addProject($event)"></project-adder>
+    <project-adder class="pt-2" v-on:add-project="addProject($event)"></project-adder>
   </b-container>
 </template>
 <script>
