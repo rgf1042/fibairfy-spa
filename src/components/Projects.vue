@@ -13,17 +13,22 @@
   </b-modal>
   </div>
     <b-row>
-      <b-col class="pt-2">
+      <b-col sm="2" class="pt-2">
         <p>Projects</p>
       </b-col>
     </b-row>
     <b-row v-for="(project, index) in list" :key="project.id" v-if="list">
-      <p>{{project.name}}</p>
-      <project-buttons v-on:activate-project="activateProject(index)"
-        v-on:save-pos="savePos"
-        v-on:delete-project="questionDeleteProject($event)"
-        :projectId="project.id" :current="current">
-      </project-buttons>
+      <b-col sm="2">
+        <span>{{project.name}}</span>
+        <span v-if="!project.writable">(Només lectura)</span>
+      </b-col>
+      <b-col sm="4">
+        <project-buttons v-on:activate-project="activateProject(index)"
+          v-on:save-pos="savePos"
+          v-on:delete-project="questionDeleteProject($event)"
+          :projectId="project.id" :current="current">
+        </project-buttons>
+      </b-col>
     </b-row>
     <project-adder v-on:add-project="addProject($event)"></project-adder>
   </b-container>

@@ -24,6 +24,11 @@ export default {
       state.user.name = name
     }
   },
+  getters: {
+    currentId: state => {
+      return state.user.id
+    },
+  },
   actions: {
     login (context, form) {
       return new Promise((resolve, reject) => {

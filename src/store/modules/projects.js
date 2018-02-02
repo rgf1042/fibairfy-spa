@@ -17,7 +17,8 @@ export default {
       name: '',
       latitude: 0.0,
       longitude: 0.0,
-      zoom: 0
+      zoom: 0,
+      writable: true
     },
     list: []
   },
@@ -68,6 +69,8 @@ export default {
             longitude: response.body.longitude,
             zoom: response.body.zoom
           }
+          // Comprovem si el projecte es writable
+          project.writable = (typeof(response.body.users.find(item => item.user === context.rootGetters['user/currentId'])) === 'object')
           context.commit('setCurrentProject', project)
           context.dispatch('map/setLocation', { latitude: project.latitude, longitude: project.longitude })
           context.dispatch('map/setZoom', project.zoom)
@@ -94,6 +97,9 @@ export default {
       return new Promise((resolve, reject) => {
         Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/').then(response => {
           // success callback
+          for (let x in response.body) {
+            response.body[x].writable = (typeof(response.body[x].users.find(item => item.user === context.rootGetters['user/currentId'])) === 'object')
+          }
           context.commit('setListProjects', response.body)
           resolve(response)
         }, error => {
