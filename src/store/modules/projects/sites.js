@@ -20,11 +20,17 @@ export default {
   getters: {
     findSiteById: state => id => {
       return state.sites.find(item => item.id === id)
+    },
+    findSiteIndexById: state => id => {
+      return state.sites.findIndex(item => item.id === id)
     }
   },
   mutations: {
     addNewSite (state, site) {
       state.sites.push(site)
+    },
+    updateSite (state, data) {
+      state.sites[data.index] = data.site
     },
     loadSiteArray (state, sites) {
       state.sites = sites
@@ -53,6 +59,22 @@ export default {
         }, error => {
           reject(error)
         })
+      })
+    },
+    updateSite (context, site) {
+      return new Promise((resolve, reject) => {
+        let index = context.getters.findSiteIndexById(site.id)
+        if (index !== -1) {
+          Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/site/' + site.id, site).then(response => {
+            context.commit('updateSite', { index: index, site: site })
+            resolve(response)
+          }, error => {
+            reject(error)
+          })
+        }
+        else {
+          reject({ msg: 'This site doesnt exist'})
+        }
       })
     },
     findSiteById (context, id) {

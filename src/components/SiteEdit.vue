@@ -12,7 +12,7 @@
     </b-row>
     <b-row>
       <b-col cols="4" class="pt-2">
-        <h3>Editar site: {{id}}</h3>
+        <h3>Editar site: {{form.id}}</h3>
       </b-col>
     </b-row>
       <b-form @submit="onSubmit">
@@ -26,10 +26,26 @@
                         placeholder="Enter name">
           </b-form-input>
         </b-form-group>
+        <b-form-group id="locationInputGroup"
+                      label="Nom:"
+                      label-for="latitudeInput">
+          <b-form-input id="latitudeInput"
+                        type="text"
+                        v-model="form.latitude"
+                        required
+                        placeholder="Enter latitude">
+          </b-form-input>
+          <b-form-input id="longitudeInput"
+                        type="text"
+                        v-model="form.longitude"
+                        required
+                        placeholder="Enter longitude">
+          </b-form-input>
+        </b-form-group>
         <b-form-group id="typeInputGroup"
                       label="Tipus:"
                       label-for="typeInput">
-          <b-form-select id="typeInput" v-model="form.typeSelected" :options="types" class="mb-3" />
+          <b-form-select id="typeInput" v-model="form.type" :options="types" class="mb-3" />
         </b-form-group>
         <b-form-group id="observationsInputGroup"
                       label="Observacions:"
@@ -51,10 +67,12 @@ export default {
   name: 'SiteEdit',
   data () {
     return {
-      id: 0,
       form: {
+        id: 0,
         name: '',
-        typeSelected: '',
+        latitude: '',
+        longitude: '',
+        type: '',
         observations: ''
       },
       alert: {
@@ -66,9 +84,11 @@ export default {
   mounted () {
     this.$store.dispatch('projects/findSiteById', this.$route.params.id).then(response => {
       let site = response
-      this.id = site.id
+      this.form.id = site.id
       this.form.name = site.name
-      this.form.typeSelected = site.type
+      this.form.latitude = site.latitude
+      this.form.longitude = site.longitude
+      this.form.type = site.type
       this.form.observations = site.observations
     }, error => {
       this.alert.message = error
@@ -84,6 +104,13 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
+      this.$store.dispatch('projects/updateSite', this.form).then(response => {
+        this.$router.go(-1)
+      }, error => {
+        this.alert.message = error
+        this.alert.show = true
+        console.log(error)
+      })
     }
   }
 }
