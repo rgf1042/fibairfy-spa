@@ -119,6 +119,7 @@ export default {
         }
         Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/', project).then(response => {
           Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/' + response.body.project).then(response => {
+            response.body.writable = (typeof(response.body.users.find(item => item.user === context.rootGetters['user/currentId'])) === 'object')
             context.commit('addNewProject', response.body)
             resolve(response)
           }, error => {
