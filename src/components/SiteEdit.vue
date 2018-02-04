@@ -27,7 +27,7 @@
           </b-form-input>
         </b-form-group>
         <b-form-group id="locationInputGroup"
-                      label="Nom:"
+                      label="Localització:"
                       label-for="latitudeInput">
           <b-form-input id="latitudeInput"
                         type="text"
