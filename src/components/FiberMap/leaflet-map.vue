@@ -10,11 +10,11 @@ export default {
   props: ['status', 'layerActive'],
   data () {
     return {
-      leafletHeight: 1080
+      leafletHeight: window.innerHeight / 1.25
     }
   },
   mounted () {
-    this.leafletHeight = window.innerHeight / 1.25
+    // this.leafletHeight = window.innerHeight / 1.25
     map = new Mapa(this.map, 'map', this.status, this.layerActive, this)
     map.load()
   },
