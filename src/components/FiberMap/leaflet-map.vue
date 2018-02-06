@@ -14,9 +14,12 @@ export default {
     }
   },
   mounted () {
-    // this.leafletHeight = window.innerHeight / 1.25
+    window.addEventListener('resize', this.handleResize)
     map = new Mapa(this.map, 'map', this.status, this.layerActive, this)
     map.load()
+  },
+  destroyed () {
+    window.removeEventListener('resize', this.handleResize)
   },
   watch: {
     layerActive: function (newVal, oldVal) { // watch it
@@ -25,6 +28,11 @@ export default {
     },
     status: function (newVal, oldVal) {
       map.setStatus(newVal)
+    }
+  },
+  methods: {
+    handleResize () {
+      this.leafletHeight = window.innerHeight / 1.25
     }
   }
 }
