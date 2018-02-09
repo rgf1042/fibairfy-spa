@@ -75,7 +75,7 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
 
   // Llistat tancat? (TODO: Passar-ho a una taula.)
   this.type_path = ['Aeri', 'Façana', 'Soterrat']
-  this.type_path_colors = []
+  this.type_path_colors = this.vue.$store.state.projects.paths.types
   this.type_path_colors['normal'] = ['#000080', '#254117', '#806517']
   this.type_path_colors['over'] = ['#95b9c7', '#99C68E', '#AF9B60']
   this.type_path_colors['active'] = ['#357ec7', '#7FE817', '#E8A317']
@@ -205,53 +205,6 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
     this.type_site_icon_active[name] = new objectSiteIconActive[name]()
     this.type_site_icon_grey[name] = new objectSiteIconGrey[name]()
 
-    /*
-    // Icon Base
-    eval(
-      'var ' +
-        name +
-        "Icon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/'" +
-        name +
-        ".png'}});"
-    )
-    eval("this.type_site_icon['" + name + "'] = new " + name + 'Icon();')
-    // Icon Over
-    eval(
-      'var ' +
-        name +
-        "OverIcon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/'" +
-        name +
-        ".over.png'}});"
-    )
-    eval(
-      "this.type_site_icon_over['" + name + "'] = new " + name + 'OverIcon();'
-    )
-    // Icon Active
-    eval(
-      'var ' +
-        name +
-        "ActiveIcon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/'" +
-        name +
-        ".active.png'}});"
-    )
-    eval(
-      "this.type_site_icon_active['" +
-        name +
-        "'] = new " +
-        name +
-        'ActiveIcon();'
-    )
-    // Icon Grey
-    eval(
-      'var ' +
-        name +
-        "GreyIcon = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath +  '/'" +
-        name +
-        ".grey.png'}});"
-    )
-    eval(
-      "this.type_site_icon_grey['" + name + "'] = new " + name + 'GreyIcon();'
-    ) */
   }
   // console.log(this);
 
@@ -317,72 +270,6 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   }
 
   this.info.addTo(this.map)
-  /*
-  //Button - Declare events
-  $('#make_section').click(function() {
-    that.clickMenu(this)
-    that.makeSection()
-  })
-  $('#make_site').click(function() {
-    that.clickMenu(this)
-    that.makeSite()
-  })
-  $('#split_path').click(function() {
-    that.clickMenu(this)
-    that.makeSplit()
-  })
-  $('#load').click(function() {
-    that.clickMenu(this)
-    that.loadExternalMap()
-  })
-  $('#debug').click(function() {
-    that.clickMenu(this)
-    that.debugFunction()
-  })
-  $('.tiles').click(function() {
-    that.rollTiles()
-  })
-  $('#input_output').click(function() {
-    that.inputOutput()
-  })
-
-  $('#projects_manager').click(function() {
-    that.clickMenu(this)
-    that.projectManager()
-  })
-  $('#view_infrastructure').click(function() {
-    that.changeMenu('infra')
-  })
-
-  $('.back_map').click(function() {
-    that.clickMenu(this)
-    that.backMap()
-  })
-  $('.back_site').click(function() {
-    that.backSite()
-  })
-
-  $('#fusion_graph').click(function() {
-    that.fusionSite()
-  })
-  $('#back_fusion').click(function() {
-    that.backFusion()
-  })
-
-  // Menu d'infraestructura
-  $('#make_box').click(function() {
-    that.clickMenu(this)
-    that.makeBox()
-  })
-  $('#make_fiber').click(function() {
-    that.clickMenu(this)
-    that.makeFiber()
-  })
-  $('#view_obracivil').click(function() {
-    that.changeMenu('civil')
-  }) */
-
-  // this.loadProjects()
 }
 Mapa.prototype.setStatus = function (status) {
   this.status = status
@@ -401,208 +288,6 @@ Mapa.prototype.tileLayer = function (tiles) {
   this.layer = L.tileLayer(tiles.tiles, tiles.options)
   this.layer.addTo(this.map)
 }
-/*
-// Project resouces
-Mapa.prototype.loadProjects = function() {
-  var that = this
-
-  // Netejem l'array en cas de que hi hagi algo.
-  this.projects = []
-  strUrl = that.serverUrl + '/project'
-  $.getJSON(strUrl, function(data) {
-    // Iterem
-    $.each(data, function(index, value) {
-      project = new Projecte(
-        value.id,
-        value.name,
-        value.latitude,
-        value.longitude,
-        value.zoom,
-        value.readonly,
-        that
-      )
-      that.projects.push(project)
-    })
-    // Hi ha projecte actiu?
-    if (!that.active_project) {
-      // No hi ha cap actiu, però tampoc té cap projecte, creem un per defecte.
-      if (that.projects.length === 0) {
-        project = new Projecte(
-          0,
-          that.project_default_name,
-          that.project_default_latitude,
-          that.project_default_longitude,
-          that.project_default_zoom,
-          false,
-          that
-        )
-        project.save()
-        that.projects.push(project)
-      }
-      that.active_project = that.projects[0]
-    }
-    that.drawProjects()
-    // Ara fem un "load", per què quan arribem aquí ja tenim projecte.
-    if (that.active_project.id != 0) {
-      that.load()
-    }
-  })
-} */
-
-Mapa.prototype.findProject = function (id) {
-  var that = this
-
-  for (let idx_project in that.projects) {
-    var value = that.projects[idx_project]
-    if (value.id === id) {
-      return value
-    }
-  }
-  return null
-}
-/*
-Mapa.prototype.drawProjects = function() {
-  var that = this
-  var addbutton = '#project-add'
-  var addinput = 'input[name=project-name]'
-  var listprojects = '#list-projects'
-
-  // Clean events
-  $('.active-project-button').unbind('click')
-  $('.delete-project-button').unbind('click')
-
-  $(addbutton).unbind('click')
-  // Print List
-  var llista = $("<div id='project-list'>")
-  $(listprojects).html(llista)
-  $.each(that.projects, function(index, value) {
-    // És l'Actiu?
-    var projectName = value.name
-    if (value.readonly) projectName += ' (read-only)'
-    var buttonActiveProject = ''
-    if (value.id === that.active_project.id) {
-      projectName = "<label class='active'>" + projectName + '</label>'
-      buttonActiveProject = "<label class='active'>Project Actived "
-      buttonActiveProject +=
-        '   <button class="position-project-button" id="position-project-' +
-        value.id +
-        '" data-id="' +
-        value.id +
-        '">Save Pos</button>'
-      buttonActiveProject +=
-        '   <button class="report-project-button" id="report-project-' +
-        value.id +
-        '" data-id="' +
-        value.id +
-        '">Report</button>'
-      buttonActiveProject +=
-        '   <a href="/api/v1/exports/' +
-        value.id +
-        '" target="_blank"><button class="export-project-button" id="export-project-' +
-        value.id +
-        '" data-id="' +
-        value.id +
-        '">Export</button></a>'
-      buttonActiveProject += '</label>'
-    } else {
-      buttonActiveProject =
-        '<button class="active-project-button" id="active-project-' +
-        value.id +
-        '" data-id="' +
-        value.id +
-        '">Active</button>' +
-        '   <button class="delete-project-button" id="delete-project-' +
-        value.id +
-        '" data-id="' +
-        value.id +
-        '">Delete</button>'
-    }
-    var row =
-      '<div class="row">' +
-      ' <div class="col-s-6">' +
-      '   <div class="project-item" id="project-' +
-      value.id +
-      '">' +
-      projectName +
-      '   </div>' +
-      ' </div>' +
-      ' <div class="col-s-6">' +
-      buttonActiveProject +
-      ' </div>' +
-      '</div>'
-    llista.append(row)
-  })
-  $(addbutton).on('click', function(e) {
-    var name = $(addinput).val()
-    if (name != '') {
-      var project = new Projecte(
-        0,
-        name,
-        that.project_default_latitude,
-        that.project_default_longitude,
-        that.project_default_zoom,
-        false,
-        that
-      )
-      project.save()
-      that.projects.push(project)
-      $(addinput).val('')
-      that.drawProjects()
-    } else {
-      that.notify('Has de posar un nom de projecte!')
-    }
-  })
-  $('.delete-project-button').on('click', function(e) {
-    var project = that.findProject($('#' + e.target.id).data('id'))
-    // We clean possible previous structures
-    that.active_path = null
-    this.active_site = null
-    that.active_fiber = null
-
-    project.delete()
-    that.loadProjects()
-  })
-  $('.active-project-button').on('click', function(e) {
-    var project = that.findProject($('#' + e.target.id).data('id'))
-    // We clean possible previous structures
-    that.active_path = null
-    that.active_site = null
-    that.active_fiber = null
-
-    that.active_project = project
-    that.loadProjects()
-  })
-  $('.position-project-button').on('click', function(e) {
-    var ll = that.map.getCenter()
-    that.active_project.latitude = ll.lat
-    that.active_project.longitude = ll.lng
-    that.active_project.zoom = that.map.getZoom()
-    that.active_project.save()
-  })
-  $('.report-project-button').on('click', function(e) {})
-  $('.export-project-button').on('click', function(e) {})
-} */
-/* End of Project resources */
-
-/*
-Mapa.prototype.export = function() {
-  var that = this
-  // Exportar tots els sites
-  for (let idx_site in this.sites) {
-    var s = this.sites[idx_site]
-    console.log(s.marker.toGeoJSON())
-  }
-
-  // Exportar tots els paths
-  for (let idx_paths in this.paths) {
-    var p = this.paths[idx_paths]
-  }
-
-  // Exportar totes les fibres
-  for (let idx_fiber in this.fibers) {
-    var f = this.fibers[idx_fiber]
-  }
-} */
 
 Mapa.prototype.load = function () {
   var that = this
@@ -650,34 +335,6 @@ Mapa.prototype.load = function () {
   }
   // ...
   /*
-  $.getJSON(strUrl, function(data) {
-    $.each(data, function(index, value) {
-      site = new Site(
-        value.id,
-        value.name,
-        L.latLng(value.latitude, value.longitude),
-        value.type,
-        that
-      )
-      site.observations = value.observations
-      that.sites.push(site)
-    })
-    // Carreguem els trams. (afegim .id degut a nova api)
-    strUrl = that.serverUrl + '/path?project=' + that.active_project.id
-    $.getJSON(strUrl, function(data) {
-      $.each(data, function(index, value) {
-        path = new Path(
-          value.id,
-          value.name,
-          value.first.id,
-          value.last.id,
-          $.parseJSON(value.intermedial),
-          value.type,
-          that
-        )
-        path.observations = value.observations
-        that.paths.push(path)
-      })
       // Carreguem les fibres (afegim .id degut a nova api)
       strUrl = that.serverUrl + '/fiber?project=' + that.active_project.id
       $.getJSON(strUrl, function(data) {
@@ -732,9 +389,6 @@ Mapa.prototype.redraw = function () {
   for (let x in this.paths) {
     this.paths[x].draw()
   }
-  /* $.each(this.paths, function(index, path) {
-    path.draw()
-  }) */
 }
 Mapa.prototype.clearLayers = function () {
   // Seria interessant només esborrar aquells que son d'un tram.
@@ -743,24 +397,6 @@ Mapa.prototype.clearLayers = function () {
     that.map.removeLayer(layer)
   })
 }
-/*
-// Canvi de menú entre infraestructura i obra civil
-Mapa.prototype.changeMenu = function(option) {
-  switch (option) {
-    case 'infra':
-      $('nav#civil').hide()
-      $('nav#infra').removeClass('hide')
-      this.loadInfra()
-      break
-    case 'civil':
-      $('nav#civil').show()
-      $('nav#infra').addClass('hide')
-      break
-  }
-  this.layerActive = option
-  this.status = ''
-  this.changeColor(option)
-} */
 
 Mapa.prototype.setLayerActive = function (layer) {
   this.layerActive = layer
@@ -774,13 +410,13 @@ Mapa.prototype.changeColor = function (option) {
     var s = this.sites[idx_site]
     s.changeTypeIcon(status)
   }
-  /*
+
   // Canviem els colors a tots els trams.
   for (let idx_paths in this.paths) {
     var p = this.paths[idx_paths]
     p.changeTypePath(status)
   }
-
+  /*
   // Pintem o esborrem la fibra tirada?
   for (let idx_fiber in this.fibers) {
     var f = this.fibers[idx_fiber]
@@ -792,21 +428,6 @@ Mapa.prototype.changeColor = function (option) {
   } */
 }
 
-/* --- */
-/*
-Mapa.prototype.clickMenu = function(divActive) {
-  $('nav.menu li a').removeClass('active')
-  divSelect = $(divActive)
-  divSelect.addClass('active')
-  $('.toggle-nav label').text(' ' + divSelect.text())
-  $('.menu ul').toggleClass('active')
-} */
-
-/*
-Mapa.prototype.changeStatus = function(s, divActive) {
-  this.status = s
-} */
-
 Mapa.prototype.loadExternalMap = function () {
   var that = this
   var track = new L.KML('/mapa/doc.kml', { async: true })
@@ -817,71 +438,6 @@ Mapa.prototype.loadExternalMap = function () {
   })
   this.map.addLayer(track)
 }
-/*
-Mapa.prototype.debugFunction = function () {
-  for (idx_path in this.paths) {
-    path = this.paths[idx_path]
-    console.log(path.id + ' ' + path.distance())
-  }
-} */
-/*
-Mapa.prototype.backMap = function() {
-  if (this.layerActive === 'infra') this.loadInfra()
-  $('#map-group').show()
-  $('.second-level').addClass('hide')
-  $('.third-level').addClass('hide')
-  Config.closeForm()
-
-  this.changeStatus('', '')
-}
-
-Mapa.prototype.backSite = function() {
-  $('#zoom-path-group').addClass('hide')
-  $('#zoom-site-fusion-group').addClass('hide')
-  $('#zoom-fusion-graph-group').addClass('hide')
-  if (this.layerActive === 'civil') {
-    $('#zoom-site-group').removeClass('hide')
-    $('#zoom-box-group').addClass('hide')
-  } else {
-    $('#zoom-site-group').addClass('hide')
-    $('#zoom-box-group').removeClass('hide')
-  }
-  $('#form-project-group').addClass('hide')
-  this.changeStatus('', '')
-}
-
-Mapa.prototype.fusionSite = function() {
-  $('#zoom-path-group').addClass('hide')
-  $('#zoom-site-fusion-group').addClass('hide')
-  $('#zoom-fusion-graph-group').removeClass('hide')
-  $('#zoom-site-group').addClass('hide')
-  $('#form-project-group').addClass('hide')
-  this.changeStatus('', '')
-  var graph = new Pfusion($('#fusionGraph')[0], this.active_site)
-  graph.draw()
-}
-
-Mapa.prototype.backFusion = function() {
-  $('#zoom-path-group').addClass('hide')
-  $('#zoom-site-fusion-group').removeClass('hide')
-  $('#zoom-fusion-graph-group').addClass('hide')
-  $('#zoom-site-group').addClass('hide')
-  $('#form-project-group').addClass('hide')
-  this.changeStatus('', '')
-}
-
-Mapa.prototype.inputOutput = function() {
-  var that = this
-  that.ioMap.toGeoJSON()
-  $('#map-group').hide()
-  $('#zoom-path-group').addClass('hide')
-  $('#zoom-site-fusion-group').addClass('hide')
-  $('#zoom-fusion-graph-group').addClass('hide')
-  $('#zoom-site-group').addClass('hide')
-  $('#form-project-group').addClass('hide')
-  this.changeStatus('', '')
-  $('#zoom-io-group').removeClass('hide')
-} */
 
 Mapa.prototype.onClick = function (e) {
   switch (this.status) {

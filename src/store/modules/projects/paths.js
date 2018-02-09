@@ -6,11 +6,26 @@ Vue.use(VueResource)
 /* eslint-disable */
 export default {
   state: {
-    paths: []
+    paths: [],
+    types: ['Aeri', 'Façana', 'Soterrat']
+  },
+  getters: {
+    findPathById: state => id => {
+      return state.paths.find(item => item.id === id)
+    },
+    findPathIndexById: state => id => {
+      return state.paths.findIndex(item => item.id === id)
+    }
   },
   mutations: {
     addNewPath (state, path) {
       state.paths.push(path)
+    },
+    updatePath (state, data) {
+      state.paths[data.index] = data.path
+    },
+    deletePath (state, index) {
+      state.paths.splice(index, 1)
     },
     loadPathArray (state, paths) {
       state.paths = paths
@@ -39,6 +54,43 @@ export default {
         }, error => {
           reject(error)
         })
+      })
+    },
+    deletePath (context, id) {
+      return new Promise((resolve, reject) => {
+        let index = context.getters.findPathIndexById(id)
+        if (index !== -1) {
+          Vue.http.delete(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/path/' + id).then(response => {
+            context.commit('deletePath', index)
+            resolve(response)
+          }, error => {
+            reject(error)
+          })
+        }
+        else {
+          reject({ msg: 'This path doesnt exist'})
+        }
+      })
+    },
+    updatePath (context, path) {
+      return new Promise((resolve, reject) => {
+        let index = context.getters.findPathIndexById(path.id)
+        if (index !== -1) {
+          Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/path/' + path.id, path).then(response => {
+            context.commit('updatePath', { index: index, path: response.body })
+            resolve(response)
+          }, error => {
+            reject(error)
+          })
+        }
+        else {
+          reject({ msg: 'This path doesnt exist'})
+        }
+      })
+    },
+    findPathById (context, id) {
+      return new Promise((resolve, reject) => {
+        resolve(context.getters.findPathById(id))
       })
     }
   }

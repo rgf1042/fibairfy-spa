@@ -15,7 +15,7 @@
           <template slot="button-content">
             <em>{{user}}</em>
           </template>
-          <b-dropdown-item href="#">Perfil</b-dropdown-item>
+          <b-dropdown-item to="Profile">Perfil</b-dropdown-item>
           <b-dropdown-item href="#">Logout</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>

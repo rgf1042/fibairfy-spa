@@ -32,6 +32,9 @@ export default {
     updateSite (state, data) {
       state.sites[data.index] = data.site
     },
+    deleteSite (state, index) {
+      state.sites.splice(index, 1)
+    },
     loadSiteArray (state, sites) {
       state.sites = sites
     }
@@ -59,6 +62,22 @@ export default {
         }, error => {
           reject(error)
         })
+      })
+    },
+    deleteSite (context, id) {
+      return new Promise((resolve, reject) => {
+        let index = context.getters.findSiteIndexById(id)
+        if (index !== -1) {
+          Vue.http.delete(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/site/' + id).then(response => {
+            context.commit('deleteSite', index)
+            resolve(response)
+          }, error => {
+            reject(error)
+          })
+        }
+        else {
+          reject({ msg: 'This site doesnt exist'})
+        }
       })
     },
     updateSite (context, site) {

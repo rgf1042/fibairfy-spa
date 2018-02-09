@@ -1,13 +1,13 @@
 <template>
   <div>
-    <b-modal id="modal-delete-site" ref="deleteModalRef"
-      @ok="deleteSite"
-      @cancel="noDeleteSite"
-      @esc="noDeleteSite"
-      @backdrop="noDeleteSite"
-      @headerclose="noDeleteSite"
+    <b-modal id="modal-delete-path" ref="deleteModalRef"
+      @ok="deletePath"
+      @cancel="noDeletePath"
+      @esc="noDeletePath"
+      @backdrop="noDeletePath"
+      @headerclose="noDeletePath"
       title="Esborrar projecte">
-      <p class="my-4">Segur que vol esborrar el site: {{deleted.name}}</p>
+      <p class="my-4">Segur que vol esborrar el path: {{deleted.name}}</p>
     </b-modal>
     <b-container>
       <b-row>
@@ -22,7 +22,7 @@
       </b-row>
       <b-row>
         <b-col cols="4" class="pt-2">
-          <h3>Editar site: {{form.id}}</h3>
+          <h3>Editar path: {{form.id}}</h3>
         </b-col>
       </b-row>
         <b-form @submit="onSubmit">
@@ -36,20 +36,24 @@
                           placeholder="Enter name">
             </b-form-input>
           </b-form-group>
-          <b-form-group id="locationInputGroup"
-                        label="Localització:"
-                        label-for="latitudeInput">
-            <b-form-input id="latitudeInput"
+          <b-form-group id="iniSiteInputGroup"
+                        label="Primer site:"
+                        label-for="iniSiteInput">
+            <b-form-input id="iniSiteInput"
                           type="text"
-                          v-model="form.latitude"
+                          v-model="form.first"
                           required
-                          placeholder="Enter latitude">
+                          placeholder="Enter site">
             </b-form-input>
-            <b-form-input id="longitudeInput"
+          </b-form-group>
+          <b-form-group id="lastSiteInputGroup"
+                        label="Segon site:"
+                        label-for="lastSiteInput">
+            <b-form-input id="lastSiteInput"
                           type="text"
-                          v-model="form.longitude"
+                          v-model="form.last"
                           required
-                          placeholder="Enter longitude">
+                          placeholder="Enter site">
             </b-form-input>
           </b-form-group>
           <b-form-group id="typeInputGroup"
@@ -75,14 +79,14 @@
 </template>
 <script>
 export default {
-  name: 'SiteEdit',
+  name: 'PathEdit',
   data () {
     return {
       form: {
         id: 0,
         name: '',
-        latitude: '',
-        longitude: '',
+        first: 0,
+        last: 0,
         type: '',
         observations: ''
       },
@@ -96,14 +100,14 @@ export default {
     }
   },
   mounted () {
-    this.$store.dispatch('projects/findSiteById', this.$route.params.id).then(response => {
-      let site = response
-      this.form.id = site.id
-      this.form.name = site.name
-      this.form.latitude = site.latitude
-      this.form.longitude = site.longitude
-      this.form.type = site.type
-      this.form.observations = site.observations
+    this.$store.dispatch('projects/findPathById', this.$route.params.id).then(response => {
+      let path = response
+      this.form.id = path.id
+      this.form.name = path.name
+      this.form.first = path.first.id
+      this.form.last = path.last.id
+      this.form.type = path.type
+      this.form.observations = path.observations
     }, error => {
       this.alert.message = error
       this.alert.show = true
@@ -112,13 +116,13 @@ export default {
   },
   computed: {
     types () {
-      return this.$store.state.projects.sites.types
+      return this.$store.state.projects.paths.types
     }
   },
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      this.$store.dispatch('projects/updateSite', this.form).then(response => {
+      this.$store.dispatch('projects/updatePath', this.form).then(response => {
         this.$router.go(-1)
       }, error => {
         this.alert.message = error.msg
@@ -131,12 +135,12 @@ export default {
       this.deleted = this.form
       this.$refs.deleteModalRef.show()
     },
-    noDeleteSite () {
+    noDeletePath () {
       this.deleted = {}
       this.$refs.deleteModalRef.hide()
     },
-    deleteSite () {
-      this.$store.dispatch('projects/deleteSite', this.deleted.id).then(response => {
+    deletePath () {
+      this.$store.dispatch('projects/deletePath', this.deleted.id).then(response => {
         this.deleted = {} // Esborrem referencia
         this.$router.go(-1)
       }, error => {

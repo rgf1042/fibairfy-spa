@@ -9,12 +9,12 @@
     @backdrop="noDeleteProject"
     @headerclose="noDeleteProject"
     title="Esborrar projecte">
-    <p class="my-4">Segur que vol esborrar el projecte: {{deleted.name}}</p>
+    <p class="my-4">Segur que vol esborrar el site: {{deleted.name}}</p>
   </b-modal>
   </div>
     <b-row>
       <b-col sm="2" class="pt-2">
-        <p>Projects</p>
+        <h3>Projects</h3>
       </b-col>
     </b-row>
     <b-row class="pt-2" v-for="(project, index) in list" :key="project.id" v-if="list">
@@ -105,6 +105,7 @@ export default {
       this.$store.dispatch('projects/deleteProject', this.deleted.id).then(response => {
         this.deleted = {} // Esborrem referencia
       }, error => {
+        this.deleted = {} // Esborrem referencia
         console.log(error)
       })
     }

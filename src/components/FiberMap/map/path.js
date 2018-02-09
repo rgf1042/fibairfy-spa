@@ -130,7 +130,7 @@ Path.prototype.save = function () {
     type: this.type
   }
   this.map_parent.vue.$store.dispatch('projects/addNewPath', path).then(response => {
-
+    this.id = response.body.id
   }, error => {
     this.clear();
     this.map_parent.deletePathById(this.id);
@@ -138,127 +138,7 @@ Path.prototype.save = function () {
     console.log(error)
   })
 }
-/*
-Path.prototype.save = function() {
-  var that = this
-  strUrl = this.map_parent.serverUrl + '/path'
-  console.log('API call: ' + strUrl)
-  if (this.first_site == null || this.end_site == null) {
-    console.log(
-      'First or End site does not have id, please check this problem.'
-    )
-    return
-  }
-  $.post(
-    strUrl,
-    JSON.stringify({
-      first: this.first_site,
-      last: this.end_site,
-      intermedial: JSON.stringify(this.dots),
-      project: this.map_parent.active_project.id,
-      type: this.type,
-    })
-  )
-    .done(function(data) {
-      that.id = data.id
-    }, 'json')
-    .fail(function(data) {
-      that.clear()
-      that.map_parent.deletePathById(that.id)
-      alert('There was a problem. Please, try again.')
-    })
-}
-Path.prototype.loadTypes = function(SelectField) {
-  var that = this
 
-  SelectField.find('option')
-    .remove()
-    .end()
-  $.each(this.map_parent.type_path, function(key, value) {
-    var option = $('<option></option>')
-      .attr('value', value)
-      .text(value)
-    if (that.type == value) {
-      option.attr('selected', 'selected')
-    }
-    SelectField.append(option)
-  })
-}
-Path.prototype.updateForm = function() {
-  var that = this
-  // Carraguem els caps del formulari al objecte  $('#site-delete').unbind("click");
-
-  this.name = $('#path-name').val()
-  this.first_site = $('#path-first-site').val()
-  this.end_site = $('#path-end-site').val()
-  this.dots = $.parseJSON($('#path-intermedial').val())
-  this.type = $('#path-type').val()
-  try {
-    this.colors = $.parseJSON($('#path-colors').val())
-  } catch (err) {
-    console.log(err)
-  }
-  this.observations = $('#path-observations').val()
-
-  strUrl = this.map_parent.serverUrl + '/path/' + this.id
-  console.log('API call: ' + strUrl)
-  if (this.first_site == null || this.end_site == null) {
-    console.log(
-      'First or End site does not have id, please check this problem.'
-    )
-    return
-  }
-  // Not exist $.put need use $.ajax
-  $.put(
-    strUrl,
-    JSON.stringify({
-      name: this.name,
-      first: this.first_site,
-      last: this.end_site,
-      intermedial: JSON.stringify(this.dots),
-      colors: this.colors,
-      project: this.map_parent.active_project.id,
-      type: this.type,
-      observations: this.observations,
-    })
-  )
-    .done(function(data) {
-      that.map_parent.notify('Updated!')
-      that.draw()
-    }, 'json')
-    .fail(function(data) {
-      that.clear()
-      that.map_parent.deletePathById(that.id)
-      alert('There was a problem. Please, try again.')
-    })
-}
-Path.prototype.editForm = function() {
-  var that = this
-  // Clear old click events.
-  $('#path-update').unbind('click')
-  $('#path-delete').unbind('click')
-
-  // Carreguem les dades a on toqui
-  $('#path-name').val(this.name)
-  $('#path-first-site').val(this.first_site)
-  $('#path-end-site').val(this.end_site)
-  $('#path-intermedial').val(JSON.stringify(this.dots))
-
-  $('#path-observations').val(this.observations)
-  // Update
-  $('#path-update').click(function() {
-    that.updateForm()
-  })
-  // Delete
-  $('#path-delete').on('click', function(e) {
-    //Check if this path have fibers.
-    if (that) that.delete()
-  })
-  this.loadTypes($('#path-type'))
-  // Canviem de pàgina
-  $('#map-group').hide()
-  $('#zoom-path-group').toggleClass('hide')
-} */
 Path.prototype.onPathClick = function(e) {
   var that = this
   switch (this.map_parent.status) {
@@ -270,7 +150,7 @@ Path.prototype.onPathClick = function(e) {
       break
     case 'path':
     case 'site':
-      // this.editForm()
+      this.map_parent.vue.$emit('edit-path', Number(this.id))
       break
     case 'box':
       break
