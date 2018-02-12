@@ -36,6 +36,11 @@
                         placeholder="Enter password">
           </b-form-input>
         </b-form-group>
+        <b-form-group id="authInputGroup"
+                      label="Autenticació:"
+                      label-for="authInput">
+          <b-form-select id="authInput" v-model="form.auth" :options="authTypes" class="mb-3" />
+        </b-form-group>
         <b-button type="submit" variant="primary">Submit</b-button>
       </b-form>
   </b-container>
@@ -47,13 +52,18 @@ export default {
   data () {
     return {
       form: {
+        auth: 'LDAP',
         username: '',
         password: ''
       },
       alert: {
         show: false,
         message: ''
-      }
+      },
+      authTypes: [
+        'Local',
+        'LDAP'
+      ]
     }
   },
   methods: {
@@ -67,12 +77,14 @@ export default {
             this.alert.message = error.body
             this.alert.show = true
           }
+          this.form.auth = 'LDAP'
         })
       }, error => {
         if (error.body.message) {
           this.alert.message = error.body.message
           this.alert.show = true
         }
+        this.form.auth = 'LDAP'
       })
     }
   }
