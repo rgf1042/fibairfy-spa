@@ -5,23 +5,14 @@ import Vue from 'vue'
 import SitesModule from './projects/sites'
 import PathsModule from './projects/paths'
 import MapModule from './projects/map'
+import InitialStates from '../initial-states.js'
 
 Vue.use(VueResource)
 
 /* eslint-disable */
 export default {
   namespaced: true,
-  state: {
-    current: {
-      id: 0,
-      name: '',
-      latitude: 0.0,
-      longitude: 0.0,
-      zoom: 0,
-      writable: true
-    },
-    list: []
-  },
+  state: InitialStates.projects(),
   getters : {
     currentId: state => {
       return state.current.id
@@ -54,6 +45,10 @@ export default {
     },
     deleteListProject (state, index) {
       state.list.splice(index, 1) // Eliminem un element
+    },
+    reset (state) {
+      state.current = InitialStates.projects().current
+      state.list = InitialStates.projects().list
     }
   },
   actions: {

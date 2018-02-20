@@ -1,18 +1,13 @@
 import VueResource from 'vue-resource'
 import Vue from 'vue'
+import InitialStates from '../initial-states.js'
 
 Vue.use(VueResource)
 
 /* eslint-disable */
 export default {
   namespaced: true,
-  state: {
-    user: {
-      id: 0,
-      name: '',
-      token: ''
-    }
-  },
+  state: InitialStates.user(),
   mutations: {
     setToken (state, token) {
       state.user.token = token
@@ -22,6 +17,9 @@ export default {
     },
     setUserName (state, name) {
       state.user.name = name
+    },
+    reset (state) {
+      state.user = InitialStates.user().user
     }
   },
   getters: {
@@ -66,6 +64,13 @@ export default {
           })
         }
       })
+    },
+    logout (context) {
+      context.commit('reset')
+      context.commit('projects/reset', null, { root: true })
+      context.commit('projects/map/reset', null, { root: true })
+      context.commit('projects/resetSites', null, { root: true })
+      context.commit('projects/resetPaths', null, { root: true })
     }
   }
 }

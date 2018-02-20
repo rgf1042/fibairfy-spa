@@ -1,16 +1,13 @@
 import VueResource from 'vue-resource'
 import Vue from 'vue'
+import InitialStates from '../../initial-states.js'
 
 Vue.use(VueResource)
 
 /* eslint-disable */
 export default {
   namespaced: true,
-  state: {
-    latitude: 0.0,
-    longitude: 0.0,
-    zoom: 1
-  },
+  state: InitialStates.map(),
   getters : {
     currentLocation: state => {
       return { latitude: state.latitude, longitude: state.longitude, zoom: state.zoom }
@@ -25,6 +22,11 @@ export default {
     },
     setZoom (state, zoom) {
       state.zoom = zoom
+    },
+    reset (state) {
+      state.latitude = InitialStates.map().latitude,
+      state.longitude = InitialStates.map().longitude,
+      state.zoom = InitialStates.map().zoom
     }
   },
   actions: {

@@ -1,22 +1,12 @@
 import VueResource from 'vue-resource'
 import Vue from 'vue'
+import InitialStates from '../../initial-states.js'
 
 Vue.use(VueResource)
 
 /* eslint-disable */
 export default {
-  state: {
-    sites: [],
-    types: [
-      'Arqueta',
-      'Poste',
-      'Cambra',
-      'Armari',
-      'Poe',
-      'Ganxo',
-      'Salt'
-    ]
-  },
+  state: InitialStates.sites(),
   getters: {
     findSiteById: state => id => {
       return state.sites.find(item => item.id === id)
@@ -37,6 +27,10 @@ export default {
     },
     loadSiteArray (state, sites) {
       state.sites = sites
+    },
+    resetSites (state) {
+      state.sites = InitialStates.sites().sites
+      state.types = InitialStates.sites().types
     }
   },
   actions: {

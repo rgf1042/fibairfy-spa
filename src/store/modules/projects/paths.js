@@ -1,14 +1,12 @@
 import VueResource from 'vue-resource'
 import Vue from 'vue'
+import InitialStates from '../../initial-states.js'
 
 Vue.use(VueResource)
 
 /* eslint-disable */
 export default {
-  state: {
-    paths: [],
-    types: ['Aeri', 'Façana', 'Soterrat']
-  },
+  state: InitialStates.paths(),
   getters: {
     findPathById: state => id => {
       return state.paths.find(item => item.id === id)
@@ -29,6 +27,10 @@ export default {
     },
     loadPathArray (state, paths) {
       state.paths = paths
+    },
+    resetPaths (state) {
+      state.paths = InitialStates.paths().paths
+      state.types = InitialStates.paths().types
     }
   },
   actions: {

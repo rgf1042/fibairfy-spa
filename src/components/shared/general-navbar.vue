@@ -16,7 +16,7 @@
             <em>{{user}}</em>
           </template>
           <b-dropdown-item to="Profile">Perfil</b-dropdown-item>
-          <b-dropdown-item href="#">Logout</b-dropdown-item>
+          <b-dropdown-item @click="onLogout">Logout</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>
@@ -29,6 +29,13 @@ export default {
   computed: {
     user () {
       return this.$store.state.user.user.name
+    }
+  },
+  methods: {
+    onLogout (evt) {
+      evt.preventDefault()
+      this.$store.dispatch('user/logout')
+      this.$router.push('/')
     }
   }
 }
