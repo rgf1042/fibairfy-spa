@@ -1,17 +1,27 @@
 <template>
   <b-container fluid>
-  <div>
-  <!-- Modal Component -->
-  <b-modal id="modal-delete-project" ref="deleteModalRef"
-    @ok="deleteProject"
-    @cancel="noDeleteProject"
-    @esc="noDeleteProject"
-    @backdrop="noDeleteProject"
-    @headerclose="noDeleteProject"
-    title="Esborrar projecte">
-    <p class="my-4">Segur que vol esborrar el site: {{deleted.name}}</p>
-  </b-modal>
-  </div>
+    <div>
+    <!-- Modal Component -->
+    <b-modal id="modal-delete-project" ref="deleteModalRef"
+      @ok="deleteProject"
+      @cancel="noDeleteProject"
+      @esc="noDeleteProject"
+      @backdrop="noDeleteProject"
+      @headerclose="noDeleteProject"
+      title="Esborrar projecte">
+      <p class="my-4">Segur que vol esborrar el site: {{deleted.name}}</p>
+    </b-modal>
+    </div>
+    <b-row>
+      <b-col class="pt-1">
+        <b-alert :variant="alert.variant"
+             dismissible
+             :show="alert.show"
+             @dismissed="alert.show=false">
+              {{alert.message}}
+        </b-alert>
+      </b-col>
+    </b-row>
     <b-row>
       <b-col sm="2" class="pt-2">
         <h3>Projects</h3>
@@ -51,6 +61,11 @@ export default {
     return {
       deleted: {
         id: 0
+      },
+      alert: {
+        show: false,
+        message: '',
+        variant: 'info'
       }
     }
   },
@@ -72,22 +87,34 @@ export default {
           this.alert.show = true
         } */
         console.log(error)
+        this.alert.message = error.body
+        this.alert.variant = 'danger'
+        this.alert.show = true
       })
     },
     savePos () {
       this.$store.dispatch('projects/savePos').then(response => {
+        this.alert.message = 'New position correctly saved'
+        this.alert.variant = 'info'
+        this.alert.show = true
       }, error => {
         /* if (error.body.message) {
           this.alert.message = error.body.message
           this.alert.show = true
         } */
         console.log(error)
+        this.alert.message = error.body
+        this.alert.show = true
+        this.alert.variant = 'danger'
       })
     },
     addProject (name) {
       this.$store.dispatch('projects/addNewProject', name).then(response => {
       }, error => {
         console.log(error)
+        this.alert.message = error.body
+        this.alert.variant = 'danger'
+        this.alert.show = true
       })
     },
     questionDeleteProject (id) {
@@ -107,6 +134,9 @@ export default {
       }, error => {
         this.deleted = {} // Esborrem referencia
         console.log(error)
+        this.alert.message = error.body
+        this.alert.variant = 'danger'
+        this.alert.show = true
       })
     }
   }
