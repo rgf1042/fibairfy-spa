@@ -29,13 +29,13 @@ Site.prototype.save = function () {
     type: this.type,
     status: this.status
   }
-  this.map_parent.vue.$store.dispatch('projects/addNewSite', site).then(response => {
-    this.id = response.body.id
-  }, error => {
-    this.clear();
-    this.map_parent.deleteSiteById(this.id);
-    alert("There was a problem. Please, try again.");
-    console.log(error)
+  return new Promise((resolve, reject) => {
+    this.map_parent.vue.$store.dispatch('projects/addNewSite', site).then(response => {
+      this.id = response.body.id
+      resolve(response)
+    }, error => {
+      reject(error)
+    })
   })
 }
 
@@ -45,8 +45,25 @@ Site.prototype.clear = function () {
 }
 Site.prototype.draw = function () {
   var that = this
-  this.marker = L.marker(this.latlng)
-    .on('click', function () {
+  this.marker = L.marker(this.latlng).addTo(that.map_parent.map)
+  this.changeTypeIcon()
+  if (!this.id) this.save().then(response => {
+    this.setEvents()
+  }, error => {
+    this.clear();
+    this.map_parent.deleteSiteById(this.id);
+    alert("There was a problem. Please, try again.");
+    console.log(error)
+  })
+  else {
+    this.setEvents()
+  }
+}
+
+Site.prototype.setEvents = function () {
+  var that = this
+  this.marker.
+    on('click', function () {
       return that.onSiteClick()
     })
     .on('mouseover', function () {
@@ -55,10 +72,6 @@ Site.prototype.draw = function () {
     .on('mouseout', function () {
       return that.onSiteMouseOut()
     })
-    .addTo(that.map_parent.map)
-  this.changeTypeIcon()
-  if (!this.id)
-    this.save()
 }
 
 Site.prototype.changeTypeIcon = function (status, type) {
