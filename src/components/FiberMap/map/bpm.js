@@ -325,8 +325,8 @@ Mapa.prototype.load = function () {
     let path = new Path(
       paths[x].id,
       paths[x].name,
-      paths[x].first.id,
-      paths[x].last.id,
+      {id: paths[x].first.id, latlng: {lat: paths[x].first.latitude, lng: paths[x].first.longitude}},
+      {id: paths[x].last.id, latlng: {lat: paths[x].last.latitude, lng: paths[x].last.longitude}},
       JSON.parse(paths[x].intermedial),
       paths[x].type,
       that

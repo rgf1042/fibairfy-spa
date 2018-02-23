@@ -1,34 +1,34 @@
 /* eslint-disable */
 // =====================
 // Tram
-function Path(id, name, first_site, end_site, dots, type, m) {
+function Path(id, name, first_site, end_site, intermedial, type, m) {
   this.id = id
   this.name = name
-  this.first_site = first_site
-  this.end_site = end_site
+  this.first_site = first_site || {}
+  this.end_site = end_site || {}
   this.type = !type ? m.type_path_default : type
   this.polyline = null
-  this.dots = dots
+  // We add first_site and end_site to dots array
+  this.intermedial = intermedial || []
   this.color_building = 'red'
   this.color_did = 'blue'
   this.color_mouseover = 'green'
   this.observations = null
-
   this.map_parent = m
 }
 Path.prototype.setFirstSite = function(b) {
-  this.first_site = b.id
-  this.dots.push(b.latlng)
+  this.first_site.id = b.id
+  this.first_site.latlng = b.latlng
 }
 Path.prototype.setEndSite = function(b) {
-  this.end_site = b.id
-  this.dots.push(b.latlng)
+  this.end_site.id = b.id
+  this.end_site.latlng = b.latlng
   this.draw()
-  this.map_parent.setIconInSiteById(this.first_site)
-  this.map_parent.setIconInSiteById(this.end_site)
+  this.map_parent.setIconInSiteById(this.first_site.id)
+  this.map_parent.setIconInSiteById(this.end_site.id)
   this.map_parent.paths.push(this)
   this.map_parent.active_path = ''
-  if (this.end_site != this.first_site) {
+  if (this.end_site.id != this.first_site.id) {
     this.save()
   } else {
     // Esborrar link
@@ -58,17 +58,6 @@ Path.prototype.findPathColor = function(status, type) {
   }
   return color
 }
-/* Path.prototype.remove = function() {
-  var that = this
-  strUrl = this.map_parent.serverUrl + '/path'
-  console.log('API call: ' + strUrl)
-  $.delete(strUrl + '/' + this.id).done(function(data) {
-    that.clear()
-    that.map_parent.backMap()
-    that.map_parent.notify('Path deleted!')
-    that.map_parent.deletePathById(that.id)
-  }, 'json')
-} */
 Path.prototype.delete = function() {
   if (!this.map_parent.haveFibers(this.id)) {
     //This path has not any fibers. We can delete.
@@ -88,11 +77,16 @@ Path.prototype.draw = function() {
     this.clear()
   }
 
-  var color = this.end_site
+  var color = this.end_site.id
     ? this.findPathColor()
     : this.findPathColor('active')
 
-  this.polyline = new L.Polyline(this.dots, {
+    let dots = this.intermedial.slice(0, this.intermedial.length) || []
+    dots.unshift(this.first_site.latlng)
+    if (typeof this.end_site.latlng !== 'undefined')
+      dots.push(this.end_site.latlng)
+    if (this)
+    this.polyline = new L.Polyline(dots, {
     color: color,
     weight: 5,
     opacity: 0.5,
@@ -110,9 +104,9 @@ Path.prototype.draw = function() {
     .addTo(this.map_parent.map)
 }
 Path.prototype.addPoint = function(point) {
-  if (!this.end_site) {
-    if (this.first_site) {
-      this.dots.push(point)
+  if (!this.end_site.id) {
+    if (this.first_site.id) {
+      this.intermedial.push(point)
       this.draw()
     } else {
       console.log('Els trams comencen a una caixa.')
@@ -124,9 +118,9 @@ Path.prototype.addPoint = function(point) {
 Path.prototype.save = function () {
   let path = {
     project: this.map_parent.active_project.id,
-    first: this.first_site,
-    last: this.end_site,
-    intermedial: JSON.stringify(this.dots),
+    first: this.first_site.id,
+    last: this.end_site.id,
+    intermedial: JSON.stringify(this.intermedial),
     type: this.type
   }
   this.map_parent.vue.$store.dispatch('projects/addNewPath', path).then(response => {
@@ -141,33 +135,24 @@ Path.prototype.save = function () {
 
 Path.prototype.onPathClick = function(e) {
   var that = this
-  switch (this.map_parent.status) {
-    case 'split':
-      alert('Fer un split!')
-      console.log(that)
-      console.log(e)
-      this.getSegment(e)
-      break
-    case 'path':
-    case 'site':
-      this.map_parent.vue.$emit('edit-path', Number(this.id))
-      break
-    case 'box':
-      break
-    case 'fiber':
-      //this.map_parent.active_fiber.addPath(this.id);
-      console.log(this.map_parent.active_fiber.paths)
-      break
+  if (this.id) { // Ja s'ha creat i guardat
+    switch (this.map_parent.layerActive) {
+      case 'civil':
+        this.map_parent.vue.$emit('edit-path', Number(this.id))
+        break
+      case 'infra':
+        break
+    }
   }
 }
 Path.prototype.onPathMouseOver = function(e) {
-  if (this.map_parent.status == 'path') {
+  if (this.map_parent.layerActive === 'civil' && this.id) {
     this.map_parent.info.update('Tram ' + this.name + '(' + this.id + ')')
     this.changeTypePath('over')
   }
 }
 Path.prototype.onPathMouseOut = function(e) {
-  if (this.map_parent.status == 'path') {
+  if (this.map_parent.layerActive === 'civil' && this.id) {
     this.map_parent.info.update('')
     this.changeTypePath()
   }
