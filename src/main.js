@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-search/dist/leaflet-search.min.css'
+import 'octicons/build/build.css'
 
 // require('../node_modules/leaflet/dist/leaflet.css')
 Vue.use(BootstrapVue)
