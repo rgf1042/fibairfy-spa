@@ -25,7 +25,16 @@
       }
     },
     "projects": {
-
+      "readonly": "només lectura",
+      "addProjectMenu": {
+        "name": "Afegir projecte",
+        "addButton": "Afegir"
+      },
+      "projectButtons": {
+        "activate": "Activar",
+        "savePos": "Guardar pos.",
+        "delete": "Eliminar"
+      }
     },
     "profile": {
 

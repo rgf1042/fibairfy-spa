@@ -25,7 +25,16 @@
       }
     },
     "projects": {
-
+      "readonly": "read-only",
+      "addProjectMenu": {
+        "name": "Add project",
+        "addButton": "Add"
+      },
+      "projectButtons": {
+        "activate": "Activate",
+        "savePos": "Save pos.",
+        "delete": "Delete"
+      }
     },
     "profile": {
 

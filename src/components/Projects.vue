@@ -30,7 +30,7 @@
     <b-row class="pt-2" v-for="(project, index) in list" :key="project.id" v-if="list">
       <b-col sm="2">
         <span>{{project.name}}</span>
-        <span v-if="!project.writable">(Només lectura)</span>
+        <span v-if="!project.writable">({{$t('components.projects.readonly')}})</span>
       </b-col>
       <b-col sm="4">
         <project-buttons v-on:activate-project="activateProject(index)"
