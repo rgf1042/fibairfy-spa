@@ -5,5 +5,30 @@
     "profile": "Profile",
     "logout": "Logout",
     "back": "Back"
+  },
+  "components": {
+    "map": {
+      "layerMenu": {
+        "name": "Layer",
+        "civil": "Civil",
+        "network": "Network"
+      },
+      "civilMenu": {
+        "name": "Civil work",
+        "newSite": "New site",
+        "newPath": "New path"
+      },
+      "networkMenu": {
+        "name": "Network infrastructure",
+        "newBox": "New box",
+        "newFiber": "New fiber"
+      }
+    },
+    "projects": {
+
+    },
+    "profile": {
+
+    }
   }
 }

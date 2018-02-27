@@ -5,5 +5,30 @@
     "profile": "Perfil",
     "logout": "Sortir",
     "back": "Torna enrera"
+  },
+  "components": {
+    "map": {
+      "layerMenu": {
+        "name": "Capa",
+        "civil": "Cívil",
+        "network": "Xarxa"
+      },
+      "civilMenu": {
+        "name": "Obra cívil",
+        "newSite": "Nou lloc",
+        "newPath": "Nou tram"
+      },
+      "networkMenu": {
+        "name": "infraestructura xarxa",
+        "newBox": "Nova caixa",
+        "newFiber": "Nova fibra"
+      }
+    },
+    "projects": {
+
+    },
+    "profile": {
+
+    }
   }
 }
