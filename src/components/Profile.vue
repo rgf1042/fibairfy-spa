@@ -1,6 +1,14 @@
 <template>
   <b-container>
     <h3>{{user.name}}</h3>
+    <b-form @submit="onSubmit">
+      <b-form-group id="langInputGroup"
+                    label="Idioma:"
+                    label-for="langInput">
+        <b-form-select id="langInput" v-model="form.locale" :options="langList" class="mb-3" />
+      </b-form-group>
+      <b-button type="submit" variant="primary">Actualitzar</b-button>
+    </b-form>
   </b-container>
 </template>
 <script>
@@ -8,6 +16,9 @@ export default {
   name: 'Profile',
   data () {
     return {
+      form: {
+        locale: this.$store.state.user.locale
+      }
     }
   },
   mounted () {
@@ -16,18 +27,16 @@ export default {
   computed: {
     user () {
       return this.$store.state.user.user
+    },
+    langList () {
+      return Object.keys(this.$i18n.messages)
     }
   },
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      this.$store.dispatch('projects/updateSite', this.form).then(response => {
-        this.$router.go(-1)
-      }, error => {
-        this.alert.message = error.msg
-        this.alert.show = true
-        console.log(error)
-      })
+      this.$i18n.locale = this.form.locale
+      this.$store.dispatch('user/changeLocale', this.form.locale)
     }
   }
 }

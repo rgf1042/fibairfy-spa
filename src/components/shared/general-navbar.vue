@@ -4,8 +4,8 @@
     <b-navbar-brand href="#">fiberfy</b-navbar-brand>
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
-        <b-nav-item href="#" :active="mapActive" to="Map">Mapa</b-nav-item>
-        <b-nav-item href="#" :active="projectsActive" to="Projects">Projectes</b-nav-item>
+        <b-nav-item href="#" :active="mapActive" to="Map">{{$t('menu.map')}}</b-nav-item>
+        <b-nav-item href="#" :active="projectsActive" to="Projects">{{$t('menu.projects')}}</b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
@@ -15,8 +15,8 @@
           <template slot="button-content">
             <em>{{user}}</em>
           </template>
-          <b-dropdown-item to="Profile">Perfil</b-dropdown-item>
-          <b-dropdown-item @click="onLogout">Logout</b-dropdown-item>
+          <b-dropdown-item to="Profile">{{$t('menu.profile')}}</b-dropdown-item>
+          <b-dropdown-item @click="onLogout">{{$t('menu.logout')}}</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>

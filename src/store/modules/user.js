@@ -20,12 +20,16 @@ export default {
     },
     reset (state) {
       state.user = InitialStates.user().user
+      state.locale = InitialStates.user().locale
+    },
+    setLocale (state, locale) {
+      state.locale = locale
     }
   },
   getters: {
     currentId: state => {
       return state.user.id
-    },
+    }
   },
   actions: {
     login (context, form) {
@@ -71,6 +75,9 @@ export default {
       context.commit('projects/map/reset', null, { root: true })
       context.commit('projects/resetSites', null, { root: true })
       context.commit('projects/resetPaths', null, { root: true })
+    },
+    changeLocale (context, locale) {
+      context.commit('setLocale', locale)
     }
   }
 }

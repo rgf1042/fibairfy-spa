@@ -1,0 +1,9 @@
+{
+  "menu": {
+    "map": "Mapa",
+    "projects": "Projectes",
+    "profile": "Perfil",
+    "logout": "Sortir",
+    "back": "Torna enrera"
+  }
+}

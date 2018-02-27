@@ -5,7 +5,8 @@ export default {
         id: 0,
         name: '',
         token: ''
-      }
+      },
+      locale: 'ca'
     }
   },
   projects () {

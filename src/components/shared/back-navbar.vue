@@ -4,7 +4,7 @@
     <b-navbar-brand href="#">fiberfy</b-navbar-brand>
     <b-collapse is-nav id="nav_collapse">
       <b-navbar-nav>
-        <b-nav-item href="#" @click="$router.go(-1)">Torna enrera</b-nav-item>
+        <b-nav-item href="#" @click="$router.go(-1)">{{$t('menu.back')}}</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>

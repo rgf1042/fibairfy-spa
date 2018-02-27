@@ -14,6 +14,6 @@ export default new Vuex.Store({
     user: UserModule,
     projects: ProjectsModule
   },
-  plugins: [createPersistedState()]
+  plugins: [createPersistedState({ storage: window.sessionStorage })]
 })
 /* eslint-enable */

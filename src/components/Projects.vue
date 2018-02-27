@@ -24,7 +24,7 @@
     </b-row>
     <b-row>
       <b-col sm="2" class="pt-2">
-        <h3>Projects</h3>
+        <h3>{{$t('menu.projects')}}</h3>
       </b-col>
     </b-row>
     <b-row class="pt-2" v-for="(project, index) in list" :key="project.id" v-if="list">
