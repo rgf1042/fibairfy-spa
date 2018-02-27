@@ -170,12 +170,14 @@ Site.prototype.onSiteClick = function (e){
         // Sí
         console.log('tancar tram.')
         this.map_parent.active_path.setEndSite(this)
+        this.map_parent.vue.$emit('active-path', Boolean(false))
       } else {
         // No n'hi ha cap actiu, el creem.
         console.log('inici tram.')
         this.changeTypeIcon('active')
         this.map_parent.active_path = new Path(null, null, null, null, new Array(), this.map_parent.type_path_default, this.map_parent)
         this.map_parent.active_path.setFirstSite(this)
+        this.map_parent.vue.$emit('active-path', Boolean(true))
       }
       break
     case "split":

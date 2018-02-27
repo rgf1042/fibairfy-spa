@@ -2,8 +2,11 @@
   <div>
     <leaflet-map :status="status" :layerActive="layerActive"
       v-on:edit-site="editSite($event)"
-      v-on:edit-path="editPath($event)"></leaflet-map>
-    <map-controls v-on:set-status="setStatus($event)" v-on:set-layer="setLayer($event)" :status="status" :layerActive="layerActive"></map-controls>
+      v-on:edit-path="editPath($event)"
+      v-on:active-path="setActivePath($event)"></leaflet-map>
+    <map-controls v-on:set-status="setStatus($event)" v-on:set-layer="setLayer($event)"
+      :status="status" :layerActive="layerActive"
+      :activePath="activePath"></map-controls>
   </div>
 </template>
 
@@ -22,16 +25,22 @@ export default {
   data () {
     return {
       status: '',
-      layerActive: 'civil'
+      layerActive: 'civil',
+      activePath: false
     }
   },
   methods: {
     setStatus (status) {
       this.status = status
+      this.activePath = false
     },
     setLayer (layer) {
       this.layerActive = layer
       this.status = ''
+      this.activePath = false
+    },
+    setActivePath (active) {
+      this.activePath = active
     },
     editSite (id) {
       this.$router.push({ name: 'SiteEdit', params: { id: id }})

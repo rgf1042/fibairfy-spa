@@ -1,23 +1,33 @@
 <template>
   <b-container>
+    <!-- Modal Component -->
+    <b-modal id="modal-change-menu" ref="changeMenuModalRef"
+      @ok="changeMenu(newMenu)"
+      @cancel="noChangeMenu"
+      @esc="noChangeMenu"
+      @backdrop="noChangeMenu"
+      @headerclose="noChangeMenu"
+      title="Path en construcció">
+      <p class="my-4">Actualment hi ha un path en construcció, segur que vol canviar el menú?</p>
+    </b-modal>
     <b-row align-h="center">
       <b-button-toolbar key-nav  aria-label="Toolbar for map controlling" align-h="center" class="pt-1">
         <b-input-group class="mx-1" prepend="Layer:">
           <b-input-group-append>
-            <b-button variant="primary" :disabled="this.isCivil" @click="setLayer('civil', $event)">Cívil</b-button>
-            <b-button variant="primary" :disabled="!this.isCivil" @click="setLayer('infra', $event)">Xarxa</b-button>
+            <b-button variant="primary" :disabled="this.isCivil" @click="testActive({ layer: 'civil'}, $event)">Cívil</b-button>
+            <b-button variant="primary" :disabled="!this.isCivil" @click="testActive({ layer: 'infra'}, $event)">Xarxa</b-button>
           </b-input-group-append>
         </b-input-group>
         <b-input-group class="mx-1" prepend="Obra Civil:" v-if="this.isCivil">
           <b-input-group-append>
-            <b-button :pressed="this.status === 'site'" @click="setStatus('site', $event)">Crea Site</b-button>
-            <b-button :pressed="this.status === 'path'" @click="setStatus('path', $event)">Crea Tram</b-button>
+            <b-button :pressed="this.status === 'site'" @click="testActive({ status: 'site'}, $event)">Crea Site</b-button>
+            <b-button :pressed="this.status === 'path'" @click="testActive({ status: 'path'}, $event)">Crea Tram</b-button>
           </b-input-group-append>
         </b-input-group>
         <b-input-group class="mx-1" prepend="Infraestructura xarxa:" v-if="!this.isCivil">
           <b-input-group-append>
-            <b-button :pressed="this.status === 'box'" @click="setStatus('box', $event)">Crea Box</b-button>
-            <b-button :pressed="this.status === 'fiber'" @click="setStatus('fiber', $event)">Crea Fibra</b-button>
+            <b-button :pressed="this.status === 'box'" @click="testActive({ status: 'box'}, $event)">Crea Box</b-button>
+            <b-button :pressed="this.status === 'fiber'" @click="testActive({ status: 'fiber'}, $event)">Crea Fibra</b-button>
           </b-input-group-append>
         </b-input-group>
         <b-button variant="info "v-if="this.status" @click="resetStatus($event)"><div v-html="octicons['arrow-left'].toSVG()"></div></b-button>
@@ -30,7 +40,7 @@ import octicons from 'octicons'
 
 export default {
   name: 'map-controls',
-  props: ['status', 'layerActive'],
+  props: ['status', 'layerActive', 'activePath'],
   computed: {
     isCivil: function () {
       return (this.layerActive === 'civil')
@@ -38,24 +48,45 @@ export default {
   },
   data () {
     return {
-      octicons: octicons
+      octicons: octicons,
+      newMenu: {}
     }
   },
   methods: {
-    setStatus (status, evt) {
+    testActive (newMenu, evt) {
       evt.preventDefault()
+      if (this.activePath) {
+        this.newMenu = newMenu
+        this.$refs.changeMenuModalRef.show()
+      } else {
+        this.changeMenu(newMenu)
+      }
+    },
+    changeMenu (newMenu) {
+      if (newMenu.layer) {
+        // setLayer
+        this.setLayer(newMenu.layer)
+      }
+      if (newMenu.status) {
+        // setStatus
+        this.setStatus(newMenu.status)
+      }
+    },
+    noChangeMenu () {
+      this.newMenu = {}
+      this.$refs.changeMenuModalRef.hide()
+    },
+    setStatus (status) {
       if (this.status === status) {
         this.$emit('set-status', '')
       } else {
         this.$emit('set-status', status)
       }
     },
-    setLayer (layer, evt) {
-      evt.preventDefault()
+    setLayer (layer) {
       this.$emit('set-layer', layer)
     },
     resetStatus (evt) {
-      evt.preventDefault()
       this.$emit('set-status', '')
     }
   }

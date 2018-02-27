@@ -272,6 +272,10 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   this.info.addTo(this.map)
 }
 Mapa.prototype.setStatus = function (status) {
+  if (this.status === 'path')
+    if (this.active_path)
+      this.active_path.clear()
+      this.active_path = null
   this.status = status
 }
 Mapa.prototype.rollTiles = function () {

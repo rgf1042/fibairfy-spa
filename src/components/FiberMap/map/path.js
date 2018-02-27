@@ -27,7 +27,7 @@ Path.prototype.setEndSite = function(b) {
   this.map_parent.setIconInSiteById(this.first_site.id)
   this.map_parent.setIconInSiteById(this.end_site.id)
   this.map_parent.paths.push(this)
-  this.map_parent.active_path = ''
+  this.map_parent.active_path = null
   if (this.end_site.id != this.first_site.id) {
     this.save()
   } else {
