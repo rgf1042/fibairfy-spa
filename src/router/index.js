@@ -27,14 +27,6 @@ export default new Router({
       }
     },
     {
-      path: '/',
-      name: 'Login',
-      components: {
-        navbar: LoginNavbar,
-        view: Login
-      }
-    },
-    {
       path: '/map',
       name: 'Map',
       components: {
