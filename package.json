@@ -10,7 +10,8 @@
     "build": "node build/build.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
-    "test": "npm run unit && npm run e2e",
+    "test-origin": "npm run unit && npm run e2e",
+    "test": "cypress run",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
@@ -43,6 +44,7 @@
     "cross-spawn": "^5.0.1",
     "css-loader": "^0.28.0",
     "cssnano": "^3.10.0",
+    "cypress": "^2.0.4",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^6.2.1",
     "eslint-friendly-formatter": "^3.0.0",
