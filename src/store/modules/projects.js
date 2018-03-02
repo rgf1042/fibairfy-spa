@@ -103,14 +103,15 @@ export default {
         })
       })
     },
-    addNewProject (context, name) {
+    addNewProject (context, form) {
       return new Promise((resolve, reject) => {
         let project = {
-          name: name,
-          status: 'define',
-          latitude: fiberfy.constants.PROJECT_DEFAULT_LATITUDE,
-          longitude: fiberfy.constants.PROJECT_DEFAULT_LONGITUDE,
-          zoom: fiberfy.constants.PROJECT_DEFAULT_ZOOM
+          name: form.name,
+          status: form.status,
+          latitude: form.latitude,
+          longitude: form.longitude,
+          zoom: form.zoom,
+          defaultZone: form.defaultZone
         }
         Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/', project).then(response => {
           Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/' + response.body.project).then(response => {

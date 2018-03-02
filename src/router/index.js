@@ -5,6 +5,7 @@ import Router from 'vue-router'
 import Login from '@/components/Login'
 import FiberMap from '@/components/FiberMap'
 import Projects from '@/components/Projects'
+import ProjectAdd from '@/components/ProjectAdd'
 import SiteEdit from '@/components/SiteEdit'
 import PathEdit from '@/components/PathEdit'
 import Profile from '@/components/Profile'
@@ -48,6 +49,14 @@ export default new Router({
       props: {
         navbar: {'projectsActive': true},
         view: false
+      }
+    },
+    {
+      path: '/projects/add',
+      name: 'ProjectAdd',
+      components: {
+        navbar: BackNavbar,
+        view: ProjectAdd
       }
     },
     {

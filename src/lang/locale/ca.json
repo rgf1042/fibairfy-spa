@@ -6,6 +6,19 @@
     "logout": "Sortir",
     "back": "Torna enrera"
   },
+  "general": {
+    "add": "Afegir",
+    "update": "Actualitzar",
+    "delete": "Eliminar",
+    "name": "Nom",
+    "type": "Tipus",
+    "status": "Status",
+    "location": "Localització",
+    "latitude": "Latitud",
+    "longitude": "Longitud",
+    "zoom": "Zoom",
+    "zone": "Zona"
+  },
   "components": {
     "map": {
       "layerMenu": {
@@ -34,6 +47,9 @@
         "activate": "Activar",
         "savePos": "Guardar pos.",
         "delete": "Eliminar"
+      },
+      "projectAdd": {
+        "name": "Afegir projecte"
       }
     },
     "profile": {

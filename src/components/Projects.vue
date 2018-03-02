@@ -40,7 +40,14 @@
         </project-buttons>
       </b-col>
     </b-row>
-    <project-adder class="pt-2" v-on:add-project="addProject($event)"></project-adder>
+    <b-row class="pt-2">
+      <b-col sm="1">
+        <b-button type="button" variant="primary"
+          :to="{ name: 'ProjectAdd'}">
+          {{$t('components.projects.projectAdd.name')}}
+        </b-button>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 <script>
@@ -51,8 +58,7 @@ import ProjectAdder from '@/components/Projects/project-adder'
 export default {
   name: 'Projects',
   components: {
-    'project-buttons': ProjectButtons,
-    'project-adder': ProjectAdder
+    'project-buttons': ProjectButtons
   },
   mounted () {
 
@@ -106,15 +112,6 @@ export default {
         this.alert.message = error.body
         this.alert.show = true
         this.alert.variant = 'danger'
-      })
-    },
-    addProject (name) {
-      this.$store.dispatch('projects/addNewProject', name).then(response => {
-      }, error => {
-        console.log(error)
-        this.alert.message = error.body
-        this.alert.variant = 'danger'
-        this.alert.show = true
       })
     },
     questionDeleteProject (id) {
