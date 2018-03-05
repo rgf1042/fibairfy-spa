@@ -61,7 +61,8 @@
           <b-form-group id="zoneInputGroup"
                         :label="this.$t('general.zone')+':'"
                         label-for="zoneInput">
-            <fiberfy-autocomplete :url="this.zoneUrl"
+            <fiberfy-autocomplete type="remote"
+                                  :url="this.zoneUrl"
                                   selectedField="title" returnedField="id"
                                   required="true"
                                   v-model="form.defaultZone"/>

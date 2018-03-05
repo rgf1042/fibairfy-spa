@@ -20,11 +20,11 @@
 <script>
 export default {
   name: 'fiberfy-autocomplete',
-  props: ['selectedField', 'returnedField', 'url', 'value', 'required'],
+  props: ['selectedField', 'returnedField', 'url', 'value', 'required', 'inputData', 'type'],
   data () {
     return {
       selection: '',
-      data: [],
+      remoteData: [],
       open: false,
       current: 0,
       id: this.value
@@ -51,6 +51,11 @@ export default {
         let upperSelection = this.selection.toUpperCase()
         return upperItem.indexOf(upperSelection) >= 0
       })
+    },
+    data () {
+      if (this.type === 'remote') return this.remoteData
+      else if (this.type === 'local') return this.inputData
+      else return []
     }
   },
   watch: {
@@ -62,30 +67,37 @@ export default {
   },
   methods: {
     loadSelectionById (id) {
-      this.$http.get(this.url, {params: {id: id}})
+      if (this.type === 'remote') {
+        this.$http.get(this.url, {params: {id: id}})
                   .then(response => {
                     this.selection = response.body[this.selectedField]
                   }, error => {
                     console.log(error)
                   })
+      } else {
+        let item = this.display.find(item => item.id === id)
+        if (item) this.selection = item.text
+      }
     },
     fetchData () {
-      if (this.selection.length > 2) {
-        let where = {}
-        where[this.selectedField] = {
-          contains: this.selection
-        }
-        let query = { where: where, sort: this.selectedField + ' ASC' }
+      if (this.type === 'remote') { // If data is stored remotely
+        if (this.selection.length > 2) {
+          let where = {}
+          where[this.selectedField] = {
+            contains: this.selection
+          }
+          let query = { where: where, sort: this.selectedField + ' ASC' }
 
-        this.$http.get(this.url, { params: query })
-                    .then(response => {
-                      this.data = response.body
-                    }, error => {
-                      console.log(error)
-                    })
-      } else {
-        // Afegir que s'esborri data
-        if (this.data.length > 0) this.data = []
+          this.$http.get(this.url, { params: query })
+                      .then(response => {
+                        this.remoteData = response.body
+                      }, error => {
+                        console.log(error)
+                      })
+        } else {
+          // We erase data
+          if (this.remoteData.length > 0) this.remoteData = []
+        }
       }
     },
     enter (evt) {
