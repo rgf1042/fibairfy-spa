@@ -6,7 +6,7 @@
       @esc="noDeletePath"
       @backdrop="noDeletePath"
       @headerclose="noDeletePath"
-      title="Esborrar projecte">
+      title="Esborrar path">
       <p class="my-4">Segur que vol esborrar el path: {{deleted.name}}</p>
     </b-modal>
     <b-container>

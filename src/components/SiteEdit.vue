@@ -6,7 +6,7 @@
       @esc="noDeleteSite"
       @backdrop="noDeleteSite"
       @headerclose="noDeleteSite"
-      title="Esborrar projecte">
+      title="Esborrar site">
       <p class="my-4">Segur que vol esborrar el site: {{deleted.name}}</p>
     </b-modal>
     <b-container>
