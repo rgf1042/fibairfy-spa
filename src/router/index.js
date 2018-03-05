@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '../store/store'
 
 // Components
 import Login from '@/components/Login'
@@ -17,7 +18,7 @@ import BackNavbar from '@/components/shared/back-navbar'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -85,3 +86,10 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.path === '/' || store.state.user.user.token) next() // If is login or you have a token
+  else next('/')
+})
+
+export default router
