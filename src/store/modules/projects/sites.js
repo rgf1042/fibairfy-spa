@@ -79,7 +79,7 @@ export default {
         let index = context.getters.findSiteIndexById(site.id)
         if (index !== -1) {
           Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/site/' + site.id, site).then(response => {
-            context.commit('updateSite', { index: index, site: site })
+            context.commit('updateSite', { index: index, site: response.body })
             resolve(response)
           }, error => {
             reject(error)

@@ -57,6 +57,15 @@
                         label-for="typeInput">
             <b-form-select id="typeInput" v-model="form.type" :options="types" class="mb-3" />
           </b-form-group>
+          <b-form-group id="zoneInputGroup"
+                        :label="this.$t('general.zone')+':'"
+                        label-for="zoneInput">
+            <fiberfy-autocomplete type="remote"
+                                  :url="this.zoneUrl"
+                                  selectedField="title" returnedField="id"
+                                  required="true"
+                                  v-model="form.zone"/>
+          </b-form-group>
           <b-form-group id="observationsInputGroup"
                         label="Observacions:"
                         label-for="observationsInput">
@@ -74,8 +83,13 @@
   </div>
 </template>
 <script>
+import FiberfyAutocomplete from '@/components/shared/fiberfy-autocomplete'
+
 export default {
   name: 'SiteEdit',
+  components: {
+    'fiberfy-autocomplete': FiberfyAutocomplete
+  },
   data () {
     return {
       form: {
@@ -84,6 +98,7 @@ export default {
         latitude: '',
         longitude: '',
         type: '',
+        zone: '',
         observations: ''
       },
       alert: {
@@ -92,7 +107,8 @@ export default {
       },
       deleted: {
         id: 0
-      }
+      },
+      zoneUrl: fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/zone/', // eslint-disable-line
     }
   },
   mounted () {
@@ -103,6 +119,7 @@ export default {
       this.form.latitude = site.latitude
       this.form.longitude = site.longitude
       this.form.type = site.type
+      this.form.zone = site.zone.id
       this.form.observations = site.observations
     }, error => {
       this.alert.message = error

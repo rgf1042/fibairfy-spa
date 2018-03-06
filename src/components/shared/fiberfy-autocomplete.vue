@@ -102,6 +102,7 @@ export default {
     },
     enter (evt) {
       evt.preventDefault()
+      this.id = this.display[this.current].id
       this.selection = this.display[this.current].text
       this.open = false
       this.$emit('input', this.id) // v-model
