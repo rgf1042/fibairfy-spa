@@ -28,6 +28,11 @@
       "poe": "Poe",
       "hook": "Hook",
       "jump": "Jump"
+    },
+    "pathTypes": {
+      "aerial": "Aerial",
+      "facade": "Facade",
+      "underground": "Underground"
     }
   },
   "components": {

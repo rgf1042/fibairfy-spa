@@ -119,7 +119,15 @@ export default {
   },
   computed: {
     types () {
-      return this.$store.state.projects.paths.types
+      let output = []
+      let types = this.$store.state.projects.paths.types
+      for (let x in types) {
+        output[x] = {
+          value: types[x],
+          text: this.$t('content.pathTypes.' + types[x])
+        }
+      }
+      return output
     },
     sites () {
       return this.$store.state.projects.sites.sites

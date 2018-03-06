@@ -28,6 +28,11 @@
       "poe": "Poe",
       "hook": "Ganxo",
       "jump": "Salt"
+    },
+    "pathTypes": {
+      "aerial": "Aeri",
+      "facade": "Façana",
+      "underground": "Soterrat"
     }
   },
   "components": {

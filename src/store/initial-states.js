@@ -32,7 +32,11 @@ export default {
   paths () {
     return {
       paths: [],
-      types: ['Aeri', 'Façana', 'Soterrat']
+      types: [
+        'aerial',
+        'facade',
+        'underground'
+      ]
     }
   },
   sites () {
