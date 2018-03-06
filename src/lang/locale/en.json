@@ -19,6 +19,17 @@
     "zoom": "Zoom",
     "zone": "Zone"
   },
+  "content": {
+    "siteTypes": {
+      "manhole": "Manhole",
+      "pole": "Pole",
+      "room": "Room",
+      "cabinet": "Cabinet",
+      "poe": "Poe",
+      "hook": "Hook",
+      "jump": "Jump"
+    }
+  },
   "components": {
     "map": {
       "layerMenu": {

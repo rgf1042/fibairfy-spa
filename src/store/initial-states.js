@@ -39,13 +39,13 @@ export default {
     return {
       sites: [],
       types: [
-        'Arqueta',
-        'Poste',
-        'Cambra',
-        'Armari',
-        'Poe',
-        'Ganxo',
-        'Salt'
+        'manhole',
+        'pole',
+        'room',
+        'cabinet',
+        'poe',
+        'hook',
+        'jump'
       ]
     }
   }

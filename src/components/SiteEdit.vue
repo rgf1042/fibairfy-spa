@@ -112,7 +112,15 @@ export default {
   },
   computed: {
     types () {
-      return this.$store.state.projects.sites.types
+      let output = []
+      let types = this.$store.state.projects.sites.types
+      for (let x in types) {
+        output[x] = {
+          value: types[x],
+          text: this.$t('content.siteTypes.' + types[x])
+        }
+      }
+      return output
     }
   },
   methods: {

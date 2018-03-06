@@ -19,6 +19,17 @@
     "zoom": "Zoom",
     "zone": "Zona"
   },
+  "content": {
+    "siteTypes": {
+      "manhole": "Arqueta",
+      "pole": "Poste",
+      "room": "Cambra",
+      "cabinet": "Armari",
+      "poe": "Poe",
+      "hook": "Ganxo",
+      "jump": "Salt"
+    }
+  },
   "components": {
     "map": {
       "layerMenu": {
