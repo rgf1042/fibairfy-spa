@@ -71,7 +71,7 @@ export default {
       evt.preventDefault()
       this.$store.dispatch('user/login', this.form).then(response => {
         this.$store.dispatch('projects/loadProjectsList').then(response => {
-          this.$router.push('Map')
+          this.$router.push({name: 'Map'})
         }, error => {
           if (error.body) {
             this.alert.message = error.body

@@ -6,6 +6,35 @@
     "logout": "Logout",
     "back": "Back"
   },
+  "general": {
+    "add": "Add",
+    "update": "Update",
+    "delete": "Delete",
+    "name": "Name",
+    "type": "Type",
+    "status": "Status",
+    "location": "Location",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "zoom": "Zoom",
+    "zone": "Zone"
+  },
+  "content": {
+    "siteTypes": {
+      "manhole": "Manhole",
+      "pole": "Pole",
+      "room": "Room",
+      "cabinet": "Cabinet",
+      "poe": "Poe",
+      "hook": "Hook",
+      "jump": "Jump"
+    },
+    "pathTypes": {
+      "aerial": "Aerial",
+      "facade": "Facade",
+      "underground": "Underground"
+    }
+  },
   "components": {
     "map": {
       "layerMenu": {
@@ -34,6 +63,9 @@
         "activate": "Activate",
         "savePos": "Save pos.",
         "delete": "Delete"
+      },
+      "projectAdd": {
+        "name": "Add project"
       }
     },
     "profile": {

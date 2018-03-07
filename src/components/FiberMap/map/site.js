@@ -6,7 +6,7 @@ import L from 'leaflet'
 // =====================
 // Site
 
-var Site = function (id, name, latlng, type, m) {
+var Site = function (id, name, latlng, type, zone, m) {
   this.name = name // Nom del Lloc
   this.latlng = latlng // Posició del Lloc
   this.id = id // Identificador
@@ -15,6 +15,7 @@ var Site = function (id, name, latlng, type, m) {
   this.observations = null // Observacions
   this.marker = null // Marcador en el mapa
   this.map_parent = m // referencia al mapa on està
+  this.zone = zone // Zona de guifi (location)
 
   // this.boxs = new Array() // Coses que hi ha al site
   this.actualFusionSite = null // L'última grup de dades d'una fusió
@@ -27,6 +28,7 @@ Site.prototype.save = function () {
     latitude: this.latlng.lat,
     longitude: this.latlng.lng,
     type: this.type,
+    zone: this.zone,
     status: this.status
   }
   return new Promise((resolve, reject) => {

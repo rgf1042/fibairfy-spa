@@ -6,6 +6,35 @@
     "logout": "Sortir",
     "back": "Torna enrera"
   },
+  "general": {
+    "add": "Afegir",
+    "update": "Actualitzar",
+    "delete": "Eliminar",
+    "name": "Nom",
+    "type": "Tipus",
+    "status": "Status",
+    "location": "Localització",
+    "latitude": "Latitud",
+    "longitude": "Longitud",
+    "zoom": "Zoom",
+    "zone": "Zona"
+  },
+  "content": {
+    "siteTypes": {
+      "manhole": "Arqueta",
+      "pole": "Poste",
+      "room": "Cambra",
+      "cabinet": "Armari",
+      "poe": "Poe",
+      "hook": "Ganxo",
+      "jump": "Salt"
+    },
+    "pathTypes": {
+      "aerial": "Aeri",
+      "facade": "Façana",
+      "underground": "Soterrat"
+    }
+  },
   "components": {
     "map": {
       "layerMenu": {
@@ -34,6 +63,9 @@
         "activate": "Activar",
         "savePos": "Guardar pos.",
         "delete": "Eliminar"
+      },
+      "projectAdd": {
+        "name": "Afegir projecte"
       }
     },
     "profile": {

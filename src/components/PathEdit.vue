@@ -6,7 +6,7 @@
       @esc="noDeletePath"
       @backdrop="noDeletePath"
       @headerclose="noDeletePath"
-      title="Esborrar projecte">
+      title="Esborrar path">
       <p class="my-4">Segur que vol esborrar el path: {{deleted.name}}</p>
     </b-modal>
     <b-container>
@@ -39,22 +39,20 @@
           <b-form-group id="iniSiteInputGroup"
                         label="Primer site:"
                         label-for="iniSiteInput">
-            <b-form-input id="iniSiteInput"
-                          type="text"
-                          v-model="form.first"
-                          required
-                          placeholder="Enter site">
-            </b-form-input>
+            <fiberfy-autocomplete type="local"
+                                  :inputData="this.sites"
+                                  selectedField="name" returnedField="id"
+                                  required="true"
+                                  v-model="form.first"/>
           </b-form-group>
           <b-form-group id="lastSiteInputGroup"
                         label="Segon site:"
                         label-for="lastSiteInput">
-            <b-form-input id="lastSiteInput"
-                          type="text"
-                          v-model="form.last"
-                          required
-                          placeholder="Enter site">
-            </b-form-input>
+            <fiberfy-autocomplete type="local"
+                                  :inputData="this.sites"
+                                  selectedField="name" returnedField="id"
+                                  required="true"
+                                  v-model="form.last"/>
           </b-form-group>
           <b-form-group id="typeInputGroup"
                         label="Tipus:"
@@ -78,8 +76,13 @@
   </div>
 </template>
 <script>
+import FiberfyAutocomplete from '@/components/shared/fiberfy-autocomplete'
+
 export default {
   name: 'PathEdit',
+  components: {
+    'fiberfy-autocomplete': FiberfyAutocomplete
+  },
   data () {
     return {
       form: {
@@ -116,7 +119,18 @@ export default {
   },
   computed: {
     types () {
-      return this.$store.state.projects.paths.types
+      let output = []
+      let types = this.$store.state.projects.paths.types
+      for (let x in types) {
+        output[x] = {
+          value: types[x],
+          text: this.$t('content.pathTypes.' + types[x])
+        }
+      }
+      return output
+    },
+    sites () {
+      return this.$store.state.projects.sites.sites
     }
   },
   methods: {

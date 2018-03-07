@@ -32,20 +32,24 @@ export default {
   paths () {
     return {
       paths: [],
-      types: ['Aeri', 'Façana', 'Soterrat']
+      types: [
+        'aerial',
+        'facade',
+        'underground'
+      ]
     }
   },
   sites () {
     return {
       sites: [],
       types: [
-        'Arqueta',
-        'Poste',
-        'Cambra',
-        'Armari',
-        'Poe',
-        'Ganxo',
-        'Salt'
+        'manhole',
+        'pole',
+        'room',
+        'cabinet',
+        'poe',
+        'hook',
+        'jump'
       ]
     }
   }

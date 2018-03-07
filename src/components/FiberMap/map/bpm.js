@@ -74,8 +74,8 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   this.type_site_default = this.type_site[0]
 
   // Llistat tancat? (TODO: Passar-ho a una taula.)
-  this.type_path = ['Aeri', 'Façana', 'Soterrat']
-  this.type_path_colors = this.vue.$store.state.projects.paths.types
+  this.type_path = this.vue.$store.state.projects.paths.types
+  this.type_path_colors = []
   this.type_path_colors['normal'] = ['#000080', '#254117', '#806517']
   this.type_path_colors['over'] = ['#95b9c7', '#99C68E', '#AF9B60']
   this.type_path_colors['active'] = ['#357ec7', '#7FE817', '#E8A317']
@@ -140,6 +140,9 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
 
   // Active project
   this.active_project = this.vue.$store.state.projects.current // Apliquem el projecte actual amb el store de Vue
+
+  // default zone
+  this.default_zone = this.vue.$store.state.projects.current.defaultZone
 
   // Map details
   this.map_data = this.vue.$store.state.projects.map // Apliquem el projecte actual amb el store de Vue
@@ -319,7 +322,12 @@ Mapa.prototype.load = function () {
   // Carreguem les caixes.
   let sites = this.vue.$store.state.projects.sites.sites
   for (let x in sites) {
-    let site = new Site(sites[x].id, sites[x].name, L.latLng(sites[x].latitude, sites[x].longitude), sites[x].type, that)
+    let site = new Site(sites[x].id, sites[x].name,
+      L.latLng(sites[x].latitude,
+      sites[x].longitude),
+      sites[x].type,
+      sites[x].zone,
+      that)
     this.sites.push(site)
   }
   let paths = this.vue.$store.state.projects.paths.paths
@@ -454,6 +462,7 @@ Mapa.prototype.onClick = function (e) {
         'site' + Math.floor(Math.random() * 100000),
         e.latlng,
         this.type_site_default,
+        this.default_zone,
         this
       )
       this.sites.push(mysite)

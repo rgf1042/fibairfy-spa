@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '../store/store'
 
 // Components
 import Login from '@/components/Login'
 import FiberMap from '@/components/FiberMap'
 import Projects from '@/components/Projects'
+import ProjectAdd from '@/components/ProjectAdd'
 import SiteEdit from '@/components/SiteEdit'
 import PathEdit from '@/components/PathEdit'
 import Profile from '@/components/Profile'
@@ -16,7 +18,7 @@ import BackNavbar from '@/components/shared/back-navbar'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -51,6 +53,14 @@ export default new Router({
       }
     },
     {
+      path: '/projects/add',
+      name: 'ProjectAdd',
+      components: {
+        navbar: BackNavbar,
+        view: ProjectAdd
+      }
+    },
+    {
       path: '/site/:id',
       name: 'SiteEdit',
       components: {
@@ -76,3 +86,10 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.path === '/' || store.state.user.user.token) next() // If is login or you have a token
+  else next('/')
+})
+
+export default router
