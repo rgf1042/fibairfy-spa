@@ -35,7 +35,7 @@ describe("Fiberfy-nt Login", () => {
     cy.get('.btn')
     .click()
 
-    cy.url().should('include', '/#/Map')
+    cy.url().should('include', '/#/map')
 
 
   })
