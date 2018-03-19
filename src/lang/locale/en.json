@@ -2,6 +2,7 @@
   "menu": {
     "map": "Map",
     "projects": "Projects",
+    "export": "Export",
     "profile": "Profile",
     "logout": "Logout",
     "back": "Back"
@@ -17,7 +18,8 @@
     "latitude": "Latitude",
     "longitude": "Longitude",
     "zoom": "Zoom",
-    "zone": "Zone"
+    "zone": "Zone",
+    "download": "Download"
   },
   "content": {
     "siteTypes": {

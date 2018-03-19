@@ -6,6 +6,7 @@
       <b-navbar-nav>
         <b-nav-item href="#" :active="mapActive" :to="{ name: 'Map'}">{{$t('menu.map')}}</b-nav-item>
         <b-nav-item href="#" :active="projectsActive" :to="{ name: 'Projects'}">{{$t('menu.projects')}}</b-nav-item>
+        <b-nav-item href="#" :active="exportActive" :to="{ name: 'Export'}">{{$t('menu.export')}}</b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
@@ -25,7 +26,7 @@
 <script>
 export default {
   name: 'general-navbar',
-  props: ['mapActive', 'projectsActive'],
+  props: ['mapActive', 'projectsActive', 'exportActive'],
   computed: {
     user () {
       return this.$store.state.user.user.name

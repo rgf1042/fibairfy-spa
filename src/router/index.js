@@ -10,6 +10,7 @@ import ProjectAdd from '@/components/ProjectAdd'
 import SiteEdit from '@/components/SiteEdit'
 import PathEdit from '@/components/PathEdit'
 import Profile from '@/components/Profile'
+import Export from '@/components/Export'
 
 // Import navbars
 import GeneralNavbar from '@/components/shared/general-navbar'
@@ -82,6 +83,18 @@ const router = new Router({
       components: {
         navbar: GeneralNavbar,
         view: Profile
+      }
+    },
+    {
+      path: '/export',
+      name: 'Export',
+      components: {
+        navbar: GeneralNavbar,
+        view: Export
+      },
+      props: {
+        navbar: {'exportActive': true},
+        view: false
       }
     }
   ]

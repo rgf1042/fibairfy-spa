@@ -2,6 +2,7 @@
   "menu": {
     "map": "Mapa",
     "projects": "Projectes",
+    "export": "Exporta",
     "profile": "Perfil",
     "logout": "Sortir",
     "back": "Torna enrera"
@@ -17,7 +18,8 @@
     "latitude": "Latitud",
     "longitude": "Longitud",
     "zoom": "Zoom",
-    "zone": "Zona"
+    "zone": "Zona",
+    "download": "Descarregar"
   },
   "content": {
     "siteTypes": {
