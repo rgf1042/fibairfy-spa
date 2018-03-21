@@ -11,6 +11,7 @@ import SiteEdit from '@/components/SiteEdit'
 import PathEdit from '@/components/PathEdit'
 import Profile from '@/components/Profile'
 import Export from '@/components/Export'
+import Import from '@/components/Import'
 
 // Import navbars
 import GeneralNavbar from '@/components/shared/general-navbar'
@@ -94,6 +95,18 @@ const router = new Router({
       },
       props: {
         navbar: {'exportActive': true},
+        view: false
+      }
+    },
+    {
+      path: '/import',
+      name: 'Import',
+      components: {
+        navbar: GeneralNavbar,
+        view: Import
+      },
+      props: {
+        navbar: {'importActive': true},
         view: false
       }
     }

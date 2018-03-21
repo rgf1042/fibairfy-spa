@@ -3,6 +3,7 @@
     "map": "Mapa",
     "projects": "Projectes",
     "export": "Exporta",
+    "import": "Importa",
     "profile": "Perfil",
     "logout": "Sortir",
     "back": "Torna enrera"
@@ -11,6 +12,8 @@
     "add": "Afegir",
     "update": "Actualitzar",
     "delete": "Eliminar",
+    "file": "Fitxer",
+    "import": "Importar",
     "name": "Nom",
     "type": "Tipus",
     "status": "Status",

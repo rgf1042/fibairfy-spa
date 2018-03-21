@@ -1,0 +1,112 @@
+<template>
+  <b-container>
+    <b-row>
+      <b-col class="pt-1">
+        <b-alert variant="danger"
+             dismissible
+             :show="alert.show"
+             @dismissed="alert.show=false">
+              {{alert.message}}
+        </b-alert>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col sm="2" class="pt-2">
+        <h3>{{$t('menu.import')}}</h3>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col sm="1" class="pt-2">
+
+      </b-col>
+    </b-row>
+    <b-form @submit="onSubmit">
+      <b-form-group id="typeInputGroup"
+                    label="Tipus llocs (per defecte):"
+                    label-for="typeInput">
+        <b-form-select id="typeInput" v-model="form.defaultSiteType" :options="siteTypes" class="mb-3" />
+      </b-form-group>
+      <b-form-group id="zoneInputGroup"
+                    :label="this.$t('general.zone')+':'"
+                    label-for="zoneInput">
+        <fiberfy-autocomplete type="remote"
+                              :url="this.zoneUrl"
+                              selectedField="title" returnedField="id"
+                              required="true"
+                              v-model="form.defaultZone"/>
+      </b-form-group>
+      <b-form-group id="fileInputGroup"
+                    :label="this.$t('general.file')+':'"
+                    label-for="fileInput">
+        <b-form-file id="fileInput" v-model="form.data" plain></b-form-file>
+      </b-form-group>
+      <b-button type="submit" variant="primary">{{$t('general.import')}}</b-button>
+    </b-form>
+  </b-container>
+</template>
+<script>
+import FiberfyAutocomplete from '@/components/shared/fiberfy-autocomplete'
+
+export default {
+  name: 'Import',
+  components: {
+    'fiberfy-autocomplete': FiberfyAutocomplete
+  },
+  data () {
+    return {
+      form: {
+        data: '',
+        defaultZone: '',
+        defaultSiteType: 'manhole'
+      },
+      alert: {
+        show: false,
+        message: ''
+      },
+      zoneUrl: fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/zone/', // eslint-disable-line
+    }
+  },
+  mounted () {
+
+  },
+  computed: {
+    project () {
+      return this.$store.state.projects.current
+    },
+    siteTypes () {
+      let output = []
+      let types = this.$store.state.projects.sites.types
+      for (let x in types) {
+        output[x] = {
+          value: types[x],
+          text: this.$t('content.siteTypes.' + types[x])
+        }
+      }
+      return output
+    },
+    pathTypes () {
+      let output = []
+      let types = this.$store.state.projects.paths.types
+      for (let x in types) {
+        output[x] = {
+          value: types[x],
+          text: this.$t('content.pathTypes.' + types[x])
+        }
+      }
+      return output
+    }
+  },
+  methods: {
+    onSubmit (evt) {
+      evt.preventDefault()
+      this.$store.dispatch('projects/importProject', this.form).then(response => {
+        this.$router.go(-1)
+      }, error => {
+        this.alert.message = error.msg
+        this.alert.show = true
+        console.log(error)
+      })
+    }
+  }
+}
+</script>

@@ -3,6 +3,7 @@
     "map": "Map",
     "projects": "Projects",
     "export": "Export",
+    "import": "Import",
     "profile": "Profile",
     "logout": "Logout",
     "back": "Back"
@@ -11,6 +12,7 @@
     "add": "Add",
     "update": "Update",
     "delete": "Delete",
+    "file": "File",
     "name": "Name",
     "type": "Type",
     "status": "Status",

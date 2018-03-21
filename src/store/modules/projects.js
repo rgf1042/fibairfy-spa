@@ -154,6 +154,24 @@ export default {
       return new Promise((resolve, reject) => {
         resolve(context.getters.findProjectById(id))
       })
+    },
+    importProject (context, form) {
+      return new Promise((resolve, reject) => {
+        let formData = new FormData()
+        formData.append('project', context.getters.currentId)
+        formData.append('data', form.data, form.data.name)
+
+        Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/import/', formData).then(response => {
+          // We reload current project
+          context.dispatch('setCurrent', context.getters.currentId).then(response => {
+            resolve(response)
+          }, error => {
+            reject(error)
+          })
+        }, error => {
+          reject(error)
+        })
+      })
     }
   },
   modules: {
