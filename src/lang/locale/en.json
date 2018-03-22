@@ -31,12 +31,14 @@
       "cabinet": "Cabinet",
       "poe": "Poe",
       "hook": "Hook",
-      "jump": "Jump"
+      "jump": "Jump",
+      "notdefined": "Not defined"
     },
     "pathTypes": {
       "aerial": "Aerial",
       "facade": "Facade",
-      "underground": "Underground"
+      "underground": "Underground",
+      "notdefined": "Not defined"
     }
   },
   "components": {

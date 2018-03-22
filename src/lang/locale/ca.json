@@ -32,12 +32,14 @@
       "cabinet": "Armari",
       "poe": "Poe",
       "hook": "Ganxo",
-      "jump": "Salt"
+      "jump": "Salt",
+      "notdefined": "No definit"
     },
     "pathTypes": {
       "aerial": "Aeri",
       "facade": "Façana",
-      "underground": "Soterrat"
+      "underground": "Soterrat",
+      "notdefined": "No definit"
     }
   },
   "components": {

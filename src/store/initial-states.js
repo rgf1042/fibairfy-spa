@@ -35,7 +35,8 @@ export default {
       types: [
         'aerial',
         'facade',
-        'underground'
+        'underground',
+        'notdefined'
       ]
     }
   },
@@ -49,7 +50,8 @@ export default {
         'cabinet',
         'poe',
         'hook',
-        'jump'
+        'jump',
+        'notdefined'
       ]
     }
   }

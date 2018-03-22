@@ -76,10 +76,10 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   // Llistat tancat? (TODO: Passar-ho a una taula.)
   this.type_path = this.vue.$store.state.projects.paths.types
   this.type_path_colors = []
-  this.type_path_colors['normal'] = ['#000080', '#254117', '#806517']
-  this.type_path_colors['over'] = ['#95b9c7', '#99C68E', '#AF9B60']
-  this.type_path_colors['active'] = ['#357ec7', '#7FE817', '#E8A317']
-  this.type_path_colors['grey'] = ['#2f2f2f', '#2f2f2f', '#2f2f2f']
+  this.type_path_colors['normal'] = ['#000080', '#254117', '#806517', '#7A1780']
+  this.type_path_colors['over'] = ['#95b9c7', '#99C68E', '#AF9B60', '#E065E7']
+  this.type_path_colors['active'] = ['#357ec7', '#7FE817', '#E8A317', '#D519A1']
+  this.type_path_colors['grey'] = ['#2f2f2f', '#2f2f2f', '#2f2f2f', '#2f2f2f']
   this.type_path_default = this.type_path[0]
 
   // Llistat de box (TODO: Passar-ho a una taula.)
