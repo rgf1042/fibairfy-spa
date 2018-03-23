@@ -36,7 +36,7 @@ export default {
   actions: {
     loadPaths (context) {
       return new Promise((resolve, reject) => {
-        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/path/?project=' + context.getters.currentId).then(response => {
+        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/path/?project=' + context.getters.currentId + '&limit=1000000').then(response => {
           context.commit('loadPathArray', response.body)
           resolve(response)
         }, error => {
