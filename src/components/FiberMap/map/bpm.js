@@ -334,12 +334,13 @@ Mapa.prototype.load = function () {
 
   // Carreguem els paths.
   for (let x in paths) {
+    let intermedial = paths[x].intermedial
     let path = new Path(
       paths[x].id,
       paths[x].name,
       {id: paths[x].first.id, latlng: {lat: paths[x].first.latitude, lng: paths[x].first.longitude}},
       {id: paths[x].last.id, latlng: {lat: paths[x].last.latitude, lng: paths[x].last.longitude}},
-      JSON.parse(paths[x].intermedial),
+      intermedial,
       paths[x].type,
       that
     )

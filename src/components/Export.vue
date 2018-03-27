@@ -46,7 +46,12 @@ export default {
       for (let idxPaths in this.paths) {
         let p = this.paths[idxPaths]
         let pLine = []
-        let intermedial = JSON.parse(p.intermedial) // We need to parse intermedial
+        let intermedial
+        try {
+          intermedial = JSON.parse(p.intermedial) // We need to parse intermedial
+        } catch (error) {
+          console.log(error)
+        }
         for (let idxPolyline in intermedial) {
           let latlng = intermedial[idxPolyline]
           pLine.push([ latlng.lng, latlng.lat ])
