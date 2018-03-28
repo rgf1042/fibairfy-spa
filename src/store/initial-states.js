@@ -44,14 +44,14 @@ export default {
     return {
       sites: [],
       types: [
+        'notdefined',
         'manhole',
         'pole',
         'room',
         'cabinet',
         'poe',
         'hook',
-        'jump',
-        'notdefined'
+        'jump'
       ]
     }
   }

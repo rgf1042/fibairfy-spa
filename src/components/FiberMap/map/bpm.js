@@ -28,7 +28,7 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
       }
     },
     {
-      tiles: '  http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+      tiles: 'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
       options: {
         maxZoom: 20,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
@@ -42,14 +42,14 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
       }
     },
     {
-      tiles: '  http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
+      tiles: 'http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
       options: {
         maxZoom: 20,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
       }
     },
     {
-      tiles: '  http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+      tiles: 'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
       options: {
         maxZoom: 20,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
@@ -142,7 +142,7 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   this.active_project = this.vue.$store.state.projects.current // Apliquem el projecte actual amb el store de Vue
 
   // default zone
-  this.default_zone = this.vue.$store.state.projects.current.defaultZone
+  this.default_zone = this.vue.$store.state.projects.current.defaultZone.id
 
   // Map details
   this.map_data = this.vue.$store.state.projects.map // Apliquem el projecte actual amb el store de Vue

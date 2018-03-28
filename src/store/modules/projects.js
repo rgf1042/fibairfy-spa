@@ -62,7 +62,8 @@ export default {
             name: response.body.name,
             latitude: response.body.latitude,
             longitude: response.body.longitude,
-            zoom: response.body.zoom
+            zoom: response.body.zoom,
+            defaultZone: response.body.defaultZone
           }
           // Comprovem si el projecte es writable
           project.writable = (typeof(response.body.users.find(item => item.user === context.rootGetters['user/currentId'])) === 'object')
