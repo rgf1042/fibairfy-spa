@@ -22,7 +22,7 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
     'Guifi FO <a href="http://openstreetmap.org">&copy; OpenStreetMap</a>,<a href="http://maps.google.es">&copy; Google Maps</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
   this.tiles = [
     {
-      tiles: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      tiles: fiberfy.constants.DEFAULT_TILE_SERVER,
       options: {
         maxZoom: 20
       }
@@ -287,13 +287,34 @@ Mapa.prototype.rollTiles = function () {
 }
 Mapa.prototype.tileLayer = function (tiles) {
   // add the tile layer to the map
-  if (!tiles) {
-    tiles = this.tiles[this.tilesIndex]
-    tiles.options.attribution = this.attributionTiles
+  let guifiLinksLayer = L.tileLayer.wms('https://guifi.net/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map', {
+    format: 'image/png',
+    transparent: true,
+    version: '1.1.1',
+    uppercase: true,
+    layers: 'Links',
+    crs: L.CRS.EPSG4326
+  })
+
+  let guifiNodesLayer = L.tileLayer.wms('https://guifi.net/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map', {
+    layers: 'Nodes',
+    format: 'image/png',
+    transparent: true,
+    version: '1.1.1'
+  })
+
+  let baseMaps = {
+    'Guifi.net OpenStreetMap': L.tileLayer(this.tiles[0].tiles, this.tiles[0].options).addTo(this.map),
+    'Google Maps': L.tileLayer(this.tiles[4].tiles, this.tiles[4].options)
   }
 
-  this.layer = L.tileLayer(tiles.tiles, tiles.options)
-  this.layer.addTo(this.map)
+  let overlayMaps = {
+    'Guifi.net supernodes': guifiNodesLayer,
+    'Guifi.net links': guifiLinksLayer
+  }
+
+  let controlLayers = L.control.layers(baseMaps, overlayMaps, {position: 'bottomright'})
+  controlLayers.addTo(this.map)
 }
 
 Mapa.prototype.load = function () {
@@ -381,7 +402,7 @@ Mapa.prototype.load = function () {
     L.latLng(that.map_data.latitude, that.map_data.longitude),
     that.map_data.zoom
   )
-  that.clearLayers()
+  // that.clearLayers()
   that.redraw()
 }
 Mapa.prototype.loadInfra = function () {
@@ -392,8 +413,6 @@ Mapa.prototype.loadInfra = function () {
   }
 }
 Mapa.prototype.redraw = function () {
-  // Tornem a posar el tileLayer
-  this.tileLayer()
   // Pintem tots les caixes
   for (let x in this.sites) {
     this.sites[x].draw()
