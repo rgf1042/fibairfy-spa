@@ -23,6 +23,18 @@ export default {
     setZoom (state, zoom) {
       state.zoom = zoom
     },
+    setSelectedBaseTile (state, base) {
+      state.selectedBaseTile = base
+    },
+    addSelectedOverlayTile (state, overlay) {
+      state.selectedOverlayTiles.push(overlay)
+    },
+    removeSelectedOverlayTile (state, overlay) {
+      let index = state.selectedOverlayTiles.findIndex(function (e) {
+        return (e === overlay)
+      })
+      state.selectedOverlayTiles.splice(index, 1)
+    },
     reset (state) {
       state.latitude = InitialStates.map().latitude,
       state.longitude = InitialStates.map().longitude,
@@ -36,6 +48,15 @@ export default {
     },
     setZoom (context, zoom) {
       context.commit('setZoom', zoom)
+    },
+    setSelectedBaseTile (context, base) {
+      context.commit('setSelectedBaseTile', base)
+    },
+    addSelectedOverlayTile (context, overlay) {
+      context.commit('addSelectedOverlayTile', overlay)
+    },
+    removeSelectedOverlayTile (context, overlay) {
+      context.commit('removeSelectedOverlayTile', overlay)
     }
   }
 }

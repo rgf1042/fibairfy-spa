@@ -18,51 +18,6 @@ var LeafletSearch = require('leaflet-search')
 function Mapa (divMap, mapId, status, layerActive, vue) {
   var that = this
   this.vue = vue // Passem la instància de vue
-  this.attributionTiles =
-    'Guifi FO <a href="http://openstreetmap.org">&copy; OpenStreetMap</a>,<a href="http://maps.google.es">&copy; Google Maps</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-  this.tiles = [
-    {
-      tiles: fiberfy.constants.DEFAULT_TILE_SERVER,
-      options: {
-        maxZoom: 20
-      }
-    },
-    {
-      tiles: 'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
-      options: {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-      }
-    },
-    {
-      tiles: '  http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
-      options: {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-      }
-    },
-    {
-      tiles: 'http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
-      options: {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-      }
-    },
-    {
-      tiles: 'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
-      options: {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-      }
-    }
-  ]
-  this.tilesIndex = 0
-  // create a tileLayer with the tiles, attribution
-  /* this.serverUrl = '/api/v1'
-  this.project_default_name = 'default'
-  this.project_default_latitude = 41.66060124302088
-  this.project_default_longitude = 1.571044921875
-  this.project_default_zoom = 8 */
 
   // Llistat des de modul sites vuex
   this.type_site = this.vue.$store.state.projects.sites.types
@@ -252,6 +207,27 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
     that.vue.$store.dispatch('projects/map/setZoom', zoom)
   })
 
+  this.map.on('baselayerchange', function (e) {
+    let index = that.map_data.baseTiles.findIndex(function (element) {
+      return (e.name === element.name)
+    })
+    that.vue.$store.dispatch('projects/map/setSelectedBaseTile', index)
+  })
+
+  this.map.on('overlayadd', function (e) {
+    let index = that.map_data.overlayTiles.findIndex(function (element) {
+      return (e.name === element.name)
+    })
+    that.vue.$store.dispatch('projects/map/addSelectedOverlayTile', index)
+  })
+
+  this.map.on('overlayremove', function (e) {
+    let index = that.map_data.overlayTiles.findIndex(function (element) {
+      return (e.name === element.name)
+    })
+    that.vue.$store.dispatch('projects/map/removeSelectedOverlayTile', index)
+  })
+
   this.tileLayer()
 
   // Info:
@@ -286,31 +262,27 @@ Mapa.prototype.rollTiles = function () {
   this.tileLayer(this.tiles[this.tilesIndex])
 }
 Mapa.prototype.tileLayer = function (tiles) {
-  // add the tile layer to the map
-  let guifiLinksLayer = L.tileLayer.wms('https://guifi.net/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map', {
-    format: 'image/png',
-    transparent: true,
-    version: '1.1.1',
-    uppercase: true,
-    layers: 'Links',
-    crs: L.CRS.EPSG4326
-  })
+  let baseMaps = {}
 
-  let guifiNodesLayer = L.tileLayer.wms('https://guifi.net/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map', {
-    layers: 'Nodes',
-    format: 'image/png',
-    transparent: true,
-    version: '1.1.1'
-  })
-
-  let baseMaps = {
-    'Guifi.net OpenStreetMap': L.tileLayer(this.tiles[0].tiles, this.tiles[0].options).addTo(this.map),
-    'Google Maps': L.tileLayer(this.tiles[4].tiles, this.tiles[4].options)
+  for (let x in this.map_data.baseTiles) {
+    let tile = this.map_data.baseTiles[x]
+    let tileLayer = L.tileLayer(tile.tiles, tile.options)
+    baseMaps[tile.name] = tileLayer
+    if (this.map_data.selectedBaseTile === parseInt(x)) {
+      tileLayer.addTo(this.map)
+    }
   }
 
-  let overlayMaps = {
-    'Guifi.net supernodes': guifiNodesLayer,
-    'Guifi.net links': guifiLinksLayer
+  let overlayMaps = {}
+  for (let x in this.map_data.overlayTiles) {
+    let tile = this.map_data.overlayTiles[x]
+    tile.options['crs'] = L.CRS.EPSG4326
+    let tileLayer = L.tileLayer.wms(tile.tiles, tile.options)
+    overlayMaps[tile.name] = tileLayer
+    let index = this.map_data.selectedOverlayTiles.find(function (selected) {
+      return selected === parseInt(x)
+    })
+    if (index >= 0) tileLayer.addTo(this.map)
   }
 
   let controlLayers = L.control.layers(baseMaps, overlayMaps, {position: 'bottomright'})
