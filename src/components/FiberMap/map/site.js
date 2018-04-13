@@ -6,7 +6,7 @@ import L from 'leaflet'
 // =====================
 // Site
 
-var Site = function (id, name, latlng, type, zone, m) {
+var Site = function (id, name, latlng, type, zone, m, boxes) {
   this.name = name // Nom del Lloc
   this.latlng = latlng // Posició del Lloc
   this.id = id // Identificador
@@ -17,7 +17,7 @@ var Site = function (id, name, latlng, type, zone, m) {
   this.map_parent = m // referencia al mapa on està
   this.zone = zone // Zona de guifi (location)
 
-  // this.boxs = new Array() // Coses que hi ha al site
+  this.boxes = boxes // We set boxes
   this.actualFusionSite = null // L'última grup de dades d'una fusió
 }
 
@@ -303,7 +303,7 @@ Site.prototype.loadBoxes = function() {
       box.outputFO = value.outputFO;
       box.outputFO = (box.outputFO  === parseInt(box.outputFO , 10)) ? box.outputFO : 0;
       box.observations = value.observations;
-      that.boxs[box.uuid] = box;
+      that.boxes[box.uuid] = box;
     });
     that.siteCallbackBoxes();
     that.showIconBox();
@@ -327,29 +327,29 @@ Site.prototype.siteCallbackBoxes = function() {
   var that = this;
 
   // Mostrar els elements d'un site.
-  for(idx_box in this.boxs){
-    actual_box = this.boxs[idx_box];
+  for(idx_box in this.boxes){
+    actual_box = this.boxes[idx_box];
     actual_box.addHtmlBox();
   }
 };
 Site.prototype.addBox = function(){
   // Add new
   var box = new Box(0,gUUID(),'',this.map_parent.type_box_default,this,this.map_parent);
-  this.boxs[box.uuid] = box;
+  this.boxes[box.uuid] = box;
   box.addHtmlBox();
 };
 Site.prototype.deleteBox = function(uuid){
   //Buscar el box, i esborrar-lo
-  box = this.boxs[uuid];
+  box = this.boxes[uuid];
   if (box.id != 0)
     box.delete(box.id);
   else
     $('#box-'+ box.uuid).remove();
-  delete this.boxs[uuid];
+  delete this.boxes[uuid];
 };
 Site.prototype.countBox = function(){
   var size = 0, key;
-  var obj = this.boxs;
+  var obj = this.boxes;
   for (key in obj) {
     if (obj.hasOwnProperty(key)) size++;
   };

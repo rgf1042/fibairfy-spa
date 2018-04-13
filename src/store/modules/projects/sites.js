@@ -36,6 +36,7 @@ export default {
   actions: {
     loadSites (context) {
       return new Promise((resolve, reject) => {
+        context.commit('resetSites')
         Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/site/?project=' + context.getters.currentId + '&limit=1000000').then(response => {
           context.commit('loadSiteArray', response.body)
           resolve(response)

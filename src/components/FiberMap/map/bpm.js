@@ -314,13 +314,15 @@ Mapa.prototype.load = function () {
 
   // Carreguem les caixes.
   let sites = this.vue.$store.state.projects.sites.sites
+  let boxes = this.vue.$store.state.projects.boxes.sites
   for (let x in sites) {
     let site = new Site(sites[x].id, sites[x].name,
       L.latLng(sites[x].latitude,
       sites[x].longitude),
       sites[x].type,
       sites[x].zone,
-      that)
+      that,
+      boxes[boxes[sites[x].id]])
     this.sites.push(site)
   }
   let paths = this.vue.$store.state.projects.paths.paths

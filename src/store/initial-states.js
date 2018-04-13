@@ -95,6 +95,17 @@ export default {
             uppercase: true,
             layers: 'Links'
           }
+        },
+        {
+          name: 'Guifi.net nodes (test)',
+          tiles: 'http://10.90.230.41/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
+          options: {
+            format: 'image/png',
+            transparent: true,
+            version: '1.1.1',
+            uppercase: true,
+            layers: 'Nodes'
+          }
         }
       ],
       selectedOverlayTiles: [
@@ -127,6 +138,12 @@ export default {
         'hook',
         'jump'
       ]
+    }
+  },
+  boxes () {
+    return {
+      sites: {},
+      boxes: []
     }
   }
 }
