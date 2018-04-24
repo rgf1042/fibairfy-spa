@@ -322,8 +322,9 @@ Mapa.prototype.load = function () {
       sites[x].type,
       sites[x].zone,
       that,
-      boxes[boxes[sites[x].id]])
+      boxes[sites[x].id] || [])
     this.sites.push(site)
+    console.log(test)
   }
   let paths = this.vue.$store.state.projects.paths.paths
 
@@ -381,9 +382,9 @@ Mapa.prototype.load = function () {
 }
 Mapa.prototype.loadInfra = function () {
   // Molt a saco, si hi han molts nodes!!!
-  for (var idx_site in this.sites) {
-    var s = this.sites[idx_site]
-    s.loadBoxes()
+  for (let idxSite in this.sites) {
+    let site = this.sites[idxSite]
+    site.showIconBox()
   }
 }
 Mapa.prototype.redraw = function () {
@@ -406,7 +407,8 @@ Mapa.prototype.clearLayers = function () {
 
 Mapa.prototype.setLayerActive = function (layer) {
   this.layerActive = layer
-  this.changeColor(layer)
+  if (layer === 'infra') this.loadInfra()
+  else this.changeColor(layer)
 }
 
 Mapa.prototype.changeColor = function (option) {

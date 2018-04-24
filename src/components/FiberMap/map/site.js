@@ -210,119 +210,22 @@ Site.prototype.onSiteClick = function (e){
       else this.boxDefine()
     }
 };
-/*
-// Pagina de Site
-Site.prototype.siteDefine = function() {
-  var that = this;
 
-  if (!this.id) {
-    alert("Aquesta caixa no ha estat grabada encarà!");
-    return;
-  }
-  // Netejem events anteriors:
-  $('#site-update').unbind("click");
-  $('#site-delete').unbind("click");
-
-  // Load formulari
-  $('#site-name').val(this.name);
-  $('#site-latitude').val(this.latlng.lat);
-  $('#site-longitude').val(this.latlng.lng);
-  $('#site-status').val(this.status);
-  $('#site-observation').val(this.observations);
-  this.loadTypes($('#site-type'));
-  // El declarem events
-  $('#site-update').on('click', function(e){
-    that.name = $('#site-name').val();
-    that.latlng = L.latLng($('#site-latitude').val(), $('#site-longitude').val());
-    that.type = $('#site-type').val();
-    that.status = $('#site-status').val();
-    that.observations = $('#site-observation').val();
-    that.save();
-  });
-  // Delete
-  $('#site-delete').on('click', function(e){
-    //Check if this site has some paths.
-    if (that)
-    that.delete();
-  });
-
-  // Posem el ID d'aquest site al
-  that.map_parent.active_site = that;
-  // Amagar mapa.
-  $('#map-group').hide();
-  $('#zoom-site-group').toggleClass('hide');
-};
-Site.prototype.loadTypes = function(SelectField){
-  var that = this;
-
-  SelectField.find('option').remove().end();
-  $.each(this.map_parent.type_site, function(key, value) {
-    var option = $("<option></option>")
-                    .attr("value",value)
-                    .text(value);
-    if (that.type == value) {
-      option.attr("selected","selected");
-    }
-    SelectField.append(option);
-  });
-};
-Site.prototype.boxDefine = function(){
-  var that = this;
-  // Remove click event.
-  $('#box-new').unbind("click");
-  $('#box-fusio').unbind("click");
-  // Frist clear box form.
-  $(".box").html("");
-  // Load existen boxes.
-  this.loadBoxes();
-  // Add click of add Button.
-  $('#box-new').on("click", function(){
-    that.addBox();
-  });
-  $('#box-fusio').on('click', function (){
-    that.siteFusion();
-    $('#zoom-box-group').toggleClass('hide');
-  });
-  // Hidden and Show div's
-  $('#map-group').hide();
-  $('#zoom-box-group').toggleClass('hide');
-
-  // Posem el ID d'aquest site al
-  that.map_parent.active_site = that;
-};
-// Carraguem els seus boxs
-Site.prototype.loadBoxes = function() {
-  var that = this;
-  strUrl = that.map_parent.serverUrl + "/site/" + that.id + "/boxes";
-  $.getJSON(strUrl, function (data) {
-    // Iterem
-    $.each(data, function (index, value) {
-      var box = new Box(value.id, value.uuid, value.name, value.type, that, that.map_parent);
-      box.inputFO = value.inputFO;
-      box.inputFO = (box.inputFO  === parseInt(box.inputFO , 10)) ? box.inputFO : 0;
-      box.outputFO = value.outputFO;
-      box.outputFO = (box.outputFO  === parseInt(box.outputFO , 10)) ? box.outputFO : 0;
-      box.observations = value.observations;
-      that.boxes[box.uuid] = box;
-    });
-    that.siteCallbackBoxes();
-    that.showIconBox();
-  });
-};
 Site.prototype.showIconBox = function() {
   switch(this.map_parent.layerActive){
     case 'civil':
-      this.changeTypeIcon();
-      break;
+      this.changeTypeIcon()
+      break
     case 'infra':
       if (this.countBox() > 0) {
-        this.changeTypeIcon('active');
+        this.changeTypeIcon('active')
       } else {
-        this.changeTypeIcon('grey');
+        this.changeTypeIcon('grey')
       }
-      break;
+      break
   }
 };
+/*
 Site.prototype.siteCallbackBoxes = function() {
   var that = this;
 
@@ -347,15 +250,11 @@ Site.prototype.deleteBox = function(uuid){
     $('#box-'+ box.uuid).remove();
   delete this.boxes[uuid];
 };
+*/
 Site.prototype.countBox = function(){
-  var size = 0, key;
-  var obj = this.boxes;
-  for (key in obj) {
-    if (obj.hasOwnProperty(key)) size++;
-  };
-  return size;
+  return this.boxes.length
 };
-
+/*
 // Pagina de Definició de fusió
 Site.prototype.siteFusion = function(){
   if (!this.id) {

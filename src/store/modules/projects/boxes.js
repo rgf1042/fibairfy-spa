@@ -19,7 +19,7 @@ export default {
     addNewBox (state, box) {
       state.boxes.push(box)
       state.sites[box.site] = state.sites[box.site] || []
-      state.sites[box.site].push(state.boxes.length) // We push index in sites to boxes array
+      state.sites[box.site].push(state.boxes.length - 1) // We push index in sites to boxes array
     },
     updateBox (state, data) {
       state.boxes[data.index] = data.site
@@ -44,7 +44,7 @@ export default {
     loadBoxes (context) {
       return new Promise((resolve, reject) => {
         context.commit('resetBoxes')
-        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/?project=' + context.getters.currentId + '&limit=1000000&populate=null').then(response => {
+        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/?project=' + context.getters.currentId + '&limit=10000&populate=null').then(response => {
           for (let x in response.body) {
             let box = response.body[x]
             context.commit('addNewBox', box)
