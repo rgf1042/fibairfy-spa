@@ -143,7 +143,13 @@ export default {
   boxes () {
     return {
       sites: {},
-      boxes: []
+      boxes: {},
+      types: [
+        'mainline',
+        'CTO',
+        'splitter',
+        'patchpanel'
+      ]
     }
   }
 }

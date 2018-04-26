@@ -3,6 +3,7 @@
     <leaflet-map :status="status" :layerActive="layerActive"
       v-on:edit-site="editSite($event)"
       v-on:edit-path="editPath($event)"
+      v-on:edit-boxes="editBoxes($event)"
       v-on:active-path="setActivePath($event)"></leaflet-map>
     <map-controls v-on:set-status="setStatus($event)" v-on:set-layer="setLayer($event)"
       :status="status" :layerActive="layerActive"
@@ -47,6 +48,9 @@ export default {
     },
     editPath (id) {
       this.$router.push({ name: 'PathEdit', params: { id: id }})
+    },
+    editBoxes (id) {
+      this.$router.push({ name: 'BoxesEdit', params: { id: id }})
     }
   }
 

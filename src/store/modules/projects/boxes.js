@@ -8,42 +8,45 @@ Vue.use(VueResource)
 export default {
   state: InitialStates.boxes(),
   getters: {
-    findBoxById: state => id => {
-      return state.boxes.find(item => item.id === id)
-    },
-    findBoxIndexById: state => id => {
-      return state.boxes.findIndex(item => item.id === id)
+    boxesIndexes: state => idSite => {
+      return state.sites[idSite]
     }
   },
   mutations: {
     addNewBox (state, box) {
-      state.boxes.push(box)
-      state.sites[box.site] = state.sites[box.site] || []
-      state.sites[box.site].push(state.boxes.length - 1) // We push index in sites to boxes array
+      Vue.set(state.boxes, box.id, box)
+      // Vue.set(state.sites[box.site], box.id)
+      state.sites[box.site].push(box.id) // We push index in sites to boxes array
+    },
+    addSiteToBox (state, site) { // We load this every time a new Site is created
+      Vue.set(state.sites, site.id, [])
     },
     updateBox (state, data) {
-      state.boxes[data.index] = data.site
+      Vue.set(state.boxes, data.index, data.site)
     },
-    deleteBox (state, index) {
-      let id = state.boxes[index].site
-      let boxes = state.sites[id]
+    deleteBox (state, id) {
+      let idSite = state.boxes[id].site
+      let boxes = state.sites[idSite]
       for (let x in boxes) {
-        if (boxes[x] === index) {
-          boxes.splice(boxes[x], 1)
+        if (boxes[x] === id) {
+          boxes.splice(x, 1)
           break
         }
       }
-      state.boxes.splice(index, 1)
+      Vue.delete(state.boxes, id)
     },
     resetBoxes (state) {
       state.boxes = InitialStates.boxes().boxes
       state.sites = InitialStates.boxes().sites
+      state.types = InitialStates.boxes().types
     }
   },
   actions: {
     loadBoxes (context) {
       return new Promise((resolve, reject) => {
         context.commit('resetBoxes')
+        let sites = context.getters.sites // We load existing sites
+        for (let x in sites) context.commit('addSiteToBox', sites[x])
         Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/?project=' + context.getters.currentId + '&limit=10000&populate=null').then(response => {
           for (let x in response.body) {
             let box = response.body[x]
@@ -58,7 +61,7 @@ export default {
     addNewBox (context, box) {
       return new Promise((resolve, reject) => {
         Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/', box).then(response => {
-          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/' + response.body.id).then(response => {
+          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/' + response.body.id + '?populate=null').then(response => {
             context.commit('addNewBox', response.body)
             resolve(response)
           }, error => {
@@ -71,39 +74,22 @@ export default {
     },
     deleteBox (context, id) {
       return new Promise((resolve, reject) => {
-        let index = context.getters.findBoxIndexById(id)
-        if (index !== -1) {
-          Vue.http.delete(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/' + id).then(response => {
-            context.commit('deleteBox', index)
-            resolve(response)
-          }, error => {
-            reject(error)
-          })
-        }
-        else {
-          reject({ msg: 'This box doesnt exist'})
-        }
+        Vue.http.delete(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/' + id).then(response => {
+          context.commit('deleteBox', id)
+          resolve(response)
+        }, error => {
+          reject(error)
+        })
       })
     },
     updateBox (context, box) {
       return new Promise((resolve, reject) => {
-        let index = context.getters.findBoxIndexById(box.id)
-        if (index !== -1) {
-          Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/' + box.id, box).then(response => {
-            context.commit('updateBox', { index: index, site: response.body })
-            resolve(response)
-          }, error => {
-            reject(error)
-          })
-        }
-        else {
-          reject({ msg: 'This box doesnt exist'})
-        }
-      })
-    },
-    findBoxById (context, id) {
-      return new Promise((resolve, reject) => {
-        resolve(context.getters.findBoxById(id))
+        Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/' + box.id, box).then(response => {
+          context.commit('updateBox', { id: box.id, site: response.body })
+          resolve(response)
+        }, error => {
+          reject(error)
+        })
       })
     }
   }

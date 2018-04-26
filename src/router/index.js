@@ -8,6 +8,7 @@ import FiberMap from '@/components/FiberMap'
 import Projects from '@/components/Projects'
 import ProjectAdd from '@/components/ProjectAdd'
 import SiteEdit from '@/components/SiteEdit'
+import BoxesEdit from '@/components/BoxesEdit'
 import PathEdit from '@/components/PathEdit'
 import Profile from '@/components/Profile'
 import Export from '@/components/Export'
@@ -68,6 +69,14 @@ const router = new Router({
       components: {
         navbar: BackNavbar,
         view: SiteEdit
+      }
+    },
+    {
+      path: '/boxes/:id',
+      name: 'BoxesEdit',
+      components: {
+        navbar: BackNavbar,
+        view: BoxesEdit
       }
     },
     {

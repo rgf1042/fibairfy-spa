@@ -13,6 +13,9 @@ export default {
     },
     findSiteIndexById: state => id => {
       return state.sites.findIndex(item => item.id === id)
+    },
+    sites: state => {
+      return state.sites
     }
   },
   mutations: {
@@ -50,6 +53,7 @@ export default {
         Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/site/', site).then(response => {
           Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/site/' + response.body.id).then(response => {
             context.commit('addNewSite', response.body)
+            context.commit('addSiteToBox', response.body)
             resolve(response)
           }, error => {
             reject(error)

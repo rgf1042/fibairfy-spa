@@ -191,6 +191,7 @@ Site.prototype.onSiteClick = function (e){
       break
     case "box":
       // this.boxDefine()
+      this.map_parent.vue.$emit('edit-boxes', Number(this.id))
       break
     case "fiber":
       // Hi ha alguna fibra activa?
@@ -207,7 +208,7 @@ Site.prototype.onSiteClick = function (e){
       break;
     case "":
       if (this.map_parent.layerActive === 'civil') this.map_parent.vue.$emit('edit-site', Number(this.id))
-      else this.boxDefine()
+      else this.map_parent.vue.$emit('edit-boxes', Number(this.id))
     }
 };
 

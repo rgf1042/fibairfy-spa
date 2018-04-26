@@ -12,6 +12,7 @@
     "add": "Afegir",
     "update": "Actualitzar",
     "delete": "Eliminar",
+    "edit": "Editar",
     "file": "Fitxer",
     "import": "Importar",
     "name": "Nom",
@@ -40,6 +41,12 @@
       "facade": "Façana",
       "underground": "Soterrat",
       "notdefined": "No definit"
+    },
+    "boxTypes": {
+      "mainline": "Troncal",
+      "CTO": "CTO",
+      "splitter": "Splitter",
+      "patchpanel": "PatchPanel"
     }
   },
   "components": {
@@ -59,6 +66,14 @@
         "newBox": "Nova caixa",
         "newFiber": "Nova fibra"
       }
+    },
+    "editBoxes": {
+      "title": "@:general.edit @:components.editBoxes.boxes",
+      "editBox": {
+        "title": "@:general.edit @:components.editBoxes.box"
+      },
+      "box": "caixa",
+      "boxes": "caixes"
     },
     "projects": {
       "readonly": "només lectura",

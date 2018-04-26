@@ -324,7 +324,6 @@ Mapa.prototype.load = function () {
       that,
       boxes[sites[x].id] || [])
     this.sites.push(site)
-    console.log(test)
   }
   let paths = this.vue.$store.state.projects.paths.paths
 

@@ -12,6 +12,7 @@
     "add": "Add",
     "update": "Update",
     "delete": "Delete",
+    "edit": "Edit",
     "file": "File",
     "name": "Name",
     "type": "Type",
@@ -39,6 +40,12 @@
       "facade": "Facade",
       "underground": "Underground",
       "notdefined": "Not defined"
+    },
+    "boxTypes": {
+      "mainline": "Mainline",
+      "CTO": "CTO",
+      "splitter": "Splitter",
+      "patchpanel:": "PatchPanel"
     }
   },
   "components": {
@@ -58,6 +65,14 @@
         "newBox": "New box",
         "newFiber": "New fiber"
       }
+    },
+    "editBoxes": {
+      "title": "@:general.edit @:components.editBoxes.boxes",
+      "editBox": {
+        "title": "@:general.edit @:components.editBoxes.box"
+      },
+      "box": "box | boxes",
+      "boxes": "boxes"
     },
     "projects": {
       "readonly": "read-only",
