@@ -22,7 +22,7 @@ export default {
       Vue.set(state.sites, site.id, [])
     },
     updateBox (state, data) {
-      Vue.set(state.boxes, data.index, data.site)
+      Vue.set(state.boxes, data.id, data.box)
     },
     deleteBox (state, id) {
       let idSite = state.boxes[id].site
@@ -84,8 +84,8 @@ export default {
     },
     updateBox (context, box) {
       return new Promise((resolve, reject) => {
-        Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/' + box.id, box).then(response => {
-          context.commit('updateBox', { id: box.id, site: response.body })
+        Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/' + box.id + '?populate=null', box).then(response => {
+          context.commit('updateBox', { id: box.id, box: response.body })
           resolve(response)
         }, error => {
           reject(error)
