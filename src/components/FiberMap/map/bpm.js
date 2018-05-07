@@ -5,7 +5,7 @@ import L from 'leaflet'
 import Site from './site'
 // var Box = require('./box')
 import Path from './path'
-// var Fiber = require('./fiber')
+import Fiber from './fiber'
 // var Pfusion = require('./pfusion')
 // var Projecte = require('./projecte')
 // var Config = require('./config')
@@ -341,26 +341,22 @@ Mapa.prototype.load = function () {
     )
     this.paths.push(path)
   }
-  // ...
-  /*
-      // Carreguem les fibres (afegim .id degut a nova api)
-      strUrl = that.serverUrl + '/fiber?project=' + that.active_project.id
-      $.getJSON(strUrl, function(data) {
-        $.each(data, function(index, value) {
-          path = new Fiber(
-            value.id,
-            value.name,
-            value.first.id,
-            value.last.id,
-            $.parseJSON(value.intermedial),
-            $.parseJSON(value.colors),
-            value.template,
-            that
-          )
-          path.observations = value.observations
-          that.fibers.push(path)
-        })
-      }) */
+  let cables = this.vue.$store.state.projects.cables.cables
+  for (let key in cables) {
+    if (cables.hasOwnProperty(key)) {
+      let fiber = new Fiber(
+        cables[key].id,
+        cables[key].name,
+        cables[key].first,
+        cables[key].last,
+        cables[key].intermedial,
+        null,
+        null,
+        that
+      )
+      this.fibers.push(fiber)
+    }
+  }
       // Posició del projecte.
   that.active_project.latitude = that.active_project.latitude
     ? that.active_project.latitude
@@ -379,13 +375,29 @@ Mapa.prototype.load = function () {
   // that.clearLayers()
   that.redraw()
 }
-Mapa.prototype.loadInfra = function () {
+/* Mapa.prototype.loadInfra = function () { // TODO: Repassar
   // Molt a saco, si hi han molts nodes!!!
   for (let idxSite in this.sites) {
     let site = this.sites[idxSite]
     site.showIconBox()
   }
-}
+
+  // Canviem els colors a tots els trams.
+  for (let idx_paths in this.paths) {
+    var p = this.paths[idx_paths]
+    p.changeTypePath(status)
+  }
+
+  // Pintem o esborrem la fibra tirada?
+  for (let idx_fiber in this.fibers) {
+    var f = this.fibers[idx_fiber]
+    if (option === 'civil') {
+      f.clear()
+    } else if (option === 'infra') {
+      f.draw()
+    }
+  }
+} */
 Mapa.prototype.redraw = function () {
   // Pintem tots les caixes
   for (let x in this.sites) {
@@ -406,16 +418,18 @@ Mapa.prototype.clearLayers = function () {
 
 Mapa.prototype.setLayerActive = function (layer) {
   this.layerActive = layer
-  if (layer === 'infra') this.loadInfra()
-  else this.changeColor(layer)
+  this.changeColor(layer)
+  /* if (layer === 'infra') this.loadInfra()
+  else this.changeColor(layer) */
 }
 
-Mapa.prototype.changeColor = function (option) {
+Mapa.prototype.changeColor = function (option) { //TODO: Repassar
   var status = option === 'infra' ? 'grey' : 'normal'
-  // Canviem els color a tots els llocs.
-  for (let idx_site in this.sites) {
-    var s = this.sites[idx_site]
-    s.changeTypeIcon(status)
+
+  // Molt a saco, si hi han molts nodes!!!
+  for (let idxSite in this.sites) {
+    let site = this.sites[idxSite]
+    site.showIconBox()
   }
 
   // Canviem els colors a tots els trams.
@@ -423,7 +437,7 @@ Mapa.prototype.changeColor = function (option) {
     var p = this.paths[idx_paths]
     p.changeTypePath(status)
   }
-  /*
+
   // Pintem o esborrem la fibra tirada?
   for (let idx_fiber in this.fibers) {
     var f = this.fibers[idx_fiber]
@@ -432,18 +446,7 @@ Mapa.prototype.changeColor = function (option) {
     } else if (option === 'infra') {
       f.draw()
     }
-  } */
-}
-
-Mapa.prototype.loadExternalMap = function () {
-  var that = this
-  var track = new L.KML('/mapa/doc.kml', { async: true })
-  that.info.update('Loading map')
-  track.on('loaded', function (e) {
-    that.map.fitBounds(e.target.getBounds())
-    that.info.update('')
-  })
-  this.map.addLayer(track)
+  }
 }
 
 Mapa.prototype.onClick = function (e) {
@@ -458,7 +461,8 @@ Mapa.prototype.onClick = function (e) {
         e.latlng,
         this.type_site_default,
         this.default_zone,
-        this
+        this,
+        []
       )
       this.sites.push(mysite)
       mysite.draw()
@@ -495,19 +499,20 @@ Mapa.prototype.makeBox = function() {
   this.changeStatus('box', '#make_box')
 } */
 
-/* Mapa.prototype.getPathBeetwenSites = function(s1, s2) {
+Mapa.prototype.getPathBeetwenSites = function (s1, s2) {
   //Busquem a tots els paths  si hi ha algun que els sites coincideixen.
-  for (var idx_paths in this.paths) {
+  for (let idx_paths in this.paths) {
     var p = this.paths[idx_paths]
     if (
-      (p.first_site === s1 && p.end_site === s2) ||
-      (p.first_site === s2 && p.end_site === s1)
+      (p.first_site.id === s1 && p.end_site.id === s2) ||
+      (p.first_site.id === s2 && p.end_site.id === s1)
     )
       return p.id
   }
   return null
 }
 
+/*
 Mapa.prototype.convertBoxesInPatchs = function(Boxes) {
   var siteFO = {}
   siteFO.id = 0
@@ -663,27 +668,16 @@ Mapa.prototype.question = function(text, callback) {
     callback($(this).attr('class'))
   })
 } */
-/*
-Mapa.prototype.getSite = function(id) {
-  for (idx_site in this.sites) {
-    site = this.sites[idx_site]
-    if (site.id === id) {
-      return site
-    }
-  }
-  return null
+
+Mapa.prototype.getSite = function (id) {
+  return this.vue.$store.getters['projects/findSiteById'](id)
 }
 
-Mapa.prototype.getPath = function(id) {
-  for (idx_path in this.paths) {
-    path = this.paths[idx_path]
-    if (path.id === id) {
-      return path
-    }
-  }
-  return null
+Mapa.prototype.getPath = function (id) {
+  return this.vue.$store.getters['projects/findPathById'](id)
 }
-*/
+
+/*
 Mapa.prototype.deleteSiteById = function (id) {
   for (let idx_site in this.sites) {
     let site = this.sites[idx_site]
@@ -703,7 +697,7 @@ Mapa.prototype.deletePathById = function(id) {
     }
   }
 }
-/*
+
 Mapa.prototype.deleteFiberById = function(id) {
   for (idx_fiber in this.fibers) {
     fiber = this.fibers[idx_fiber]
@@ -712,6 +706,7 @@ Mapa.prototype.deleteFiberById = function(id) {
       break
     }
   }
-} */
+}
+*/
 // =====
 export default Mapa

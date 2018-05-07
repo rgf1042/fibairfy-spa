@@ -1,7 +1,7 @@
 /* eslint-disable */
 // var Box = require('./box');
 import Path from './path'
-// var Fiber = require('./fiber');
+import Fiber from './fiber'
 import L from 'leaflet'
 // =====================
 // Site
@@ -94,10 +94,13 @@ Site.prototype.changeTypeIcon = function (status, type) {
       icon = this.map_parent.type_site_icon_grey[type]
       break
     default:
-      icon =
-        this.map_parent.layerActive === 'civil'
-          ? this.map_parent.type_site_icon[type]
-          : this.map_parent.type_site_icon_grey[type]
+      if (this.map_parent.layerActive === 'civil')
+        icon = this.map_parent.type_site_icon[type]
+      else
+        icon =
+          this.countBox() > 0
+            ? this.map_parent.type_site_icon_active[type]
+            : this.map_parent.type_site_icon_grey[type]
   }
   this.marker.setIcon(icon)
 }
@@ -195,7 +198,7 @@ Site.prototype.onSiteClick = function (e){
       break
     case "fiber":
       // Hi ha alguna fibra activa?
-      /* if ((this.map_parent.active_fiber) && (this.map_parent.active_fiber.first_site)) {
+      if ((this.map_parent.active_fiber) && (this.map_parent.active_fiber.first_site)) {
         // Sí
         this.map_parent.active_fiber.addSite(this)
       } else {
@@ -204,7 +207,7 @@ Site.prototype.onSiteClick = function (e){
         this.changeTypeIcon('over')
         this.map_parent.active_fiber = new Fiber(null, null, null, null, new Array(), null, this.map_parent.type_path_default, this.map_parent)
         this.map_parent.active_fiber.setFirstSite(this)
-      } */
+      }
       break;
     case "":
       if (this.map_parent.layerActive === 'civil') this.map_parent.vue.$emit('edit-site', Number(this.id))

@@ -58,14 +58,6 @@ Path.prototype.findPathColor = function(status, type) {
   }
   return color
 }
-Path.prototype.delete = function() {
-  if (!this.map_parent.haveFibers(this.id)) {
-    //This path has not any fibers. We can delete.
-    this.remove()
-  } else {
-    alert('It is not possible. This path has fibers.')
-  }
-}
 Path.prototype.clear = function() {
   if (this.polyline) this.map_parent.map.removeLayer(this.polyline)
 }
@@ -120,7 +112,7 @@ Path.prototype.save = function () {
     project: this.map_parent.active_project.id,
     first: this.first_site.id,
     last: this.end_site.id,
-    intermedial: JSON.stringify(this.intermedial),
+    intermedial: this.intermedial,
     type: this.type
   }
   this.map_parent.vue.$store.dispatch('projects/addNewPath', path).then(response => {
@@ -142,6 +134,10 @@ Path.prototype.onPathClick = function(e) {
         break
       case 'infra':
         break
+      case "fiber":
+        // this.map_parent.active_fiber.addPath(this.id)
+        console.log(this.map_parent.active_fiber.paths)
+      break
     }
   }
 }

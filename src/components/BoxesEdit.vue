@@ -17,11 +17,12 @@
         </b-col>
       </b-row>
       <b-row class="pt-2" v-for="boxId in boxesIds" :key="boxId">
-        <box-edit :id="boxId">
-      </box-edit>
+        <b-col>
+          <box-edit :id="boxId"></box-edit>
+        </b-col>
       </b-row>
-      <b-row>
-        <b-button variant="primary" v-on:click="addBox">{{$t('general.add')}}</b-button>
+      <b-row class="pt-3">
+        <b-button variant="success" v-on:click="addBox">{{$t('general.add')}}</b-button>
       </b-row>
     </b-container>
   </div>

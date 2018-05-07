@@ -1,4 +1,5 @@
-//=====================
+/* eslint-disable */
+// =====================
 // Tram
 function Fiber(id, name, first_site, end_site, paths, colors, template, m){
   this.id = id;
@@ -17,7 +18,7 @@ function Fiber(id, name, first_site, end_site, paths, colors, template, m){
 
   this.map_parent = m;
 
-  //Calcule sites
+  // Calcula sites
   if (this.paths == null) {
     console.log("La fibra '" +  this.id + "', no té paths?");
   } else if (this.paths.length > 0) {
@@ -50,7 +51,7 @@ Fiber.prototype.changeTypeFiber = function(status, type) {
 Fiber.prototype.findFiberColor = function(status, type) {
   if (!type) type = this.type;
   if (!type) type = this.map_parent.type_path_default;
-  type_idx = this.map_parent.type_path.indexOf(type);
+  let type_idx = this.map_parent.type_path.indexOf(type);
 
   var color;
   switch( status ){
@@ -60,7 +61,7 @@ Fiber.prototype.findFiberColor = function(status, type) {
       color = this.map_parent.type_path_colors[status][type_idx];
       break;
     default:
-      color = (this.map_parent.layerActive == 'civil') ? this.map_parent.type_path_colors['normal'][type_idx] : this.map_parent.type_path_colors['grey'][type_idx];
+      color = (this.map_parent.layerActive === 'civil') ? this.map_parent.type_path_colors['normal'][type_idx] : this.map_parent.type_path_colors['grey'][type_idx];
   }
   return color;
 };
@@ -106,40 +107,44 @@ Fiber.prototype.getSites = function() {
   }
 };
 
-Fiber.prototype.getAllDots = function() {
-  var that = this;
+Fiber.prototype.getAllDots = function () { // TODO: Repassar
+  let that = this;
 
-  var dots = [];
-  for(var x = 0; x < this.paths.length; x++){
+  let dots = [];
+  for (let x = 0; x < this.paths.length; x++){
     var actPath = this.map_parent.getPath(this.paths[x]);
     // Si el primer site del path actual, no és el site per numero
     // que toca s'han de guardar els punts al reves
-    if (actPath.first_site == this.sites[x]) {
-      for(var y = 0; y < actPath.dots.length; y++){
-        var actDot = actPath.dots[y];
+    if (actPath.first.id === this.sites[x]) {
+      dots.push([actPath.first.latitude, actPath.first.longitude])
+      for (let y = 0; y < actPath.intermedial.length; y++){
+        let actDot = actPath.intermedial[y];
         if (dots.length == 0){
           dots.push(actDot);
         } else {
           // Mirem que no hi hagi el punt repetit!!
-          var beforeDot = dots[dots.length - 1];
-          if ((beforeDot.lat != actDot.lat) || (beforeDot.lng != actDot.lng)){
+          let beforeDot = dots[dots.length - 1];
+          if ((beforeDot[0] != actDot[0]) || (beforeDot[1] != actDot[1])) {
             dots.push(actDot);
           }
         }
       }
+      dots.push([actPath.last.latitude, actPath.last.longitude])
     } else {
-      for(var y = actPath.dots.length - 1; y >= 0; y--){
-        var actDot = actPath.dots[y];
+      dots.push([actPath.last.latitude, actPath.last.longitude])
+      for (let y = actPath.intermedial.length - 1; y >= 0; y--) {
+        var actDot = actPath.intermedial[y];
         if (dots.length == 0){
           dots.push(actDot);
         } else {
           // Mirem que no hi hagi el punt repetit!!
-          var beforeDot = dots[dots.length - 1];
-          if ((beforeDot.lat != actDot.lat) || (beforeDot.lng != actDot.lng)){
+          let beforeDot = dots[dots.length - 1];
+          if ((beforeDot[0] != actDot[0]) || (beforeDot[1] != actDot[1])) {
             dots.push(actDot);
           }
         }
       }
+      dots.push([actPath.first.latitude, actPath.first.longitude]) // Inversed
     }
   }
   return dots;
@@ -152,7 +157,7 @@ Fiber.prototype.draw = function() {
     this.clear();
   }
 
-  var color = (this.end_site) ? this.findFiberColor() : this.findFiberColor('active');
+  var color = (this.end_site) ? this.findFiberColor('active') : this.findFiberColor();
 
   var dots = this.getAllDots();
   this.polyline = new L.Polyline(dots, {
@@ -203,7 +208,7 @@ Fiber.prototype.addSite = function (site){
 };
 Fiber.prototype.save = function (){
   var that = this;
-  strUrl = this.map_parent.serverUrl + "/fiber";
+  /* strUrl = this.map_parent.serverUrl + "/fiber";
   console.log('API call: ' + strUrl);
   console.log(this);
   if (this.first_site == null || this.end_site == null) {
@@ -223,149 +228,27 @@ Fiber.prototype.save = function (){
       that.clear();
       that.map_parent.deleteFiberById(that.id);
       alert("There was a problem. Please, try again.");
-    });
-};
+    }); */
 
-Fiber.prototype.remove = function(){
-  var that = this;
-  strUrl = this.map_parent.serverUrl + "/fiber";
-  console.log('API call: ' + strUrl);
-  $.delete( strUrl+"/"+this.id)
-    .done(function( data ) {
-      that.clear();
-      that.map_parent.backMap();
-      that.map_parent.notify("Fiber deleted!");
-      that.map_parent.deleteFiberById(that.id);
-    }, "json");
-}
-Fiber.prototype.delete = function() {
-  var that = this;
-/* En realitat no hauria de ser dues crides a "/site/" + this.first_site + "/fusion" o "/site/" + this.end_site + "/fusion" */
-  var strUrlSection = that.map_parent.serverUrl + "/site/" + that.first_site + "/fusion";
-  $.getJSON(strUrlSection, function (dataSection) {
-    if (dataSection.length != 0){
-      alert('It is not possible. This fiber has fusions.');
-    } else {
-      var strUrlSection = that.map_parent.serverUrl + "/site/" + that.end_site + "/fusion";
-        $.getJSON(strUrlSection, function (dataSection) {
-          if (dataSection.length != 0) {
-            alert('It is not possible. This fiber has fusions.');
-          } else {
-            that.remove();
-          }
-      });
+    let cable = {
+      project: this.map_parent.active_project.id,
+      first: this.first_site,
+      last: this.end_site,
+      intermedial: this.paths
     }
-  });
-}
 
-Fiber.prototype.loadTypes = function(SelectField){
-  var that = this;
-
-  SelectField.find('option').remove().end();
-  $.each(this.map_parent.type_path, function(key, value) {
-    var option = $("<option></option>")
-                    .attr("value",value)
-                    .text(value);
-    if (that.type == value) {
-      option.attr("selected","selected");
-    }
-    SelectField.append(option);
-  });
-};
-Fiber.prototype.loadTemplates = function(SelectField){
-
-  var that = this;
-
-  SelectField.find('option').remove().end();
-  $.each(this.map_parent.template_path, function(key, value) {
-    var option = $("<option></option>")
-                    .attr("value",key)
-                    .text(value);
-    if (that.type == value) {
-      option.attr("selected","selected");
-    }
-    SelectField.append(option);
-  });
-};
-
-Fiber.prototype.updateForm = function (){
-  var that = this;
-  // Carraguem els caps del formulari al objecte
-
-  this.name = $('#fiber-name').val();
-  this.first_site = $('#fiber-first-site').val();
-  this.end_site = $('#fiber-end-site').val();
-  this.paths = $.parseJSON($('#fiber-intermedial').val());
-  this.type = $('#fiber-type').val();
-  try {
-    this.colors = $.parseJSON($('#fiber-colors').val());
-  } catch(err) {
-    console.log(err);
-  }
-  this.observations = $('#fiber-observations').val();
-
-  strUrl = this.map_parent.serverUrl + "/fiber/" + this.id;
-  console.log('API call: ' + strUrl);
-  if (this.first_site == null || this.end_site == null) {
-    console.log("First or End site does not have id, please check this problem.");
-    return;
-  }
-  // Not exist $.put need use $.ajax
-  $.put( strUrl, JSON.stringify({ "name": this.name, "first": this.first_site, "last": this.end_site,
-                                  "intermedial": JSON.stringify(this.paths) ,
-                                  "colors": JSON.stringify(this.colors), "project": this.map_parent.active_project.id,
-                                  "type": this.type,
-                                  "observations": this.observations }))
-    .done(function( data ) {
-      that.map_parent.notify("Updated!");
-      that.draw();
-    }, "json")
-    .fail(function( data ) {
-      that.clear();
-      that.map_parent.deleteFiberById(that.id);
+    this.map_parent.vue.$store.dispatch('projects/addNewCable', cable).then(response => {
+      this.id = response.body.id
+      this.map_parent.active_fiber = null;
+    }, error => {
+      this.clear();
+      this.map_parent.deleteFiberById(this.id);
       alert("There was a problem. Please, try again.");
-    });
+      console.log(error)
+    })
 };
-Fiber.prototype.editForm = function() {
-  var that = this;
-  // Clear old click events.
-  $('#fiber-update').unbind("click");
-  $('#fiber-template').unbind('change');
-  $('#fiber-delete').unbind("click");
 
-  // Carreguem les dades a on toqui
-  $('#fiber-name').val(this.name);
-  $('#fiber-first-site').val(this.first_site);
-  $('#fiber-end-site').val(this.end_site);
-  $('#fiber-intermedial').val(JSON.stringify(this.paths));
-  this.loadTemplates($('#fiber-template'));
-  if(this.colors == null || this.colors == "") {
-    $("#fiber-colors").val("");
-  } else {
-    $('#fiber-colors').val(JSON.stringify(this.colors));
-  }
 
-  // GUI colors
-  this.drawColors();
-
-  $('#fiber-observations').val(this.observations);
-  $('#fiber-update').click(function(){ that.updateForm();});
-  $('#fiber-delete').click(function(){ that.delete();});
-  $('#fiber-template').change( function(e) {
-    var template = $('#fiber-template').val();
-    if (template != 0) {
-      if(confirm('Estas segur que vols canviar aquesta fibra?')) {
-        that.colors = $.parseJSON(that.map_parent.template_jsons[template]);
-        $('#fiber-colors').val(that.map_parent.template_jsons[template]);
-        that.drawColors();
-      }
-    }
-  });
-
-  // Canviem de pàgina
-  $('#map-group').hide();
-  $('#zoom-fiber-group').toggleClass('hide');
-};
 Fiber.prototype.onFiberClick = function(e){
   var that = this;
   this.editForm();
@@ -379,7 +262,7 @@ Fiber.prototype.onFiberMouseOver = function(e) {
 Fiber.prototype.onFiberMouseOut = function(e) {
   if (this.map_parent.status != 'box') {
     this.map_parent.info.update('');
-    this.changeTypeFiber();
+    this.changeTypeFiber('active');
   }
 };
 
@@ -548,4 +431,4 @@ Fiber.prototype.onAddFiber = function(e, itub) {
   return false;
 }
 
-module.exports = exports = Fiber;
+export default Fiber

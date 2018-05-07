@@ -151,5 +151,10 @@ export default {
         'patchpanel'
       ]
     }
+  },
+  cables () {
+    return {
+      cables: {}
+    }
   }
 }

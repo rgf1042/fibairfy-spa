@@ -5,6 +5,7 @@ import Vue from 'vue'
 import SitesModule from './projects/sites'
 import BoxesModule from './projects/boxes'
 import PathsModule from './projects/paths'
+import CablesModule from './projects/cables'
 import MapModule from './projects/map'
 import InitialStates from '../initial-states.js'
 
@@ -75,7 +76,11 @@ export default {
           context.dispatch('loadSites').then(response => {
             context.dispatch('loadPaths').then(response => {
               context.dispatch('loadBoxes').then(response => {
-                resolve(response)
+                context.dispatch('loadCables').then(response => {
+                  resolve(response)
+                }, error => {
+                  reject(error)
+                })
               }, error => {
                 reject(error)
               })
@@ -166,7 +171,7 @@ export default {
         let formData = new FormData()
         formData.append('project', context.getters.currentId)
         formData.append('data', form.data, form.data.name)
-
+        formData.append('defaultZone', form.defaultZone)
         Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/import/', formData).then(response => {
           // We reload current project
           context.dispatch('setCurrent', context.getters.currentId).then(response => {
@@ -184,6 +189,7 @@ export default {
     sites: SitesModule,
     boxes: BoxesModule,
     paths: PathsModule,
+    cables: CablesModule,
     map: MapModule
   }
 }
