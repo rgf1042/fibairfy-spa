@@ -15,6 +15,7 @@ function Path(id, name, first_site, end_site, intermedial, type, m) {
   this.color_mouseover = 'green'
   this.observations = null
   this.map_parent = m
+  this.cables = []
 }
 Path.prototype.setFirstSite = function(b) {
   this.first_site.id = b.id
@@ -51,10 +52,13 @@ Path.prototype.findPathColor = function(status, type) {
       color = this.map_parent.type_path_colors[status][type_idx]
       break
     default:
-      color =
-        this.map_parent.layerActive == 'civil'
-          ? this.map_parent.type_path_colors['normal'][type_idx]
-          : this.map_parent.type_path_colors['grey'][type_idx]
+      if (this.map_parent.layerActive === 'civil')
+        color = this.map_parent.type_path_colors['normal'][type_idx]
+      else
+        color =
+          (this.cables.length > 0)
+            ? this.map_parent.type_path_colors['normal'][0] // We should define a color for this proposal ?
+            : this.map_parent.type_path_colors['grey'][type_idx]
   }
   return color
 }
@@ -133,6 +137,9 @@ Path.prototype.onPathClick = function(e) {
         this.map_parent.vue.$emit('edit-path', Number(this.id))
         break
       case 'infra':
+        // New implementation show fibers
+        if (this.cables.length > 0)
+          this.showCablePopup(e.latlng)
         break
       case "fiber":
         // this.map_parent.active_fiber.addPath(this.id)
@@ -187,5 +194,44 @@ Path.prototype.getSegment = function(e) {
   }
 */
   console.log('')
+}
+
+Path.prototype.drawCable = function (id) {
+  // TODO: implementar
+  /* La idea és assignar a cada path N cables que hi passen, al clickar en mode xarxa sortirà un toolbox on podrem seleccionar el cable que volem editar
+  * Segons els num de cables que hi ha ho pintarem d'un color o d'un altre
+  */
+  this.cables.push(id)
+}
+Path.prototype.deleteCables = function (id) {
+  // TODO: implementar
+  for (let x in this.cables) {
+    if (this.cables[x] === id) {
+      this.cables.splice(x, 1)
+      break
+    }
+  }
+}
+Path.prototype.showCablePopup = function (latlng) {
+  var that = this
+  let content = L.DomUtil.create('div', null)
+  let title = L.DomUtil.create('h4', null, content)
+  title.innerHTML = this.map_parent.vue.$t('general.edit') + ' cables'
+  let list = L.DomUtil.create('ul', null, content)
+  for (let x in this.cables) {
+    let item = L.DomUtil.create('li', null, list)
+    let link = L.DomUtil.create('a', null, item)
+    link.href = '#'
+    link['data-id'] = this.cables[x]
+    link.innerHTML = this.cables[x] + ' - ' + this.map_parent.getFiber(this.cables[x]).name
+    L.DomEvent.on(link, 'click', function (e) {
+      e.preventDefault()
+      L.DomEvent.stopPropagation(e)
+      that.map_parent.vue.$emit('edit-cable', e.currentTarget['data-id'])
+    })
+  }
+  this.map_parent.cablePopup.setLatLng(latlng)
+    .setContent(content)
+    .openOn(this.map_parent.map);
 }
 export default Path

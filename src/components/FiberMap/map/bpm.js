@@ -190,11 +190,11 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   // Event de click
   this.map.on('click', function (e) {
     that.onClick(e)
-    if (that.map.scrollWheelZoom.enabled()) {
+    /* if (that.map.scrollWheelZoom.enabled()) {
       that.map.scrollWheelZoom.disable()
     } else {
       that.map.scrollWheelZoom.enable()
-    }
+    } */
   })
 
   this.map.on('move', function (e) {
@@ -249,6 +249,10 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   }
 
   this.info.addTo(this.map)
+
+  // We add popup window for managing cables
+  this.cablePopup = L.popup()
+
 }
 Mapa.prototype.setStatus = function (status) {
   if (this.status === 'path')
@@ -435,7 +439,7 @@ Mapa.prototype.changeColor = function (option) { //TODO: Repassar
   // Canviem els colors a tots els trams.
   for (let idx_paths in this.paths) {
     var p = this.paths[idx_paths]
-    p.changeTypePath(status)
+    p.changeTypePath()
   }
 
   // Pintem o esborrem la fibra tirada?
@@ -674,7 +678,23 @@ Mapa.prototype.getSite = function (id) {
 }
 
 Mapa.prototype.getPath = function (id) {
-  return this.vue.$store.getters['projects/findPathById'](id)
+  /* return this.vue.$store.getters['projects/findPathById'](id) */
+  for (let x in this.paths) {
+    let path = this.paths[x]
+    if (path.id === id) {
+      return path
+    }
+  }
+}
+
+Mapa.prototype.getFiber = function (id) {
+  /* return this.vue.$store.getters['projects/findPathById'](id) */
+  for (let x in this.fibers) {
+    let fiber = this.fibers[x]
+    if (fiber.id === id) {
+      return fiber
+    }
+  }
 }
 
 /*

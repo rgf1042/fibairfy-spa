@@ -10,6 +10,7 @@ import ProjectAdd from '@/components/ProjectAdd'
 import SiteEdit from '@/components/SiteEdit'
 import BoxesEdit from '@/components/BoxesEdit'
 import PathEdit from '@/components/PathEdit'
+import CableEdit from '@/components/CableEdit'
 import Profile from '@/components/Profile'
 import Export from '@/components/Export'
 import Import from '@/components/Import'
@@ -85,6 +86,14 @@ const router = new Router({
       components: {
         navbar: BackNavbar,
         view: PathEdit
+      }
+    },
+    {
+      path: '/cable/:id',
+      name: 'CableEdit',
+      components: {
+        navbar: BackNavbar,
+        view: CableEdit
       }
     },
     {

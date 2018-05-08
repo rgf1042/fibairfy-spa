@@ -24,6 +24,9 @@ function Fiber(id, name, first_site, end_site, paths, colors, template, m){
   } else if (this.paths.length > 0) {
     this.getSites();
   }
+  if (this.id) {
+    this.attachToPath()
+  }
 
 }
 Fiber.prototype.setFirstSite = function(b){
@@ -39,6 +42,7 @@ Fiber.prototype.setEndSite = function(b){
   this.map_parent.active_path = "";
   if (this.end_site != this.first_site) {
     this.save();
+    this.clear() // We delete (Now paths manage cables)
   } else {
     // Esborrar link
     this.clear();
@@ -75,29 +79,29 @@ Fiber.prototype.getSites = function() {
   var prePath = this.map_parent.getPath(this.paths[0]);
   for(var x = 1; x < this.paths.length; x++){
     var actPath = this.map_parent.getPath(this.paths[x]);
-    if ((prePath.first_site == actPath.first_site) || (prePath.first_site == actPath.end_site)) {
-      if (this.sites.length == 0){
+    if ((prePath.first_site.id === actPath.first_site.id) || (prePath.first_site.id === actPath.end_site.id)) {
+      if (this.sites.length === 0){
         // Només pot passar la primer vegada
-        this.sites.push(prePath.end_site);
+        this.sites.push(prePath.end_site.id);
       }
-      if(prePath.first_site == actPath.end_site) {
-        this.sites.push(actPath.end_site);
-        if (x == this.paths.length - 1 ) this.sites.push(actPath.first_site);
+      if(prePath.first_site.id === actPath.end_site.id) {
+        this.sites.push(actPath.end_site.id);
+        if (x === this.paths.length - 1 ) this.sites.push(actPath.first_site.id);
       } else {
-        this.sites.push(actPath.first_site);
-        if (x == this.paths.length - 1 ) this.sites.push(actPath.end_site);
+        this.sites.push(actPath.first_site.id);
+        if (x === this.paths.length - 1 ) this.sites.push(actPath.end_site.id);
       }
-    } else if ((prePath.end_site == actPath.first_site) || (prePath.end_site == actPath.end_site)) {
-      if (this.sites.length == 0){
+    } else if ((prePath.end_site.id === actPath.first_site.id) || (prePath.end_site.id === actPath.end_site.id)) {
+      if (this.sites.length === 0){
         // Només pot passar la primer vegada
-        this.sites.push(prePath.first_site);
+        this.sites.push(prePath.first_site.id);
       }
-      if(prePath.end_site == actPath.end_site) {
-        this.sites.push(actPath.end_site);
-        if (x == this.paths.length - 1 ) this.sites.push(actPath.first_site);
+      if(prePath.end_site.id === actPath.end_site.id) {
+        this.sites.push(actPath.end_site.id);
+        if (x === this.paths.length - 1 ) this.sites.push(actPath.first_site.id);
       } else {
-        this.sites.push(actPath.first_site);
-        if (x == this.paths.length - 1 ) this.sites.push(actPath.end_site);
+        this.sites.push(actPath.first_site.id);
+        if (x === this.paths.length - 1 ) this.sites.push(actPath.end_site.id);
       }
     } else {
       console.log("ERROR: Dos paths que no tene sits ens comú.");
@@ -115,8 +119,8 @@ Fiber.prototype.getAllDots = function () { // TODO: Repassar
     var actPath = this.map_parent.getPath(this.paths[x]);
     // Si el primer site del path actual, no és el site per numero
     // que toca s'han de guardar els punts al reves
-    if (actPath.first.id === this.sites[x]) {
-      dots.push([actPath.first.latitude, actPath.first.longitude])
+    if (actPath.first_site.id === this.sites[x]) {
+      dots.push([actPath.first_site.latitude, actPath.first_site.longitude])
       for (let y = 0; y < actPath.intermedial.length; y++){
         let actDot = actPath.intermedial[y];
         if (dots.length == 0){
@@ -129,9 +133,9 @@ Fiber.prototype.getAllDots = function () { // TODO: Repassar
           }
         }
       }
-      dots.push([actPath.last.latitude, actPath.last.longitude])
+      dots.push([actPath.end_site.latitude, actPath.end_site.longitude])
     } else {
-      dots.push([actPath.last.latitude, actPath.last.longitude])
+      dots.push([actPath.end_site.latitude, actPath.end_site.longitude])
       for (let y = actPath.intermedial.length - 1; y >= 0; y--) {
         var actDot = actPath.intermedial[y];
         if (dots.length == 0){
@@ -144,14 +148,14 @@ Fiber.prototype.getAllDots = function () { // TODO: Repassar
           }
         }
       }
-      dots.push([actPath.first.latitude, actPath.first.longitude]) // Inversed
+      dots.push([actPath.first_site.latitude, actPath.first_site.longitude]) // Inversed
     }
   }
   return dots;
 };
 
 Fiber.prototype.draw = function() {
-  var that = this;
+   /* var that = this;
   // Pintar el Tram
   if (this.polyline) {
     this.clear();
@@ -165,13 +169,17 @@ Fiber.prototype.draw = function() {
       weight: 5,
       opacity: 0.5,
       smoothFactor: 1
-  }).on('click', function(e) { return that.onFiberClick(e); })
-    .on('mouseover', function(e) { return that.onFiberMouseOver(e); })
-    .on('mouseout', function(e) { return that.onFiberMouseOut(e); })
-    .addTo(this.map_parent.map);
+  }).addTo(this.map_parent.map); */
 };
 
-Fiber.prototype.addPath = function(path) {
+Fiber.prototype.attachToPath = function () {
+  for (let x in this.paths) {
+    let path = this.map_parent.getPath(this.paths[x])
+    path.drawCable(this.id)
+  }
+}
+
+Fiber.prototype.addPath = function (path) {
   if (!this.end_site){
     if(this.first_site) {
       console.log(path);
@@ -207,46 +215,24 @@ Fiber.prototype.addSite = function (site){
   }
 };
 Fiber.prototype.save = function (){
-  var that = this;
-  /* strUrl = this.map_parent.serverUrl + "/fiber";
-  console.log('API call: ' + strUrl);
-  console.log(this);
-  if (this.first_site == null || this.end_site == null) {
-    console.log("First or End site does not have id, please check this problem.");
-    return;
+  let cable = {
+    project: this.map_parent.active_project.id,
+    first: this.first_site,
+    last: this.end_site,
+    intermedial: this.paths
   }
-  $.post( strUrl, JSON.stringify({ "first": this.first_site, "last": this.end_site,
-              "intermedial": JSON.stringify(this.paths), "project": this.map_parent.active_project.id,
-              "type": this.type}))
-    .done(function( data ) {
-      that.id = data.id;
-      that.map_parent.active_fiber = null;
-      // Maybe is not necessary reload all...
-      that.map_parent.loadInfra();
-    }, "json")
-    .fail(function( data ) {
-      that.clear();
-      that.map_parent.deleteFiberById(that.id);
-      alert("There was a problem. Please, try again.");
-    }); */
 
-    let cable = {
-      project: this.map_parent.active_project.id,
-      first: this.first_site,
-      last: this.end_site,
-      intermedial: this.paths
-    }
-
-    this.map_parent.vue.$store.dispatch('projects/addNewCable', cable).then(response => {
-      this.id = response.body.id
-      this.map_parent.active_fiber = null;
-    }, error => {
-      this.clear();
-      this.map_parent.deleteFiberById(this.id);
-      alert("There was a problem. Please, try again.");
-      console.log(error)
-    })
-};
+  this.map_parent.vue.$store.dispatch('projects/addNewCable', cable).then(response => {
+    this.id = response.body.id
+    this.map_parent.active_fiber = null;
+    this.attachToPath()
+  }, error => {
+    this.clear();
+    this.map_parent.deleteFiberById(this.id);
+    alert("There was a problem. Please, try again.");
+    console.log(error)
+  })
+}
 
 
 Fiber.prototype.onFiberClick = function(e){
