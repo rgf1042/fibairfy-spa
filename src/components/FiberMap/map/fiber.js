@@ -38,7 +38,7 @@ Fiber.prototype.setEndSite = function(b){
   this.draw();
   this.map_parent.setIconInSiteById(this.first_site);
   this.map_parent.setIconInSiteById(this.end_site);
-  this.map_parent.paths.push(this);
+  this.map_parent.fibers.push(this);
   this.map_parent.active_path = "";
   if (this.end_site != this.first_site) {
     this.save();
