@@ -202,6 +202,8 @@ Path.prototype.drawCable = function (id) {
   * Segons els num de cables que hi ha ho pintarem d'un color o d'un altre
   */
   this.cables.push(id)
+  if (this.polyline)
+    this.changeTypePath() // Canviem de color si fa falta
 }
 Path.prototype.deleteCables = function (id) {
   // TODO: implementar
