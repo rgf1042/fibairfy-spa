@@ -156,5 +156,17 @@ export default {
     return {
       cables: {}
     }
+  },
+  tubes () {
+    return {
+      cables: {},
+      tubes: {}
+    }
+  },
+  fibers () {
+    return {
+      tubes: {},
+      fibers: {}
+    }
   }
 }

@@ -75,6 +75,10 @@ export default {
       context.commit('projects/map/reset', null, { root: true })
       context.commit('projects/resetSites', null, { root: true })
       context.commit('projects/resetPaths', null, { root: true })
+      context.commit('projects/resetBoxes', null, { root: true })
+      context.commit('projects/resetCables', null, { root: true })
+      context.commit('projects/resetTubes', null, { root: true })
+      context.commit('projects/resetFibers', null, { root: true })
     },
     changeLocale (context, locale) {
       context.commit('setLocale', locale)

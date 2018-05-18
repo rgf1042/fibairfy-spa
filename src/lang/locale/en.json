@@ -74,6 +74,14 @@
       "box": "box | boxes",
       "boxes": "boxes"
     },
+    "editTubes": {
+      "title": "@:general.edit @:components.editTubes.tubes",
+      "editTube": {
+        "title": "@:general.edit @:components.editTubes.tube"
+      },
+      "tube": "tube",
+      "tubes": "tubes"
+    },
     "projects": {
       "readonly": "read-only",
       "addProjectMenu": {

@@ -25,7 +25,7 @@
           <h3>Editar cable: {{form.id}}</h3>
         </b-col>
       </b-row>
-        <b-form @submit="onSubmit">
+        <b-form>
           <b-form-group id="nameInputGroup"
                         label="Nom:"
                         label-for="nameInput">
@@ -46,19 +46,35 @@
                        :max-rows="6">
             </b-form-textarea>
           </b-form-group>
-          <b-button type="submit" variant="primary">Actualitzar</b-button>
-          <b-button type="button" variant="danger" @click="onDelete">Eliminar</b-button>
+          <b-form-group id="templateInputGroup"
+                        label="Template:"
+                        label-for="templateInput">
+            <b-form-select id="templateInput" v-model="template" :options="templates" class="mb-3" />
+          </b-form-group>
         </b-form>
+        <div v-for="(tubeId, index) in tubes" :key="tubeId">
+          <tube-edit :id="tubeId"></tube-edit>
+        </div>
+        <b-row class="pt-4">
+          <b-button type="button" variant="success"
+                                  @click="addTube">{{$t('general.add')}}</b-button>
+        </b-row>
+        <b-row class="pt-4">
+          <b-button class="mr-1" type="button" variant="primary" @click="onSubmit">{{$t('general.update')}}</b-button>
+          <b-button class="mr-1" type="button" variant="danger" @click="onDelete">{{$t('general.delete')}}</b-button>
+        </b-row>
     </b-container>
   </div>
 </template>
 <script>
 import FiberfyAutocomplete from '@/components/shared/fiberfy-autocomplete'
+import TubeEdit from '@/components/CableEdit/tube-edit'
 
 export default {
   name: 'CableEdit',
   components: {
-    'fiberfy-autocomplete': FiberfyAutocomplete
+    'fiberfy-autocomplete': FiberfyAutocomplete,
+    'tube-edit': TubeEdit
   },
   data () {
     return {
@@ -67,6 +83,7 @@ export default {
         name: '',
         observations: ''
       },
+      template: 0,
       alert: {
         show: false,
         message: ''
@@ -89,11 +106,25 @@ export default {
     }
   },
   computed: {
-
+    templates () {
+      let output = []
+      let templates = this.$store.state.projects.cables.templates
+      for (let x in templates) {
+        output[x] = {
+          value: templates[x],
+          text: this.$t('content.cableTemplates.' + templates[x])
+        }
+      }
+      return output
+    },
+    tubes () {
+      return this.$store.getters['projects/tubesIndexes'](this.form.id)
+    }
   },
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
+      this.$bus.$emit('update-cable')
       this.$store.dispatch('projects/updateCable', this.form).then(response => {
         this.$router.go(-1)
       }, error => {
@@ -119,6 +150,19 @@ export default {
         this.alert.message = error.msg
         this.alert.show = true
         this.deleted = {} // Esborrem referencia
+        console.log(error)
+      })
+    },
+    addTube (evt) {
+      evt.preventDefault()
+      let tube = {
+        cable: this.form.id,
+        project: this.$store.state.projects.current.id
+      }
+      this.$store.dispatch('projects/addNewTube', tube).then(response => {
+      }, error => {
+        this.alert.message = error.msg
+        this.alert.show = true
         console.log(error)
       })
     }

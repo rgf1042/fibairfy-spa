@@ -75,6 +75,14 @@
       "box": "caixa",
       "boxes": "caixes"
     },
+    "editTubes": {
+      "title": "@:general.edit @:components.editTubes.tubes",
+      "editTube": {
+        "title": "@:general.edit @:components.editTubes.tube"
+      },
+      "tube": "tub",
+      "tubes": "tubs"
+    },
     "projects": {
       "readonly": "només lectura",
       "addProjectMenu": {

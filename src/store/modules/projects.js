@@ -6,6 +6,8 @@ import SitesModule from './projects/sites'
 import BoxesModule from './projects/boxes'
 import PathsModule from './projects/paths'
 import CablesModule from './projects/cables'
+import TubesModule from './projects/tubes'
+import FibersModule from './projects/fibers'
 import MapModule from './projects/map'
 import InitialStates from '../initial-states.js'
 
@@ -77,7 +79,15 @@ export default {
             context.dispatch('loadPaths').then(response => {
               context.dispatch('loadBoxes').then(response => {
                 context.dispatch('loadCables').then(response => {
-                  resolve(response)
+                  context.dispatch('loadTubes').then(response => {
+                    context.dispatch('loadFibers').then(response => {
+                      resolve(response)
+                    }, error => {
+                      reject(error)
+                    })
+                  }, error => {
+                    reject(error)
+                  })
                 }, error => {
                   reject(error)
                 })
@@ -190,6 +200,8 @@ export default {
     boxes: BoxesModule,
     paths: PathsModule,
     cables: CablesModule,
+    tubes: TubesModule,
+    fibers: FibersModule,
     map: MapModule
   }
 }
