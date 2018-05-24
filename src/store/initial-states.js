@@ -168,5 +168,10 @@ export default {
       tubes: {},
       fibers: {}
     }
+  },
+  templates () {
+    return {
+      fiberTemplates: []
+    }
   }
 }

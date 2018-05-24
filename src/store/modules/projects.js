@@ -81,6 +81,11 @@ export default {
                 context.dispatch('loadCables').then(response => {
                   context.dispatch('loadTubes').then(response => {
                     context.dispatch('loadFibers').then(response => {
+                      context.dispatch('templates/loadFiberTemplates', null, { root: true }).then(response => {
+                        resolve(response)
+                      }, error => {
+                        reject(error)
+                      })
                       resolve(response)
                     }, error => {
                       reject(error)

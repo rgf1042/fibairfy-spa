@@ -90,6 +90,20 @@ export default {
           reject(error)
         })
       })
+    },
+    clearFibersTube (context, tube) {
+      return new Promise((resolve, reject) => {
+        let fibers = context.getters.fibersIndexes(tube)
+        let promises = []
+        for (let x in fibers) {
+          promises.push(context.dispatch('deleteFiber', fibers[x]))
+        }
+        Promise.all(promises).then(response => {
+          resolve(response)
+        }, error => {
+          reject(error)
+        })
+      })
     }
   }
 }

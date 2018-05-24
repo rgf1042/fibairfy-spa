@@ -90,6 +90,20 @@ export default {
           reject(error)
         })
       })
+    },
+    clearTubesCable (context, cable) {
+      return new Promise((resolve, reject) => {
+        let tubes = context.getters.tubesIndexes(cable)
+        let promises = []
+        for (let x in tubes) {
+          promises.push(context.dispatch('deleteTube', tubes[x]))
+        }
+        Promise.all(promises).then(response => {
+          resolve(response)
+        }, error => {
+          reject(error)
+        })
+      })
     }
   }
 }

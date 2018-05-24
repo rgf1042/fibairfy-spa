@@ -10,7 +10,7 @@
       <p class="my-4">Segur que vol esborrar la fibra: {{deleted.name}}</p>
     </b-modal>
     <b-col>
-      <b-input-group :prepend="form.id">
+      <b-input-group :prepend="String(form.id)">
         <b-form-input type="text" v-model="form.color"></b-form-input>
         <b-input-group-append>
           <b-btn variant="danger" @click="onDelete">{{$t('general.delete')}}</b-btn>

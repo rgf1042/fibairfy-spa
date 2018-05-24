@@ -165,6 +165,15 @@ export default {
         this.alert.show = true
         console.log(error)
       })
+    },
+    onClear (evt) {
+      evt.preventDefault()
+      this.$store.dispatch('projects/clearTubesCable', this.form.id).then(response => {
+      }, error => {
+        this.alert.message = error.msg
+        this.alert.show = true
+        console.log(error)
+      })
     }
   }
 }
