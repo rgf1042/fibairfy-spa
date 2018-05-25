@@ -9,6 +9,11 @@
       title="Esborrar cable">
       <p class="my-4">Segur que vol esborrar el cable: {{deleted.name}}</p>
     </b-modal>
+    <b-modal id="modal-template-change" ref="changeModalRef"
+      @ok="onChange"
+      title="Template cable">
+      <p class="my-4">Segur que vol canviar la template? Es perdran tots els tubs i fibres.</p>
+    </b-modal>
     <b-container>
       <b-row>
         <b-col class="pt-1">
@@ -108,17 +113,22 @@ export default {
   computed: {
     templates () {
       let output = []
-      let templates = this.$store.state.projects.cables.templates
+      let templates = this.$store.state.templates.fiberTemplates
       for (let x in templates) {
         output[x] = {
-          value: templates[x],
-          text: this.$t('content.cableTemplates.' + templates[x])
+          value: templates[x].id,
+          text: templates[x].name
         }
       }
       return output
     },
     tubes () {
       return this.$store.getters['projects/tubesIndexes'](this.form.id)
+    }
+  },
+  watch: {
+    template: function (newVal, oldVal) {
+      this.$refs.changeModalRef.show()
     }
   },
   methods: {
@@ -160,6 +170,19 @@ export default {
         project: this.$store.state.projects.current.id
       }
       this.$store.dispatch('projects/addNewTube', tube).then(response => {
+      }, error => {
+        this.alert.message = error.msg
+        this.alert.show = true
+        console.log(error)
+      })
+    },
+    onChange () {
+      console.log('on change')
+      let data = {
+        cable: this.form.id,
+        template: this.template
+      }
+      this.$store.dispatch('projects/setCableTemplate', data).then(response => {
       }, error => {
         this.alert.message = error.msg
         this.alert.show = true

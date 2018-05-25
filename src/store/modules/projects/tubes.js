@@ -97,6 +97,10 @@ export default {
         let promises = []
         for (let x in tubes) {
           promises.push(context.dispatch('deleteTube', tubes[x]))
+          let fibers = context.getters.fibersIndexes(tubes[x]) // We delete also fibers from local store
+          for (let y in fibers) {
+            context.commit('deleteFiber', fibers[y])
+          }
         }
         Promise.all(promises).then(response => {
           resolve(response)

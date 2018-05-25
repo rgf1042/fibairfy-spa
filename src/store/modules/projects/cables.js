@@ -74,6 +74,50 @@ export default {
           reject(error)
         })
       })
+    },
+    setCableTemplate (context, data) {
+      return new Promise((resolve, reject) => {
+        context.dispatch('clearTubesCable', data.cable).then(response => {
+          // Now we should create new tubes/fibers
+          let template = context.rootGetters['templates/findFiberTemplateById'](data.template).data
+          let project = context.getters['currentId']
+          let tubePromises = []
+          for (let x in template) {
+            let tube = {}
+            tube.color = template[x].color
+            tube.cable = data.cable
+            tube.project = project
+            tubePromises.push(context.dispatch('addNewTube', tube))
+          }
+          Promise.all(tubePromises).then(response => {
+            let fiberPromises = []
+            for (let x in response) {
+              for (let key in template[x].fibers) {
+                if (template[x].fibers.hasOwnProperty(key)) {
+                  let fiberTemplate = template[x].fibers[key]
+                  let fiber = {}
+                  fiber.color = fiberTemplate.color
+                  fiber.tube = response[x].body.id
+                  fiber.project = project
+                  fiberPromises.push(context.dispatch('addNewFiber', fiber))
+                }
+              }
+            }
+
+            Promise.all(fiberPromises).then(response => {
+              resolve(response)
+            }, error => {
+              reject(error)
+            })
+          }, error => {
+            reject(error)
+          })
+
+
+        }, error => {
+          reject(error)
+        })
+      })
     }
   }
 }

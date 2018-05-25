@@ -17,7 +17,9 @@ export default {
     }
   },
   getters: {
-
+    findFiberTemplateById: state => id => {
+      return state.fiberTemplates.find(item => item.id === id)
+    }
   },
   actions: {
     loadFiberTemplates (context) {
