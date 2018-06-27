@@ -10,6 +10,9 @@ export default {
   getters: {
     fibersIndexes: state => idTube => {
       return state.tubes[idTube]
+    },
+    findFiberById: state => id => {
+      return state.fibers[id]
     }
   },
   mutations: {

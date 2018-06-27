@@ -62,7 +62,7 @@
         "newPath": "Nou tram"
       },
       "networkMenu": {
-        "name": "infraestructura xarxa",
+        "name": "Infraestructura xarxa",
         "newBox": "Nova caixa",
         "newFiber": "Nova fibra"
       }
@@ -82,6 +82,11 @@
       },
       "tube": "tub",
       "tubes": "tubs"
+    },
+    "editFusions": {
+      "title": "@:general.edit @:components.editFusions.fusions",
+      "fusion": "fusió",
+      "fusions": "fusions"
     },
     "projects": {
       "readonly": "només lectura",

@@ -24,6 +24,9 @@
       <b-row class="pt-3">
         <b-button variant="success" v-on:click="addBox">{{$t('general.add')}}</b-button>
       </b-row>
+      <b-row class="pt-3">
+        <b-button variant="primary" v-on:click="goFusions">{{$t('components.editFusions.fusions')}}</b-button>
+      </b-row>
     </b-container>
   </div>
 </template>
@@ -46,7 +49,7 @@ export default {
     }
   },
   mounted () {
-    this.$store.dispatch('projects/findSiteById', this.$route.params.id).then(response => {
+    this.$store.dispatch('projects/findSiteById', parseInt(this.$route.params.id)).then(response => {
       let site = response
       this.id = site.id
       this.name = site.name
@@ -87,6 +90,10 @@ export default {
         this.alert.show = true
         console.log(error)
       })
+    },
+    goFusions (evt) {
+      evt.preventDefault()
+      this.$router.push({name: 'FusionsEdit', params: { id: this.id }})
     }
   }
 }

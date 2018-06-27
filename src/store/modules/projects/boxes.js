@@ -10,6 +10,9 @@ export default {
   getters: {
     boxesIndexes: state => idSite => {
       return state.sites[idSite]
+    },
+    findBoxById: state => id => {
+      return state.boxes[id]
     }
   },
   mutations: {

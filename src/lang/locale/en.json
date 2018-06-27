@@ -82,6 +82,11 @@
       "tube": "tube",
       "tubes": "tubes"
     },
+    "editFusions": {
+      "title": "@:general.edit @:components.editFusions.fusions",
+      "fusion": "fusion",
+      "fusions": "fusions"
+    },
     "projects": {
       "readonly": "read-only",
       "addProjectMenu": {

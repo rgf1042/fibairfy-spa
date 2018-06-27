@@ -8,6 +8,7 @@ import PathsModule from './projects/paths'
 import CablesModule from './projects/cables'
 import TubesModule from './projects/tubes'
 import FibersModule from './projects/fibers'
+import FusionsModule from './projects/fusions'
 import MapModule from './projects/map'
 import InitialStates from '../initial-states.js'
 
@@ -207,6 +208,7 @@ export default {
     cables: CablesModule,
     tubes: TubesModule,
     fibers: FibersModule,
+    fusions: FusionsModule,
     map: MapModule
   }
 }

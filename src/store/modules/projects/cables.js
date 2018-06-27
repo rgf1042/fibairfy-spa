@@ -8,6 +8,9 @@ Vue.use(VueResource)
 export default {
   state: InitialStates.cables(),
   getters: {
+    cablesIndexes: state => idSite => {
+      return state.sites[idSite]
+    },
     findCableById: state => id => {
       return state.cables[id]
     }
@@ -15,15 +18,34 @@ export default {
   mutations: {
     addNewCable (state, cable) {
       Vue.set(state.cables, cable.id, cable)
+      if (typeof state.sites[cable.first] == 'undefined') {
+        Vue.set(state.sites, cable.first, [])
+      }
+      if (typeof state.sites[cable.last] == 'undefined') {
+        Vue.set(state.sites, cable.last, [])
+      }
+      state.sites[cable.first].push(cable.id)
+      state.sites[cable.last].push(cable.id)
     },
     updateCable (state, cable) {
       Vue.set(state.cables, cable.id, cable)
     },
     deleteCable (state, id) {
+      let idsSites = [state.cables[id].first, state.cables[id].last]
+      for (let id in idsSites) {
+        let cables = state.sites[idsSites[id]]
+        for (let x in cables) {
+          if (cables[x] === id) {
+            boxes.splice(x, 1)
+            break
+          }
+        }
+      }
       Vue.delete(state.cables, id)
     },
     resetCables (state) {
       state.cables = InitialStates.cables().cables
+      state.sites = InitialStates.cables().sites
     }
   },
   actions: {

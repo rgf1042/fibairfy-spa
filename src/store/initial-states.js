@@ -106,6 +106,17 @@ export default {
             uppercase: true,
             layers: 'Nodes'
           }
+        },
+        {
+          name: 'Xarxa XOC Generalitat',
+          tiles: 'http://10.90.230.41/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/XOC.map',
+          options: {
+            format: 'image/png',
+            transparent: true,
+            version: '1.1.1',
+            uppercase: true,
+            layers: 'XOC'
+          }
         }
       ],
       selectedOverlayTiles: [
@@ -154,7 +165,8 @@ export default {
   },
   cables () {
     return {
-      cables: {}
+      cables: {},
+      sites: {}
     }
   },
   tubes () {
@@ -167,6 +179,27 @@ export default {
     return {
       tubes: {},
       fibers: {}
+    }
+  },
+  fusions () {
+    return {
+      fibers: {
+
+      },
+      boxes: {
+
+      },
+      fusions: {
+        fibers: {
+
+        },
+        boxes: {
+
+        },
+        data: {
+
+        }
+      }
     }
   },
   templates () {
