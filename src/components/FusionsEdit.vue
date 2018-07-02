@@ -27,6 +27,7 @@
         </b-col>
       </b-row>
     </b-container>
+    <b-button variant="primary" v-on:click="goFusionsShow">{{$t('components.editFusions.fusions')}}</b-button>
   </div>
 </template>
 <script>
@@ -61,7 +62,10 @@ export default {
     }
   },
   methods: {
-
+    goFusionsShow (evt) {
+      evt.preventDefault()
+      this.$router.push({name: 'FusionsShow', params: { id: this.id }})
+    }
   }
 }
 </script>

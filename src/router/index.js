@@ -12,6 +12,7 @@ import BoxesEdit from '@/components/BoxesEdit'
 import PathEdit from '@/components/PathEdit'
 import CableEdit from '@/components/CableEdit'
 import FusionsEdit from '@/components/FusionsEdit'
+import FusionsShow from '@/components/FusionsShow'
 import Profile from '@/components/Profile'
 import Export from '@/components/Export'
 import Import from '@/components/Import'
@@ -103,6 +104,14 @@ const router = new Router({
       components: {
         navbar: BackNavbar,
         view: FusionsEdit
+      }
+    },
+    {
+      path: '/fusions/graph/:id',
+      name: 'FusionsShow',
+      components: {
+        navbar: BackNavbar,
+        view: FusionsShow
       }
     },
     {

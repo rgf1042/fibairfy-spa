@@ -47,6 +47,9 @@ export default {
       }
       return null
     },
+    getFusions: state => {
+      return state.fusions.data
+    },
     currentSite: state => {
       return state.site
     }
