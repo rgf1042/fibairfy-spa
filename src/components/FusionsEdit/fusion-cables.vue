@@ -2,7 +2,7 @@
   <div>
     <b-row>
       <b-col cols="3">
-        <h4>Cable: {{form.id}} - {{form.name}}</h4>
+        <h4>Cable: {{id}} - {{name}}</h4>
       </b-col>
     </b-row>
     <b-row class="pt-2">
@@ -30,18 +30,15 @@ export default {
   },
   data () {
     return {
-      form: {
-        id: null,
-        name: null
-      }
+      name: null
     }
   },
   mounted () {
-    this.form.id = this.id
+    this.name = this.$store.getters['projects/findCableById'](this.id).name
   },
   computed: {
     tubes () {
-      return this.$store.getters['projects/tubesIndexes'](this.form.id)
+      return this.$store.getters['projects/tubesIndexes'](this.id)
     }
   },
   methods: {

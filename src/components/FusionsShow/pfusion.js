@@ -45,7 +45,7 @@ function Pfusion(cnvs, vue) {
   }
   this.fibersTubes = {}
   this.fibers = {}
-  for (let x in this.tubes) {
+  for (let x in this.tubesCables) {
     if (this.tubesCables.hasOwnProperty(x)) {
       for (let y in this.tubesCables[x]) {
         let tube = this.tubesCables[x][y]

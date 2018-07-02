@@ -1,6 +1,7 @@
 <template>
   <div>
-    <b-form-select id="fusionInput" v-model="select" :options="options" class="mb-3" />
+    <b-form-select id="fusionInput" v-model="select" :options="options" class="mb-3" :disabled="(select !== null)"/>
+    <b-button variant="danger" v-on:click="deleteFusion" v-if="select">{{$t('general.delete')}}</b-button>
   </div>
 </template>
 <script>
@@ -110,7 +111,27 @@ export default {
     }
   },
   methods: {
+    deleteFusion (evt) {
+      evt.preventDefault()
+      let fusion = {}
+      fusion.fdata = {
+        id: this.id,
+        type: this.type,
+        in: this.in,
+        out: this.out
+      }
+      fusion.sdata = {
+        id: this.select.id,
+        type: this.select.type,
+        in: this.select.in,
+        out: this.select.out
+      }
+      this.$store.dispatch('projects/deleteFusion', fusion).then(response => {
 
+      }, error => {
+        console.log(error)
+      })
+    }
   }
 }
 </script>

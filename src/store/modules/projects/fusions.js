@@ -47,6 +47,23 @@ export default {
       }
       return null
     },
+    getFusionIdByBox: state => box => {
+      let type = (box.in ? 'inputs' : 'outputs')
+      let content = (box.in ? box.in : box.out)
+      if (state.fusions.boxes[box.id]) {
+        if (state.fusions.boxes[box.id][type]) {
+          let fusionPos = state.fusions.boxes[box.id][type][content]
+          return fusionPos.id
+        }
+        return null
+      }
+      return null
+    },
+    getFusionIdByFiber: state => fiber => {
+      let fusionPos = state.fusions.fibers[fiber]
+      if (fusionPos) return fusionPos.id
+      else return null
+    },
     getFusions: state => {
       return state.fusions.data
     },
@@ -101,6 +118,19 @@ export default {
         let fiber = fusion.sdata.id
         Vue.set(state.fusions.fibers, fiber, {id: fusion.id, pos: 0})
       }
+    },
+    deleteFiberFusion (state, id) {
+      Vue.delete(state.fusions.fibers, id)
+    },
+    deleteBoxFusion (state, data) {
+      if (data.in) {
+        Vue.delete(state.fusions.boxes[data.id]['inputs'], data.in)
+      } else if (data.out) {
+        Vue.delete(state.fusions.boxes[data.id]['outputs'], data.out)
+      }
+    },
+    deleteFusion (state, id) {
+      Vue.delete(state.fusions.data, id)
     },
     setFusionSite (state, site) {
       Vue.set(state, 'site', site)
@@ -164,6 +194,29 @@ export default {
           }, error => {
             reject(error)
           })
+        }, error => {
+          reject(error)
+        })
+      })
+    },
+    deleteFusion (context, data) {
+      return new Promise((resolve, reject) => {
+        let fusion
+        if (data.fdata.type === 'fiber') {
+          fusion = context.getters.getFusionIdByFiber(data.fdata.id)
+          context.commit('deleteFiberFusion', data.fdata.id)
+        } else if (data.fdata.type === 'box'){
+          fusion = context.getters.getFusionIdByBox(data.fdata)
+          context.commit('deleteBoxFusion', data.fdata)
+        }
+        if (data.sdata.type === 'fiber') {
+          context.commit('deleteFiberFusion', data.sdata.id)
+        } else if (data.sdata.type === 'box') {
+          this.commit('deleteBoxFusion', data.sdata)
+        }
+        Vue.http.delete(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/fusion/' + fusion).then(response => {
+          context.commit('deleteFusion', fusion)
+          resolve(response)
         }, error => {
           reject(error)
         })
