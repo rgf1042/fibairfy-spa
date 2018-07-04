@@ -51,7 +51,6 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('projects/loadFusions', this.id)
   },
   computed: {
     cables () {

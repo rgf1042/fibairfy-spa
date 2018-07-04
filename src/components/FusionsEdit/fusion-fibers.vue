@@ -1,7 +1,16 @@
 <template>
   <div>
+    <b-modal id="modal-delete-fusion" ref="deleteModalRef"
+      @ok="deleteFusion"
+      @cancel="noDeleteFusion"
+      @esc="noDeleteFusion"
+      @backdrop="noDeleteFusion"
+      @headerclose="noDeleteFusion"
+      title="Esborrar fusió">
+      <p class="my-4">Segur que vol esborrar la fusió: {{id}}</p>
+    </b-modal>
     <b-form-select id="fusionInput" v-model="select" :options="options" class="mb-3" :disabled="(select !== null)"/>
-    <b-button variant="danger" v-on:click="deleteFusion" v-if="select">{{$t('general.delete')}}</b-button>
+    <b-button variant="danger" v-on:click="onDelete" v-if="select">{{$t('general.delete')}}</b-button>
   </div>
 </template>
 <script>
@@ -10,12 +19,11 @@ export default {
   props: ['id', 'type', 'in', 'out'],
   data () {
     return {
-
+      deleted: null
     }
   },
   mounted () {
     if (this.type === 'fiber') {
-      this.$store.dispatch('projects/addFiberToFusions', this.$store.getters['projects/findFiberById'](this.id))
     }
   },
   computed: {
@@ -35,6 +43,7 @@ export default {
       },
       // setter
       set: function (value) {
+        if (!value) return null
         if (this.select !== value) {
           let fusion = {
             fdata: {
@@ -66,7 +75,8 @@ export default {
         data.box.in = this.in
         data.box.out = this.out
       } else {
-        data.fiber = this.id
+        data.fiber = {}
+        data.fiber.id = this.id
       }
       let output = this.$store.getters['projects/getPossibleFusions'](data)
       let boxes = output.boxes
@@ -111,8 +121,14 @@ export default {
     }
   },
   methods: {
-    deleteFusion (evt) {
+    onDelete (evt) {
       evt.preventDefault()
+      this.$refs.deleteModalRef.show()
+    },
+    noDeleteFusion () {
+      this.$refs.deleteModalRef.hide()
+    },
+    deleteFusion () {
       let fusion = {}
       fusion.fdata = {
         id: this.id,

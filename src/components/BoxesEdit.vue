@@ -93,7 +93,9 @@ export default {
     },
     goFusions (evt) {
       evt.preventDefault()
-      this.$router.push({name: 'FusionsEdit', params: { id: this.id }})
+      this.$store.dispatch('projects/loadFusions', this.id).then(response => {
+        this.$router.push({name: 'FusionsEdit', params: { id: this.id }})
+      })
     }
   }
 }

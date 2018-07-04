@@ -42,7 +42,6 @@ export default {
     this.name = box.name
     this.inputFO = box.inputFO
     this.outputFO = box.outputFO
-    this.$store.dispatch('projects/addBoxToFusions', box)
   },
   computed: {
 

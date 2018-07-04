@@ -8,12 +8,12 @@ Vue.use(VueResource)
 export default {
   state: InitialStates.fusions(),
   getters: {
-    getPossibleFusions: state => data => {
+    getPossibleFusions: (state,getters) => data => {
       let result = {}
+      let couple // The other "mate"
       if (data.box) { // It can be a box
         if (data.box.id) {
           // Llistar tots - les fusions ja fetes i ell mateix
-          //result.boxes = Object.assign({}, state.boxes)
           result.boxes = JSON.parse(JSON.stringify(state.boxes)); // Deep copy object
           result.fibers = Object.assign({}, state.fibers)
           if (data.box.in) {
@@ -21,12 +21,36 @@ export default {
           } else if (data.box.out) {
             Vue.delete(result.boxes[data.box.id].outputs, data.box.out)
           }
+          couple = getters.getFusionByBox(data.box)
         }
       } else if (data.fiber) { // It can be a fiber
-        // Llistar tots - les fusions ja fetes i ell mateix
-        result.boxes = Object.assign({}, state.boxes)
-        result.fibers = Object.assign({}, state.fibers)
-        Vue.delete(result.fibers, data.fiber)
+        if (data.fiber.id) {
+          result.boxes = JSON.parse(JSON.stringify(state.boxes)); // Deep copy object
+          result.fibers = Object.assign({}, state.fibers)
+          Vue.delete(result.fibers, data.fiber.id)
+          couple = getters.getFusionByFiber(data.fiber.id)
+        }
+      }
+
+      // Now we delete used Fibers & Boxes
+      let type = (data.box !== undefined) ? 'box': 'fiber'
+      for (let x in state.fusions.data) {
+        if (state.fusions.data.hasOwnProperty(x)) {
+          let fusion = state.fusions.data[x]
+          for (let y in fusion) {
+            if (!couple || !(fusion[y].type === couple.type && couple.id === fusion[y].id)) { // We test the pair
+              if (fusion[y].type === 'fiber') {
+                Vue.delete(result.fibers, fusion[y].id)
+              } else if (fusion[y].type === 'box') {
+                if (fusion[y].in) {
+                  Vue.delete(result.boxes[fusion[y].id].inputs, fusion[y].in)
+                } else if (fusion[y].out) {
+                  Vue.delete(result.boxes[fusion[y].id].outputs, fusion[y].out)
+                }
+              }
+            }
+          }
+        }
       }
       return result
     },
@@ -155,32 +179,28 @@ export default {
             let fusion = response.body[x]
             context.commit('addNewFusion', fusion)
           }
-          resolve(response)
-        }, error => {
-          reject(error)
-        })
-        /* let tubes = context.getters.tubes // We load existing tubes
-        for (let x in tubes) context.commit('addSiteToFiber', tubes[x])
-        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/fusions/?site=' + site + '&limit=10000&populate=null').then(response => {
-          for (let x in response.body) {
-            let fusion = response.body[x]
-            context.commit('addNewFusion', fusion)
+          let cables = context.getters.cablesIndexes(site)
+          let boxes = context.getters.boxesIndexes(site)
+          for (let x in boxes) {
+            let box = context.getters.findBoxById(boxes[x])
+            context.commit('addBoxToFusions', box)
+          }
+          for (let x in cables) {
+            let cable = cables[x]
+            let tubes = context.getters.tubesIndexes(cable)
+            for (let y in tubes) {
+              let tube = tubes[y]
+              let fibers = context.getters.fibersIndexes(tube)
+              for (let z in fibers) {
+                let fiber = context.getters.findFiberById(fibers[z])
+                context.commit('addFiberToFusions', fiber)
+              }
+            }
           }
           resolve(response)
         }, error => {
           reject(error)
-        }) */
-        /* let boxesIndexes = context.getters.boxesIndexes(site)
-        for (let x in cablesIndexes) {
-          let cable = context.getters.findCableById(cablesIndexes[x])
-          context.commit('addNewFiber', cable)
-        }
-
-        for (let x in boxesIndexes) {
-          let box = context.getters.findBoxById(BoxesIndexes[x])
-          context.commit('addNewBox', box)
-        } */
-
+        })
       })
     },
     addNewFusion (context, fusion) {
