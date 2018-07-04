@@ -3,33 +3,13 @@ import { fabric } from 'fabric'
 /* eslint-disable */
 
 function Pfusion(cnvs, vue) {
+  // We add reference to Vue subsystem
   this.vue = vue
-  this.defaultCanvasHeight = 800
-  this.defaultCanvasWidth = 800
-  this.defaultHeightCable = 30
-  this.defaultHeightTube = 50
-  this.defaultHeightFiber = 80
-  this.defaultWidthCable1Tube = 90
-  this.defaultWidthTube = 80
-  this.defaultMarginTube = (this.defaultWidthCable1Tube - this.defaultWidthTube)/2
-  this.defaultMarginCables = 70
-  this.defaultWidthStrokeFiber = 3
-  this.defaultFusionOffset = 15
-  this.defaultFusionChunk = 6
-  this.fontsize = 14
 
-  this.fibersGraphics = {}
   this.site = this.vue.$store.getters['projects/currentSite']
-
   this.boxes = this.vue.$store.getters['projects/boxesIndexes'](this.site)
   this.cables = this.vue.$store.getters['projects/cablesIndexes'](this.site)
-
-  // Fabric.js
-  this.canvas = new fabric.StaticCanvas(cnvs)
-  this.canvas.setHeight(this.defaultCanvasHeight)
-  this.canvas.setWidth(this.defaultCanvasWidth)
-  this.canvas.backgroundColor = '#FFF8DC'
-  this.canvas.renderAll()
+  this.fusions = this.vue.$store.getters['projects/getFusions']
 
   this.tubesCables = {}
   this.tubes = {}
@@ -58,18 +38,110 @@ function Pfusion(cnvs, vue) {
     }
   }
 
-  this.fusions = this.vue.$store.getters['projects/getFusions']
+  // We define global data and constants
+  this.defaultHeightCable = 30
+  this.defaultHeightTube = 50
+  this.defaultHeightFiber = 80
+  this.defaultHeightBox = 100
+  this.defaultWidthBox = this.defaultHeightBox * 2
+  this.defaultWidthCable1Tube = 90
+  this.defaultWidthTube = 80
+  this.defaultMarginTube = (this.defaultWidthCable1Tube - this.defaultWidthTube)/2
+  this.defaultMarginCables = 70
+  this.defaultMarginBox = 70
+  this.defaultWidthStrokeFiber = 3
+  this.defaultOffsetCables = this.defaultHeightBox + this.defaultMarginBox * 2 + this.defaultHeightFiber
+  this.defaultFusionOffset = 15
+  this.defaultFusionChunk = 6
+  this.fontsize = 14
+
+  this.defaultCanvasHeight = (this.defaultOffsetCables * 2) + (this.tubesCount * (this.defaultWidthTube + (this.defaultMarginTube * 2))
+    + (this.defaultMarginCables * (this.cables.length/2)))
+  this.defaultCanvasWidth = this.defaultCanvasHeight
+
+  // Fabric.js
+  this.canvas = new fabric.StaticCanvas(cnvs)
+  this.canvas.setHeight(this.defaultCanvasHeight)
+  this.canvas.setWidth(this.defaultCanvasWidth)
+  this.canvas.backgroundColor = '#FFF8DC'
+  this.canvas.renderAll()
+
+  this.fibersBoxesGraphics = {}
 
   console.log(this.fibers)
 }
 
 Pfusion.prototype.draw = function () {
   this.drawCables()
+  this.drawBoxes()
   this.drawFusions()
 }
 
+Pfusion.prototype.drawBoxes = function () {
+  let top = this.defaultMarginBox
+  let left = this.defaultCanvasWidth - (this.defaultMarginBox + this.defaultWidthBox)
+  let width = this.defaultWidthBox
+  let height = this.defaultHeightBox
+
+  for (let x in this.boxes) {
+    let box = this.vue.$store.getters['projects/findBoxById'](this.boxes[x])
+    let rectBox = new fabric.Rect({
+      left: left,
+      top: top,
+      fill: 'black',
+      width: width,
+      height: height
+    })
+    let text = new fabric.Text(box.name, {
+      left: left,
+      top: top + (height / 2),
+      fontSize: 20,
+      stroke: 'white'
+    })
+    this.canvas.add(rectBox)
+    this.canvas.add(text)
+    this.drawFibersBoxes(box, rectBox)
+    left -= (this.defaultMarginBox + this.defaultWidthBox)
+  }
+}
+
+Pfusion.prototype.drawFibersBoxes = function (box, rectBox) {
+  let defaultChunk = (rectBox.width /2) / box.inputFO
+  let top = rectBox.top + rectBox.height
+  let left = rectBox.left
+
+  for (let i = 1; i <= box.inputFO; ++i) {
+    let lineFiber = new fabric.Line([left, top, left, top + this.defaultHeightFiber], {
+      stroke: 'grey',
+      strokeWidth: this.defaultWidthStrokeFiber
+    })
+    this.fibersBoxesGraphics[box.id] = this.fibersBoxesGraphics[box.id] || {}
+    this.fibersBoxesGraphics[box.id].inputs = this.fibersBoxesGraphics[box.id].inputs || {}
+    this.fibersBoxesGraphics[box.id].inputs[i] = lineFiber
+
+    this.canvas.add(lineFiber)
+    left += defaultChunk
+  }
+
+  defaultChunk = (rectBox.width /2) / box.outputFO
+  top = rectBox.top + rectBox.height
+  left = rectBox.left + (rectBox.width /2)
+  for (let i = 1; i <= box.outputFO; ++i) {
+    let lineFiber = new fabric.Line([left, top, left, top + this.defaultHeightFiber], {
+      stroke: 'brown',
+      strokeWidth: this.defaultWidthStrokeFiber
+    })
+    this.fibersBoxesGraphics[box.id] = this.fibersBoxesGraphics[box.id] || {}
+    this.fibersBoxesGraphics[box.id].outputs = this.fibersBoxesGraphics[box.id].outputs || {}
+    this.fibersBoxesGraphics[box.id].outputs[i] = lineFiber
+
+    this.canvas.add(lineFiber)
+    left += defaultChunk
+  }
+}
+
 Pfusion.prototype.drawCables = function () {
-  let top = this.defaultMarginCables
+  let top = this.defaultOffsetCables
   let left = this.defaultCanvasWidth - this.defaultMarginCables
   let width, height
   for (let x in this.cables) {
@@ -234,8 +306,14 @@ Pfusion.prototype.drawFusions = function () {
         color1 = this.fibers[id].color
         direction1 = this.fibers[id].direction
         number1 = this.fibers[id].number
-      } else if (fusion[0].type === 'box') { // TODO
-        flag = false
+      } else if (fusion[0].type === 'box') {
+        let id = fusion[0].id
+        let inout = (fusion[0].in) ? 'inputs' : 'outputs'
+        let number1 = (fusion[0].in) ? fusion[0].in : fusion[0].out
+        x1 = this.fibersBoxesGraphics[id][inout][number1].x2
+        y1 = this.fibersBoxesGraphics[id][inout][number1].y2
+        color1 = this.fibersBoxesGraphics[id][inout][number1].stroke
+        direction1 = 'box'
       }
 
       if (fusion[1].type === 'fiber') {
@@ -245,8 +323,14 @@ Pfusion.prototype.drawFusions = function () {
         color2 = this.fibers[id].color
         direction2 = this.fibers[id].direction
         number2 = this.fibers[id].number
-      } else if (fusion[1].type === 'box') { // TODO
-        flag = false
+      } else if (fusion[1].type === 'box') {
+        let id = fusion[1].id
+        let inout = (fusion[1].in) ? 'inputs' : 'outputs'
+        let number2 = (fusion[1].in) ? fusion[1].in : fusion[1].out
+        x2 = this.fibersBoxesGraphics[id][inout][number2].x2
+        y2 = this.fibersBoxesGraphics[id][inout][number2].y2
+        color2 = this.fibersBoxesGraphics[id][inout][number2].stroke
+        direction2 = 'box'
       }
       if (flag) {
         if (direction1 === direction2) { // They are parallel
@@ -291,31 +375,73 @@ Pfusion.prototype.drawFusions = function () {
           this.canvas.add(lineFusion3)
         }
         else {
-          let line1x2, line1y2
-          if (direction1 === 'vertical') {
-            line1x2 = x2
-            line1y2 = y1
+          if (direction1 === 'box' && direction2 === 'horizontal'
+              || direction2 === 'box' && direction1 === 'horizontal') { // TODO
+
+              let avg
+              let line1y2
+              let line2y2
+              let random = number1 * this.defaultFusionChunk * (Math.random() * 10)
+              if (direction1 === 'box') {
+                avg = (y2 - y1) / 2
+                line1y2 = y1 + avg + random
+                line2y2 = y2 - (avg - random)
+              } else {
+                avg = (y1 - y2) / 2
+                line1y2 = y1 - (avg - random)
+                line2y2 = y2 + avg + random
+              }
+              let lineFusion1 = new fabric.Line([x1, y1, x1, line1y2], {
+                stroke: color1,
+                backgroundColor: color2,
+                strokeDashArray: [5, 5],
+                strokeWidth: this.defaultWidthStrokeFiber
+              })
+
+              let lineFusion2 = new fabric.Line([x2, y2, x2, line2y2], {
+                stroke: color1,
+                backgroundColor: color2,
+                strokeDashArray: [5, 5],
+                strokeWidth: this.defaultWidthStrokeFiber
+              })
+
+              let lineFusion3 = new fabric.Line([x1, line1y2, x2, line2y2], {
+                stroke: color1,
+                backgroundColor: color2,
+                strokeDashArray: [5, 5],
+                strokeWidth: this.defaultWidthStrokeFiber
+              })
+
+              this.canvas.add(lineFusion1)
+              this.canvas.add(lineFusion2)
+              this.canvas.add(lineFusion3)
           } else {
-            line1x2 = x1
-            line1y2 = y2
+            let line1x2, line1y2
+            if (direction1 === 'vertical') {
+              line1x2 = x2
+              line1y2 = y1
+            } else {
+              line1x2 = x1
+              line1y2 = y2
+            }
+
+            let lineFusion1 = new fabric.Line([x1, y1, line1x2, line1y2], {
+              stroke: color1,
+              backgroundColor: color2,
+              strokeDashArray: [5, 5],
+              strokeWidth: this.defaultWidthStrokeFiber
+            })
+
+            let lineFusion2 = new fabric.Line([x2, y2, line1x2, line1y2], {
+              stroke: color1,
+              backgroundColor: color2,
+              strokeDashArray: [5, 5],
+              strokeWidth: this.defaultWidthStrokeFiber
+            })
+
+            this.canvas.add(lineFusion1)
+            this.canvas.add(lineFusion2)
           }
-
-          let lineFusion1 = new fabric.Line([x1, y1, line1x2, line1y2], {
-            stroke: color1,
-            backgroundColor: color2,
-            strokeDashArray: [5, 5],
-            strokeWidth: this.defaultWidthStrokeFiber
-          })
-
-          let lineFusion2 = new fabric.Line([x2, y2, line1x2, line1y2], {
-            stroke: color1,
-            backgroundColor: color2,
-            strokeDashArray: [5, 5],
-            strokeWidth: this.defaultWidthStrokeFiber
-          })
-
-          this.canvas.add(lineFusion1)
-          this.canvas.add(lineFusion2)
         }
 
       }
