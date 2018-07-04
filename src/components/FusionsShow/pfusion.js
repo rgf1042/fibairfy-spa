@@ -381,7 +381,7 @@ Pfusion.prototype.drawFusions = function () {
               let avg
               let line1y2
               let line2y2
-              let random = number1 * this.defaultFusionChunk * (Math.random() * 10)
+              let random = number1 * this.defaultFusionChunk * (Math.random() * 4)
               if (direction1 === 'box') {
                 avg = (y2 - y1) / 2
                 line1y2 = y1 + avg + random
