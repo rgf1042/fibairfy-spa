@@ -2,7 +2,7 @@ export default {
   user () {
     return {
       user: {
-        id: 0,
+        id: null,
         name: '',
         token: ''
       },
@@ -12,12 +12,15 @@ export default {
   projects () {
     return {
       current: {
-        id: 0,
+        id: null,
         name: '',
         latitude: 0.0,
         longitude: 0.0,
         zoom: 0,
-        writable: true
+        writable: true,
+        defaultZone: {
+          id: null
+        }
       },
       list: []
     }

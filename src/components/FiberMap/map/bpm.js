@@ -294,6 +294,9 @@ Mapa.prototype.tileLayer = function (tiles) {
 }
 
 Mapa.prototype.load = function () {
+  // If there is no project selected we dont load anything
+  if (this.active_project.id === null) return null
+
   var that = this
   // Netejem les caixes existents al mapa
   for (let idx_site in this.sites) {

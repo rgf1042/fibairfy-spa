@@ -11,23 +11,23 @@
       <p class="my-4">Actualment hi ha un path en construcció, segur que vol canviar el menú?</p>
     </b-modal>
     <b-row align-h="center">
-      <b-button-toolbar key-nav  aria-label="Toolbar for map controlling" align-h="center" class="pt-1">
+      <b-button-toolbar key-nav aria-label="Toolbar for map controlling" align-h="center" class="pt-1">
         <b-input-group class="mx-1" :prepend="this.$t('components.map.layerMenu.name')">
           <b-input-group-append>
-            <b-button variant="primary" :disabled="this.isCivil" @click="testActive({ layer: 'civil'}, $event)">{{$t('components.map.layerMenu.civil')}}</b-button>
-            <b-button variant="primary" :disabled="!this.isCivil" @click="testActive({ layer: 'infra'}, $event)">{{$t('components.map.layerMenu.network')}}</b-button>
+            <b-button variant="primary" :disabled="(this.isCivil || !this.hasProject)" @click="testActive({ layer: 'civil'}, $event)">{{$t('components.map.layerMenu.civil')}}</b-button>
+            <b-button variant="primary" :disabled="(!this.isCivil || !this.hasProject)" @click="testActive({ layer: 'infra'}, $event)">{{$t('components.map.layerMenu.network')}}</b-button>
           </b-input-group-append>
         </b-input-group>
         <b-input-group class="mx-1" :prepend="this.$t('components.map.civilMenu.name')" v-if="this.isCivil">
           <b-input-group-append>
-            <b-button :pressed="this.status === 'site'" @click="testActive({ status: 'site'}, $event)">{{$t('components.map.civilMenu.newSite')}}</b-button>
-            <b-button :pressed="this.status === 'path'" @click="testActive({ status: 'path'}, $event)">{{$t('components.map.civilMenu.newPath')}}</b-button>
+            <b-button :pressed="this.status === 'site'" @click="testActive({ status: 'site'}, $event)" :disabled="!this.hasProject">{{$t('components.map.civilMenu.newSite')}}</b-button>
+            <b-button :pressed="this.status === 'path'" @click="testActive({ status: 'path'}, $event)" :disabled="!this.hasProject">{{$t('components.map.civilMenu.newPath')}}</b-button>
           </b-input-group-append>
         </b-input-group>
         <b-input-group class="mx-1" :prepend="this.$t('components.map.networkMenu.name')" v-if="!this.isCivil">
           <b-input-group-append>
-            <b-button :pressed="this.status === 'box'" @click="testActive({ status: 'box'}, $event)">{{$t('components.map.networkMenu.newBox')}}</b-button>
-            <b-button :pressed="this.status === 'fiber'" @click="testActive({ status: 'fiber'}, $event)">{{$t('components.map.networkMenu.newFiber')}}</b-button>
+            <b-button :pressed="this.status === 'box'" @click="testActive({ status: 'box'}, $event)" :disabled="!this.hasProject">{{$t('components.map.networkMenu.newBox')}}</b-button>
+            <b-button :pressed="this.status === 'fiber'" @click="testActive({ status: 'fiber'}, $event)" :disabled="!this.hasProject">{{$t('components.map.networkMenu.newFiber')}}</b-button>
           </b-input-group-append>
         </b-input-group>
         <b-button variant="info "v-if="this.status" @click="resetStatus($event)"><div v-html="octicons['arrow-left'].toSVG()"></div></b-button>
@@ -42,8 +42,11 @@ export default {
   name: 'map-controls',
   props: ['status', 'layerActive', 'activePath'],
   computed: {
-    isCivil: function () {
+    isCivil () {
       return (this.layerActive === 'civil')
+    },
+    hasProject () {
+      return this.$store.getters['projects/currentId']
     }
   },
   data () {
