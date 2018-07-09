@@ -27,7 +27,6 @@
         </b-col>
       </b-row>
     </b-container>
-    <b-button variant="primary" v-on:click="goFusionsShow">{{$t('components.editFusions.fusions')}}</b-button>
   </div>
 </template>
 <script>

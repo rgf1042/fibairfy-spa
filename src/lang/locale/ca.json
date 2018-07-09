@@ -6,7 +6,10 @@
     "import": "Importa",
     "profile": "Perfil",
     "logout": "Sortir",
-    "back": "Torna enrera"
+    "back": "Torna enrera",
+    "boxes": "Caixes",
+    "editFusions": "Editar fusions",
+    "showFusions": "Gràfic de fusions"
   },
   "general": {
     "add": "Afegir",
@@ -63,8 +66,8 @@
       },
       "networkMenu": {
         "name": "Infraestructura xarxa",
-        "newBox": "Nova caixa",
-        "newFiber": "Nova fibra"
+        "editFusions": "Editar fusions",
+        "newCable": "Nou Cable"
       }
     },
     "editBoxes": {

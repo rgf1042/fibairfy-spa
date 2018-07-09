@@ -21,6 +21,7 @@ import Import from '@/components/Import'
 import GeneralNavbar from '@/components/shared/general-navbar'
 import LoginNavbar from '@/components/shared/login-navbar'
 import BackNavbar from '@/components/shared/back-navbar'
+import BoxesFusionsNavbar from '@/components/shared/boxesfusions-navbar'
 
 Vue.use(Router)
 
@@ -78,8 +79,12 @@ const router = new Router({
       path: '/boxes/:id',
       name: 'BoxesEdit',
       components: {
-        navbar: BackNavbar,
+        navbar: BoxesFusionsNavbar,
         view: BoxesEdit
+      },
+      props: {
+        navbar: {'boxesActive': true},
+        view: false
       }
     },
     {
@@ -102,16 +107,29 @@ const router = new Router({
       path: '/fusions/:id',
       name: 'FusionsEdit',
       components: {
-        navbar: BackNavbar,
+        navbar: BoxesFusionsNavbar,
         view: FusionsEdit
+      },
+      props: {
+        navbar: {'editFusionsActive': true},
+        view: false
+      },
+      beforeEnter: (to, from, next) => {
+        store.dispatch('projects/loadFusions', to.params.id).then(response => {
+          next()
+        })
       }
     },
     {
       path: '/fusions/graph/:id',
       name: 'FusionsShow',
       components: {
-        navbar: BackNavbar,
+        navbar: BoxesFusionsNavbar,
         view: FusionsShow
+      },
+      props: {
+        navbar: {'showFusionsActive': true},
+        view: false
       }
     },
     {

@@ -5,6 +5,7 @@
       v-on:edit-path="editPath($event)"
       v-on:edit-boxes="editBoxes($event)"
       v-on:edit-cable="editCable($event)"
+      v-on:edit-fusions="editFusions($event)"
       v-on:active-path="setActivePath($event)"></leaflet-map>
     <map-controls v-on:set-status="setStatus($event)" v-on:set-layer="setLayer($event)"
       :status="status" :layerActive="layerActive"
@@ -52,6 +53,9 @@ export default {
     },
     editBoxes (id) {
       this.$router.push({ name: 'BoxesEdit', params: { id: id }})
+    },
+    editFusions (id) {
+      this.$router.push({ name: 'FusionsEdit', params: { id: id }})
     },
     editCable (id) {
       this.$router.push({ name: 'CableEdit', params: { id: id }})

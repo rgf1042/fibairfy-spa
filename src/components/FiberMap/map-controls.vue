@@ -26,8 +26,8 @@
         </b-input-group>
         <b-input-group class="mx-1" :prepend="this.$t('components.map.networkMenu.name')" v-if="!this.isCivil">
           <b-input-group-append>
-            <b-button :pressed="this.status === 'box'" @click="testActive({ status: 'box'}, $event)" :disabled="!this.hasProject">{{$t('components.map.networkMenu.newBox')}}</b-button>
-            <b-button :pressed="this.status === 'fiber'" @click="testActive({ status: 'fiber'}, $event)" :disabled="!this.hasProject">{{$t('components.map.networkMenu.newFiber')}}</b-button>
+            <b-button :pressed="this.status === 'editFusions'" @click="testActive({ status: 'editFusions'}, $event)" :disabled="!this.hasProject">{{$t('components.map.networkMenu.editFusions')}}</b-button>
+            <b-button :pressed="this.status === 'fiber'" @click="testActive({ status: 'fiber'}, $event)" :disabled="!this.hasProject">{{$t('components.map.networkMenu.newCable')}}</b-button>
           </b-input-group-append>
         </b-input-group>
         <b-button variant="info "v-if="this.status" @click="resetStatus($event)"><div v-html="octicons['arrow-left'].toSVG()"></div></b-button>

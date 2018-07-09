@@ -192,9 +192,8 @@ Site.prototype.onSiteClick = function (e){
       // Anem a editar el site
       this.map_parent.vue.$emit('edit-site', Number(this.id))
       break
-    case "box":
-      // this.boxDefine()
-      this.map_parent.vue.$emit('edit-boxes', Number(this.id))
+    case "editFusions":
+      this.map_parent.vue.$emit('edit-fusions', Number(this.id))
       break
     case "fiber":
       // Hi ha alguna fibra activa?

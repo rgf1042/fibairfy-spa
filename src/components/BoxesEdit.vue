@@ -24,9 +24,6 @@
       <b-row class="pt-3">
         <b-button variant="success" v-on:click="addBox">{{$t('general.add')}}</b-button>
       </b-row>
-      <b-row class="pt-3">
-        <b-button variant="primary" v-on:click="goFusions">{{$t('components.editFusions.fusions')}}</b-button>
-      </b-row>
     </b-container>
   </div>
 </template>
@@ -93,9 +90,10 @@ export default {
     },
     goFusions (evt) {
       evt.preventDefault()
-      this.$store.dispatch('projects/loadFusions', this.id).then(response => {
-        this.$router.push({name: 'FusionsEdit', params: { id: this.id }})
-      })
+      this.$router.push({name: 'FusionsEdit', params: { id: this.id }})
+      /* this.$store.dispatch('projects/loadFusions', this.id).then(response => {
+
+      }) */
     }
   }
 }

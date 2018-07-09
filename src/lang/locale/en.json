@@ -6,7 +6,10 @@
     "import": "Import",
     "profile": "Profile",
     "logout": "Logout",
-    "back": "Back"
+    "back": "Back",
+    "boxes": "Caixes",
+    "editFusions": "Edit fusions",
+    "showFusions": "Fusions graph"
   },
   "general": {
     "add": "Add",
@@ -62,8 +65,8 @@
       },
       "networkMenu": {
         "name": "Network infrastructure",
-        "newBox": "New box",
-        "newFiber": "New fiber"
+        "editFusions": "Edit fusions",
+        "newCable": "New cable"
       }
     },
     "editBoxes": {
