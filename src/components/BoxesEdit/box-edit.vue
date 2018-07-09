@@ -71,7 +71,6 @@
                        :max-rows="6">
             </b-form-textarea>
           </b-form-group>
-          <b-button type="submit" variant="primary">Actualitzar</b-button>
           <b-button type="button" variant="danger" @click="onDelete">Eliminar</b-button>
         </b-form>
     </b-container>
@@ -113,6 +112,7 @@ export default {
     this.form.outputFO = box.outputFO
     this.form.type = box.type
     this.form.observations = box.observations
+    this.$bus.$once('update-boxes', this.onSubmit)
   },
   computed: {
     types () {
@@ -128,8 +128,7 @@ export default {
     }
   },
   methods: {
-    onSubmit (evt) {
-      evt.preventDefault()
+    onSubmit () {
       this.$store.dispatch('projects/updateBox', this.form).then(response => {
       }, error => {
         this.alert.message = error.msg
@@ -147,6 +146,7 @@ export default {
       this.$refs.deleteModalRef.hide()
     },
     deleteBox () {
+      this.$bus.$off('update-boxes', this.onSubmit)
       this.$store.dispatch('projects/deleteBox', this.deleted.id).then(response => {
         this.deleted = {} // Esborrem referencia
       }, error => {

@@ -24,6 +24,9 @@
       <b-row class="pt-3">
         <b-button variant="success" v-on:click="addBox">{{$t('general.add')}}</b-button>
       </b-row>
+      <b-row class="pt-4">
+        <b-button class="mr-1" type="button" variant="primary" @click="onSubmit">{{$t('general.update')}}</b-button>
+      </b-row>
     </b-container>
   </div>
 </template>
@@ -80,20 +83,8 @@ export default {
     },
     onSubmit (evt) {
       evt.preventDefault()
-      this.$store.dispatch('projects/updatePath', this.form).then(response => {
-        this.$router.go(-1)
-      }, error => {
-        this.alert.message = error.msg
-        this.alert.show = true
-        console.log(error)
-      })
-    },
-    goFusions (evt) {
-      evt.preventDefault()
-      this.$router.push({name: 'FusionsEdit', params: { id: this.id }})
-      /* this.$store.dispatch('projects/loadFusions', this.id).then(response => {
-
-      }) */
+      this.$bus.$emit('update-boxes')
+      this.$router.go(-1)
     }
   }
 }
