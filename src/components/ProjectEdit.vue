@@ -13,7 +13,7 @@
       </b-row>
       <b-row>
         <b-col cols="4" class="pt-2">
-          <h3>{{$t('components.projects.projectAdd.name')}}</h3>
+          <h3>{{$t('components.projects.projectEdit.name')}}</h3>
         </b-col>
       </b-row>
         <b-form @submit="onSubmit">
@@ -67,7 +67,7 @@
                                   required="true"
                                   v-model="form.defaultZone"/>
           </b-form-group>
-          <b-button type="submit" variant="primary">{{$t('general.add')}}</b-button>
+          <b-button type="submit" variant="primary">{{$t('general.update')}}</b-button>
         </b-form>
     </b-container>
   </div>
@@ -76,19 +76,20 @@
 import FiberfyAutocomplete from '@/components/shared/fiberfy-autocomplete'
 
 export default {
-  name: 'ProjectAdd',
+  name: 'ProjectEdit',
   components: {
     'fiberfy-autocomplete': FiberfyAutocomplete
   },
   data () {
     return {
       form: {
-        name: '',
-        latitude: fiberfy.constants.PROJECT_DEFAULT_LATITUDE, // eslint-disable-line
-        longitude: fiberfy.constants.PROJECT_DEFAULT_LONGITUDE, // eslint-disable-line
-        zoom: fiberfy.constants.PROJECT_DEFAULT_ZOOM, // eslint-disable-line
-        defaultZone: 2413,
-        status: 'Planned'
+        id: null,
+        name: null,
+        latitude: null, // eslint-disable-line
+        longitude: null, // eslint-disable-line
+        zoom: null, // eslint-disable-line
+        defaultZone: null,
+        status: null
       },
       statusList: ['Planned'],
       zoneUrl: fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/zone/', // eslint-disable-line
@@ -99,7 +100,14 @@ export default {
     }
   },
   mounted () {
-
+    let project = this.$store.getters['projects/current']
+    this.form.id = project.id
+    this.form.name = project.name
+    this.form.latitude = project.latitude
+    this.form.longitude = project.longitude
+    this.form.zoom = project.zoom
+    this.form.defaultZone = project.defaultZone
+    this.form.status = project.status
   },
   computed: {
 
@@ -107,7 +115,7 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      this.$store.dispatch('projects/addNewProject', this.form).then(response => {
+      this.$store.dispatch('projects/updateCurrent', this.form).then(response => {
         this.$router.go(-1)
       }, error => {
         this.alert.message = error.msg

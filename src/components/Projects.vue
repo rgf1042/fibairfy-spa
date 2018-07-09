@@ -53,7 +53,6 @@
 <script>
 /* eslint-disable */
 import ProjectButtons from '@/components/Projects/project-buttons'
-import ProjectAdder from '@/components/Projects/project-adder'
 
 export default {
   name: 'Projects',

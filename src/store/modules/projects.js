@@ -27,6 +27,9 @@ export default {
     },
     findProjectById: state => id => {
       return state.list.find(item => item.id === id)
+    },
+    current: state => {
+      return state.current
     }
   },
   mutations: {
@@ -68,7 +71,8 @@ export default {
             latitude: response.body.latitude,
             longitude: response.body.longitude,
             zoom: response.body.zoom,
-            defaultZone: response.body.defaultZone
+            defaultZone: response.body.defaultZone.id,
+            status: response.body.status
           }
           // Comprovem si el projecte es writable
           project.writable = (typeof(response.body.users.find(item => item.user === context.rootGetters['user/currentId'])) === 'object')
@@ -112,8 +116,19 @@ export default {
         })
       })
     },
-    updateCurrent (context, form) {
-
+    updateCurrent (context, project) {
+      return new Promise((resolve, reject) => {
+        Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/' + project.id + '?populate=null', project).then(response => {
+          context.commit('setCurrentProject', project)
+          context.dispatch('loadProjectsList').then(response => {
+            resolve(response)
+          }, error => {
+            reject(error)
+          })
+        }, error => {
+          reject(error)
+        })
+      })
     },
     loadProjectsList (context) {
       return new Promise((resolve, reject) => {

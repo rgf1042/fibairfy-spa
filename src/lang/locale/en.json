@@ -103,6 +103,9 @@
       },
       "projectAdd": {
         "name": "Add project"
+      },
+      "projectEdit": {
+        "name": "Edit project"
       }
     },
     "profile": {
