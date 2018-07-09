@@ -28,8 +28,12 @@ export default {
   data () {
     return {
       status: '',
-      layerActive: 'civil',
       activePath: false
+    }
+  },
+  computed: {
+    layerActive () {
+      return this.$store.getters['projects/map/currentLayer']
     }
   },
   methods: {
@@ -38,7 +42,7 @@ export default {
       this.activePath = false
     },
     setLayer (layer) {
-      this.layerActive = layer
+      this.$store.dispatch('projects/map/setLayer', layer)
       this.status = ''
       this.activePath = false
     },

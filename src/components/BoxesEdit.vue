@@ -3,7 +3,7 @@
     <b-container>
       <b-row>
         <b-col class="pt-1">
-          <b-alert variant="danger"
+          <b-alert :variant="alert.type"
                dismissible
                :show="alert.show"
                @dismissed="alert.show=false">
@@ -44,6 +44,7 @@ export default {
       name: null,
       alert: {
         show: false,
+        type: 'danger',
         message: ''
       }
     }
@@ -58,6 +59,10 @@ export default {
       this.alert.show = true
       console.log(error)
     })
+    this.$bus.$on('notification-boxes', this.onNotification)
+  },
+  destroyed () {
+    this.$bus.$off('notification-boxes', this.onNotification)
   },
   computed: {
     boxesIds () {
@@ -85,6 +90,11 @@ export default {
       evt.preventDefault()
       this.$bus.$emit('update-boxes')
       this.$router.go(-1)
+    },
+    onNotification (type, message) {
+      this.alert.type = type
+      this.alert.message = message
+      this.alert.show = true
     }
   }
 }

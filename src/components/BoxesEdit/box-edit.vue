@@ -11,16 +11,6 @@
     </b-modal>
     <b-container>
       <b-row>
-        <b-col class="pt-1">
-          <b-alert variant="danger"
-               dismissible
-               :show="alert.show"
-               @dismissed="alert.show=false">
-                {{alert.message}}
-          </b-alert>
-        </b-col>
-      </b-row>
-      <b-row>
         <b-col cols="4" class="pt-2">
           <h4>{{$tc('components.editBoxes.editBox.title', 1)}}: {{form.id}}</h4>
         </b-col>
@@ -95,10 +85,6 @@ export default {
         type: '',
         observations: ''
       },
-      alert: {
-        show: false,
-        message: ''
-      },
       deleted: {
         id: 0
       }
@@ -131,9 +117,7 @@ export default {
     onSubmit () {
       this.$store.dispatch('projects/updateBox', this.form).then(response => {
       }, error => {
-        this.alert.message = error.msg
-        this.alert.show = true
-        console.log(error)
+        this.$bus.$emit('notification-boxes', 'danger', error.msg)
       })
     },
     onDelete (evt) {
@@ -150,10 +134,7 @@ export default {
       this.$store.dispatch('projects/deleteBox', this.deleted.id).then(response => {
         this.deleted = {} // Esborrem referencia
       }, error => {
-        this.alert.message = error.msg
-        this.alert.show = true
-        this.deleted = {} // Esborrem referencia
-        console.log(error)
+        this.$bus.$emit('notification-boxes', 'danger', error.msg)
       })
     }
   }

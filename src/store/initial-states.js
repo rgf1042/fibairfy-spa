@@ -30,6 +30,7 @@ export default {
       latitude: 0.0,
       longitude: 0.0,
       zoom: 1,
+      layer: 'civil',
       baseTiles: [
         {
           name: 'Guifi.net OpenStreetMap',

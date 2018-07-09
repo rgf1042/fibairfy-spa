@@ -11,6 +11,9 @@ export default {
   getters : {
     currentLocation: state => {
       return { latitude: state.latitude, longitude: state.longitude, zoom: state.zoom }
+    },
+    currentLayer: state => {
+      return state.layer
     }
   },
   mutations: {
@@ -22,6 +25,9 @@ export default {
     },
     setZoom (state, zoom) {
       state.zoom = zoom
+    },
+    setLayer (state, layer) {
+      state.layer = layer
     },
     setSelectedBaseTile (state, base) {
       state.selectedBaseTile = base
@@ -39,6 +45,7 @@ export default {
       state.latitude = InitialStates.map().latitude,
       state.longitude = InitialStates.map().longitude,
       state.zoom = InitialStates.map().zoom
+      state.layer = InitialStates.map().layer
     }
   },
   actions: {
@@ -48,6 +55,9 @@ export default {
     },
     setZoom (context, zoom) {
       context.commit('setZoom', zoom)
+    },
+    setLayer (context, layer) {
+      context.commit('setLayer', layer)
     },
     setSelectedBaseTile (context, base) {
       context.commit('setSelectedBaseTile', base)
