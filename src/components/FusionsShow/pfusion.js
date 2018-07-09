@@ -8,7 +8,7 @@ function Pfusion(cnvs, vue) {
 
   this.site = this.vue.$store.getters['projects/currentSite']
   this.boxes = this.vue.$store.getters['projects/boxesIndexes'](this.site)
-  this.cables = this.vue.$store.getters['projects/cablesIndexes'](this.site)
+  this.cables = this.vue.$store.getters['projects/cablesIndexes'](this.site) || []
   this.fusions = this.vue.$store.getters['projects/getFusions']
 
   this.tubesCables = {}
@@ -55,9 +55,11 @@ function Pfusion(cnvs, vue) {
   this.defaultFusionChunk = 6
   this.fontsize = 14
 
-  this.defaultCanvasHeight = (this.defaultOffsetCables * 2) + (this.tubesCount * (this.defaultWidthTube + (this.defaultMarginTube * 2))
+  let cablesWidth = (this.defaultOffsetCables * 2) + (this.tubesCount * (this.defaultWidthTube + (this.defaultMarginTube * 2))
     + (this.defaultMarginCables * (this.cables.length/2)))
-  this.defaultCanvasWidth = this.defaultCanvasHeight
+  let boxesWidth = ((this.boxes.length + 1) * this.defaultWidthBox)
+  this.defaultCanvasWidth = (boxesWidth > cablesWidth) ? boxesWidth : cablesWidth
+  this.defaultCanvasHeight = this.defaultCanvasWidth
 
   // Fabric.js
   this.canvas = new fabric.StaticCanvas(cnvs)
