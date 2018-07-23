@@ -102,7 +102,7 @@ export default {
         },
         {
           name: 'Guifi.net nodes (test)',
-          tiles: 'http://10.90.230.41/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
+          tiles: 'http://localhost:9000/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
           options: {
             format: 'image/png',
             transparent: true,

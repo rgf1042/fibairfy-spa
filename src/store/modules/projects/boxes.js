@@ -50,7 +50,7 @@ export default {
         context.commit('resetBoxes')
         let sites = context.getters.sites // We load existing sites
         for (let x in sites) context.commit('addSiteToBox', sites[x])
-        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/?project=' + context.getters.currentId + '&limit=10000&populate=null').then(response => {
+        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/?project=' + context.getters.currentId + '&limit=10000').then(response => {
           for (let x in response.body) {
             let box = response.body[x]
             context.commit('addNewBox', box)
@@ -64,7 +64,7 @@ export default {
     addNewBox (context, box) {
       return new Promise((resolve, reject) => {
         Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/', box).then(response => {
-          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/' + response.body.id + '?populate=null').then(response => {
+          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/' + response.body.id).then(response => {
             context.commit('addNewBox', response.body)
             resolve(response)
           }, error => {
@@ -87,7 +87,7 @@ export default {
     },
     updateBox (context, box) {
       return new Promise((resolve, reject) => {
-        Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/' + box.id + '?populate=null', box).then(response => {
+        Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/box/' + box.id, box).then(response => {
           context.commit('updateBox', { id: box.id, box: response.body })
           resolve(response)
         }, error => {

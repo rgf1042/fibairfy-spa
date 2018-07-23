@@ -49,7 +49,7 @@ export default {
         context.commit('resetTubes')
         let cables = context.getters.cables // We load existing cables
         for (let x in cables) context.commit('addSiteToTube', cables[x])
-        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/tube/?project=' + context.getters.currentId + '&limit=10000&populate=null').then(response => {
+        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/tube/?project=' + context.getters.currentId + '&limit=10000').then(response => {
           for (let x in response.body) {
             let tube = response.body[x]
             context.commit('addNewTube', tube)
@@ -63,7 +63,7 @@ export default {
     addNewTube (context, tube) {
       return new Promise((resolve, reject) => {
         Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/tube/', tube).then(response => {
-          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/tube/' + response.body.id + '?populate=null').then(response => {
+          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/tube/' + response.body.id).then(response => {
             context.commit('addNewTube', response.body)
             resolve(response)
           }, error => {
@@ -86,7 +86,7 @@ export default {
     },
     updateTube (context, tube) {
       return new Promise((resolve, reject) => {
-        Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/tube/' + tube.id + '?populate=null', tube).then(response => {
+        Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/tube/' + tube.id, tube).then(response => {
           context.commit('updateTube', { id: tube.id, tube: response.body })
           resolve(response)
         }, error => {

@@ -111,7 +111,7 @@ export default {
       zoneUrl: fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/zone/', // eslint-disable-line
     }
   },
-  mounted () {
+  created () {
     this.$store.dispatch('projects/findSiteById', this.$route.params.id).then(response => {
       let site = response
       this.form.id = site.id
@@ -119,7 +119,7 @@ export default {
       this.form.latitude = site.latitude
       this.form.longitude = site.longitude
       this.form.type = site.type
-      this.form.zone = site.zone.id
+      this.form.zone = site.zone
       this.form.observations = site.observations
     }, error => {
       this.alert.message = error

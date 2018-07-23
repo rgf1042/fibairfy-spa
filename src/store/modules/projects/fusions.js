@@ -173,7 +173,7 @@ export default {
       return new Promise((resolve, reject) => {
         context.commit('resetFusions')
         Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/fusion/?project=' + context.getters.currentId
-        + '&limit=10000&populate=null&site=' + site).then(response => {
+        + '&limit=10000&site=' + site).then(response => {
           context.commit('setFusionSite', site)
           for (let x in response.body) {
             let fusion = response.body[x]

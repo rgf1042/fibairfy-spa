@@ -63,7 +63,7 @@ export default {
     setCurrent (context, id) {
       return new Promise((resolve, reject) => {
         // Do something here... lets say, a http call using vue-resource
-        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/' + id).then(response => {
+        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/' + id, {params: {populate: 'defaultZone, users'}}).then(response => {
           // success callback
           let project = {
             id: response.body.id,
@@ -132,10 +132,10 @@ export default {
     },
     loadProjectsList (context) {
       return new Promise((resolve, reject) => {
-        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/').then(response => {
+        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/', {params: {populate: 'defaultZone, users'}}).then(response => {
           // success callback
           for (let x in response.body) {
-            response.body[x].writable = (typeof(response.body[x].users.find(item => item.user === context.rootGetters['user/currentId'])) === 'object')
+            response.body[x].writable = (typeof(response.body[x].users.find(item => item.id === context.rootGetters['user/currentId'])) === 'object')
           }
           context.commit('setListProjects', response.body)
           resolve(response)
@@ -156,8 +156,8 @@ export default {
           defaultZone: form.defaultZone
         }
         Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/', project).then(response => {
-          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/' + response.body.project).then(response => {
-            response.body.writable = (typeof(response.body.users.find(item => item.user === context.rootGetters['user/currentId'])) === 'object')
+          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/' + response.body.id, {params: {populate: 'defaultZone, users'}}).then(response => {
+            response.body.writable = (typeof(response.body.users.find(item => item.id === context.rootGetters['user/currentId'])) === 'object')
             context.commit('addNewProject', response.body)
             resolve(response)
           }, error => {

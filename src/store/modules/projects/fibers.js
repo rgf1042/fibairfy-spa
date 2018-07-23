@@ -49,7 +49,7 @@ export default {
         context.commit('resetFibers')
         let tubes = context.getters.tubes // We load existing tubes
         for (let x in tubes) context.commit('addSiteToFiber', tubes[x])
-        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/fiber/?project=' + context.getters.currentId + '&limit=10000&populate=null').then(response => {
+        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/fiber/?project=' + context.getters.currentId + '&limit=10000').then(response => {
           for (let x in response.body) {
             let fiber = response.body[x]
             context.commit('addNewFiber', fiber)
@@ -63,7 +63,7 @@ export default {
     addNewFiber (context, fiber) {
       return new Promise((resolve, reject) => {
         Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/fiber/', fiber).then(response => {
-          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/fiber/' + response.body.id + '?populate=null').then(response => {
+          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/fiber/' + response.body.id).then(response => {
             context.commit('addNewFiber', response.body)
             resolve(response)
           }, error => {
@@ -86,7 +86,7 @@ export default {
     },
     updateFiber (context, fiber) {
       return new Promise((resolve, reject) => {
-        Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/fiber/' + fiber.id + '?populate=null', fiber).then(response => {
+        Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/fiber/' + fiber.id, fiber).then(response => {
           context.commit('updateFiber', { id: fiber.id, fiber: response.body })
           resolve(response)
         }, error => {

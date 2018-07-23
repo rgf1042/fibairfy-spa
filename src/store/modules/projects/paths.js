@@ -37,7 +37,7 @@ export default {
     loadPaths (context) {
       return new Promise((resolve, reject) => {
         context.commit('resetPaths')
-        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/path/?project=' + context.getters.currentId + '&limit=1000000').then(response => {
+        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/path/?project=' + context.getters.currentId + '&limit=1000000', {params: {populate: 'first,last'}}).then(response => {
           context.commit('loadPathArray', response.body)
           resolve(response)
         }, error => {
@@ -48,7 +48,7 @@ export default {
     addNewPath (context, path) {
       return new Promise((resolve, reject) => {
         Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/path/', path).then(response => {
-          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/path/' + response.body.id).then(response => {
+          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/path/' + response.body.id, {params: {populate: 'first,last'}}).then(response => {
             context.commit('addNewPath', response.body)
             resolve(response)
           }, error => {
@@ -80,8 +80,12 @@ export default {
         let index = context.getters.findPathIndexById(path.id)
         if (index !== -1) {
           Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/path/' + path.id, path).then(response => {
-            context.commit('updatePath', { index: index, path: response.body })
-            resolve(response)
+            Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/path/' + response.body.id, {params: {populate: 'first,last'}}).then(response => {
+              context.commit('updatePath', { index: index, path: response.body })
+              resolve(response)
+            }, error => {
+              reject(error)
+            })
           }, error => {
             reject(error)
           })

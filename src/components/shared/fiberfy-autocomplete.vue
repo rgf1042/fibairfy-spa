@@ -61,6 +61,7 @@ export default {
   watch: {
     value: function (newVal, oldVal) {
       if (newVal !== this.id) {
+        this.id = newVal
         this.loadSelectionById(newVal)
       }
     }
@@ -68,7 +69,7 @@ export default {
   methods: {
     loadSelectionById (id) {
       if (this.type === 'remote') {
-        this.$http.get(this.url, {params: {id: id}})
+        this.$http.get(this.url + id)
                   .then(response => {
                     this.selection = response.body[this.selectedField]
                   }, error => {
