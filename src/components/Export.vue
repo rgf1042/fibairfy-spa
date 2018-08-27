@@ -11,12 +11,10 @@
       </b-col>
     </b-row>
 
-    <b-button :href="this.getGeoJSON" :download="this.project.name + '.geojson'">{{$t('general.download')}}</b-button>
+    <b-button @click="getGeoJSON">{{$t('general.download')}}</b-button>
   </b-container>
 </template>
 <script>
-import GeoJSON from 'geojson'
-
 export default {
   name: 'Export',
   data () {
@@ -35,9 +33,11 @@ export default {
     },
     paths () {
       return this.$store.state.projects.paths.paths
-    },
+    }
+  },
+  methods: {
     getGeoJSON () {
-      let data3 = []
+      /* let data3 = []
       for (var idxSite in this.sites) {
         let s = this.sites[idxSite]
         data3.push({'lat': s.latitude, 'lng': s.longitude, 'type': s.type, 'status': s.status, 'name': s.name})
@@ -61,15 +61,20 @@ export default {
         pLine.push([p.last.longitude, p.last.latitude]) // We put in front of the array the last site
 
         data3.push({'polyline': pLine, 'type': p.type, 'name': p.name})
-      }
+      } */
 
-      return 'data:text/json;charset=utf-8,' +
-        encodeURIComponent(JSON.stringify(
-          GeoJSON.parse(data3, {'Point': ['lat', 'lng'], 'LineString': 'polyline'}), null, 4))
+      this.$http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/export/' + this.project.id) // eslint-disable-line
+        .then(response => {
+          let data = 'data:text/json;charset=utf-8,' +
+            encodeURIComponent(JSON.stringify(response.body, null, 4))
+          let link = document.createElement('a')
+          link.href = data
+          link.download = this.project.name + '.geojson'
+          link.click()
+        }, error => {
+          console.log(error)
+        })
     }
-  },
-  methods: {
-
   }
 }
 </script>
