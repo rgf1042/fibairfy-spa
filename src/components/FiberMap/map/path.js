@@ -102,7 +102,8 @@ Path.prototype.draw = function() {
 Path.prototype.addPoint = function(point) {
   if (!this.end_site.id) {
     if (this.first_site.id) {
-      this.intermedial.push(point)
+      console.log(point)
+      this.intermedial.push([point.lat, point.lng])
       this.draw()
     } else {
       console.log('Els trams comencen a una caixa.')
