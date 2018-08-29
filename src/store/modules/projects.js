@@ -57,6 +57,9 @@ export default {
     reset (state) {
       state.current = InitialStates.projects().current
       state.list = InitialStates.projects().list
+    },
+    resetCurrent (state) {
+      state.current = InitialStates.projects().current
     }
   },
   actions: {
@@ -115,6 +118,14 @@ export default {
           reject(error)
         })
       })
+    },
+    unsetCurrent (context) {
+      context.commit('resetCurrent')
+      context.commit('resetSites')
+      context.commit('resetPaths')
+      context.commit('resetCables')
+      context.commit('resetTubes')
+      context.commit('resetFibers')
     },
     updateCurrent (context, project) {
       return new Promise((resolve, reject) => {

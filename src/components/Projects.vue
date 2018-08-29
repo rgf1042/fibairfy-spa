@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid>
+  <b-container>
     <div>
     <!-- Modal Component -->
     <b-modal id="modal-delete-project" ref="deleteModalRef"
@@ -27,16 +27,16 @@
         <h3>{{$t('menu.projects')}}</h3>
       </b-col>
     </b-row>
+    <b-row>
+      <project-selected :loading="loading"></project-selected>
+    </b-row>
     <b-row class="pt-2" v-for="(project, index) in list" :key="project.id" v-if="list">
       <b-col sm="2">
         <span>{{project.name}}</span>
         <span v-if="!project.writable">({{$t('components.projects.readonly')}})</span>
       </b-col>
       <b-col sm="4">
-        <project-buttons v-on:activate-project="activateProject(index)"
-          v-on:save-pos="savePos"
-          v-on:delete-project="questionDeleteProject($event)"
-          :projectId="project.id" :current="current">
+        <project-buttons :projectId="project.id" :current="current" :loading="loading">
         </project-buttons>
       </b-col>
     </b-row>
@@ -53,17 +53,29 @@
 <script>
 /* eslint-disable */
 import ProjectButtons from '@/components/Projects/project-buttons'
+import ProjectSelected from '@/components/Projects/project-selected'
 
 export default {
   name: 'Projects',
   components: {
-    'project-buttons': ProjectButtons
+    'project-buttons': ProjectButtons,
+    'project-selected': ProjectSelected,
   },
   mounted () {
-
+    this.$bus.$on('activate-project', this.activateProject)
+    this.$bus.$on('deactivate-project', this.deactivateProject)
+    this.$bus.$on('save-pos', this.savePos)
+    this.$bus.$on('delete-project', this.questionDeleteProject)
+  },
+  destroyed () {
+    this.$bus.$off('activate-project', this.activateProject)
+    this.$bus.$off('deactivate-project', this.deactivateProject)
+    this.$bus.$off('save-pos', this.savePos)
+    this.$bus.$off('delete-project', this.questionDeleteProject)
   },
   data () {
     return {
+      loading: false,
       deleted: {
         id: 0
       },
@@ -75,27 +87,28 @@ export default {
     }
   },
   computed: {
-    current() {
+    current () {
       return this.$store.state.projects.current.id
     },
-    list() {
+    list () {
       return this.$store.state.projects.list
     }
   },
   methods: {
-    activateProject (index) {
-      // let item = this.list[index]
-      this.$store.dispatch('projects/setCurrent', this.$store.state.projects.list[index].id).then(response => {
+    activateProject (id) {
+      this.loading = true // We set to true loading data used in props communication
+      this.$store.dispatch('projects/setCurrent', id).then(response => {
+        this.loading = false
       }, error => {
-        /* if (error.body.message) {
-          this.alert.message = error.body.message
-          this.alert.show = true
-        } */
+        this.loading = false
         console.log(error)
         this.alert.message = error.body
         this.alert.variant = 'danger'
         this.alert.show = true
       })
+    },
+    deactivateProject () {
+      this.$store.dispatch('projects/unsetCurrent')
     },
     savePos () {
       this.$store.dispatch('projects/savePos').then(response => {

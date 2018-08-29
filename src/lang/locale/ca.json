@@ -26,6 +26,7 @@
     "longitude": "Longitud",
     "zoom": "Zoom",
     "zone": "Zona",
+    "loading": "Carregant",
     "download": "Descarregar"
   },
   "content": {
@@ -99,8 +100,12 @@
       },
       "projectButtons": {
         "activate": "Activar",
+        "deactivate": "Desactivar",
         "savePos": "Guardar pos.",
         "delete": "Eliminar"
+      },
+      "projectSelected": {
+        "title": "Projecte actual"
       },
       "projectAdd": {
         "name": "Afegir projecte"
