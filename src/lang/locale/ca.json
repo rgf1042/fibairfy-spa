@@ -27,6 +27,7 @@
     "zoom": "Zoom",
     "zone": "Zona",
     "loading": "Carregant",
+    "search": "Buscar",
     "download": "Descarregar"
   },
   "content": {
@@ -94,6 +95,7 @@
     },
     "projects": {
       "readonly": "només lectura",
+      "list": "Llistat de projectes",
       "addProjectMenu": {
         "name": "Afegir projecte",
         "addButton": "Afegir"

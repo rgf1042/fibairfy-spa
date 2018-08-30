@@ -13,7 +13,7 @@
       </b-row>
       <b-row>
         <b-col cols="4" class="pt-2">
-          <h3>{{$t('components.projects.projectAdd.name')}}</h3>
+          <h2>{{$t('components.projects.projectAdd.name')}}</h2>
         </b-col>
       </b-row>
         <b-form @submit="onSubmit">

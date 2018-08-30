@@ -26,6 +26,7 @@
     "zoom": "Zoom",
     "zone": "Zone",
     "loading": "Loading",
+    "search": "Search",
     "download": "Download"
   },
   "content": {
@@ -93,6 +94,7 @@
     },
     "projects": {
       "readonly": "read-only",
+      "list": "Project list",
       "addProjectMenu": {
         "name": "Add project",
         "addButton": "Add"

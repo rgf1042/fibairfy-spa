@@ -12,7 +12,7 @@
     <b-container>
       <b-row>
         <b-col cols="4" class="pt-2">
-          <h4>{{$tc('components.editBoxes.editBox.title', 1)}}: {{form.id}}</h4>
+          <h3>{{$tc('components.editBoxes.editBox.title', 1)}}: {{form.id}}</h3>
         </b-col>
       </b-row>
         <b-form @submit="onSubmit">

@@ -12,7 +12,7 @@
     </b-row>
     <b-row>
       <b-col sm="2" class="pt-2">
-        <h3>{{$t('menu.import')}}</h3>
+        <h2>{{$t('menu.import')}}</h2>
       </b-col>
     </b-row>
     <b-row>
@@ -24,7 +24,9 @@
       <b-form-group id="typeInputGroup"
                     label="Tipus llocs (per defecte):"
                     label-for="typeInput">
-        <b-form-select id="typeInput" v-model="form.defaultSiteType" :options="siteTypes" class="mb-3" />
+        <b-form-select id="typeInput" v-model="form.defaultSiteType"
+          :disabled="!project.id"
+          :options="siteTypes" class="mb-3" />
       </b-form-group>
       <b-form-group id="zoneInputGroup"
                     :label="this.$t('general.zone')+':'"
@@ -32,15 +34,17 @@
         <fiberfy-autocomplete type="remote"
                               :url="this.zoneUrl"
                               selectedField="title" returnedField="id"
+                              :disabled="!project.id"
                               required="true"
                               v-model="form.defaultZone"/>
       </b-form-group>
       <b-form-group id="fileInputGroup"
                     :label="this.$t('general.file')+':'"
+                    :disabled="!project.id"
                     label-for="fileInput">
-        <b-form-file id="fileInput" v-model="form.data" plain></b-form-file>
+        <b-form-file id="fileInput" :disabled="!project.id" v-model="form.data" plain></b-form-file>
       </b-form-group>
-      <b-button type="submit" variant="primary">{{$t('general.import')}}</b-button>
+      <b-button type="submit" variant="primary" :disabled="!project.id">{{$t('general.import')}}</b-button>
     </b-form>
   </b-container>
 </template>

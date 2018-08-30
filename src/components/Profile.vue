@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <h3>{{user.name}}</h3>
+    <h2>{{user.name}}</h2>
     <b-form @submit="onSubmit">
       <b-form-group id="langInputGroup"
                     label="Idioma:"

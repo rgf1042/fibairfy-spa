@@ -11,7 +11,7 @@
     </b-modal>
     <b-row class="pt-2">
       <b-col cols="3">
-        <h4>{{$tc('components.editTubes.editTube.title', 1)}}: {{form.id}}</h4>
+        <h3>{{$tc('components.editTubes.editTube.title', 1)}}: {{form.id}}</h3>
       </b-col>
       <b-col cols="1">
         <b-button type="button" variant="danger" @click="onDelete">{{$t('general.delete')}}</b-button>

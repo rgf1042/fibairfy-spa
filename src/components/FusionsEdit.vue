@@ -13,7 +13,7 @@
       </b-row>
       <b-row>
         <b-col cols="4" class="pt-2">
-          <h3>{{$tc('components.editFusions.title', 2)}}: {{id}}</h3>
+          <h2>{{$tc('components.editFusions.title', 2)}}: {{id}}</h2>
         </b-col>
       </b-row>
       <b-row class="pt-2">

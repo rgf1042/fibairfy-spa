@@ -22,7 +22,7 @@
       </b-row>
       <b-row>
         <b-col cols="4" class="pt-2">
-          <h3>Editar site: {{form.id}}</h3>
+          <h2>Editar site: {{form.id}}</h2>
         </b-col>
       </b-row>
         <b-form @submit="onSubmit">

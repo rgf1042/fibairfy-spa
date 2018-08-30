@@ -2,6 +2,7 @@
   <div style="position:relative">
       <input class="form-control" type="text" v-model="selection"
         :required="required"
+        :disabled="disabled"
         @keydown.enter ="enter"
         @keydown.down ="down"
         @keydown.up ="up"
@@ -20,7 +21,7 @@
 <script>
 export default {
   name: 'fiberfy-autocomplete',
-  props: ['selectedField', 'returnedField', 'url', 'value', 'required', 'inputData', 'type'],
+  props: ['selectedField', 'returnedField', 'url', 'value', 'required', 'inputData', 'type', 'disabled'],
   data () {
     return {
       selection: '',

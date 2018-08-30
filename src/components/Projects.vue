@@ -24,13 +24,34 @@
     </b-row>
     <b-row>
       <b-col sm="2" class="pt-2">
-        <h3>{{$t('menu.projects')}}</h3>
+        <h2>{{$t('menu.projects')}}</h2>
+      </b-col>
+    </b-row>
+    <b-row class="pt-2">
+      <project-selected :loading="loading"></project-selected>
+    </b-row>
+    <b-row class="pt-5">
+      <b-col cols="10">
+        <h3>{{$t('components.projects.list')}}</h3>
+      </b-col>
+      <b-col>
+        <b-button type="button" variant="success"
+          :to="{ name: 'ProjectAdd'}">
+          {{$t('components.projects.projectAdd.name')}}
+        </b-button>
       </b-col>
     </b-row>
     <b-row>
-      <project-selected :loading="loading"></project-selected>
+      <b-col><hr></b-col>
     </b-row>
-    <b-row class="pt-2" v-for="(project, index) in list" :key="project.id" v-if="list">
+    <b-row class="py-4">
+      <fiberfy-search :url="projectUrl" type="remote" selectedField="name"
+        populate="users, defaultZone"
+        :caption="this.$t('general.name') + ':'"
+        ref="browser"
+        v-model="searchList"></fiberfy-search>
+    </b-row>
+    <b-row class="pt-3" v-for="(project, index) in list" :key="project.id" v-if="list">
       <b-col sm="2">
         <span>{{project.name}}</span>
         <span v-if="!project.writable">({{$t('components.projects.readonly')}})</span>
@@ -40,26 +61,20 @@
         </project-buttons>
       </b-col>
     </b-row>
-    <b-row class="pt-2">
-      <b-col sm="1">
-        <b-button type="button" variant="primary"
-          :to="{ name: 'ProjectAdd'}">
-          {{$t('components.projects.projectAdd.name')}}
-        </b-button>
-      </b-col>
-    </b-row>
   </b-container>
 </template>
 <script>
 /* eslint-disable */
 import ProjectButtons from '@/components/Projects/project-buttons'
 import ProjectSelected from '@/components/Projects/project-selected'
+import FiberfySearch from '@/components/shared/fiberfy-search'
 
 export default {
   name: 'Projects',
   components: {
     'project-buttons': ProjectButtons,
     'project-selected': ProjectSelected,
+    'fiberfy-search': FiberfySearch
   },
   mounted () {
     this.$bus.$on('activate-project', this.activateProject)
@@ -83,7 +98,9 @@ export default {
         show: false,
         message: '',
         variant: 'info'
-      }
+      },
+      searchList: null,
+      projectUrl: fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/', // eslint-disable-line
     }
   },
   computed: {
@@ -91,16 +108,24 @@ export default {
       return this.$store.state.projects.current.id
     },
     list () {
-      return this.$store.state.projects.list
+      if (this.searchList) {
+        for (let x in this.searchList.content) {
+          this.searchList.content[x].writable = (typeof(this.searchList.content[x].users.find(item => item.id === this.$store.getters['user/currentId'])) === 'object')
+        }
+        return this.searchList.content
+      } else return this.$store.state.projects.list
     }
   },
   methods: {
     activateProject (id) {
       this.loading = true // We set to true loading data used in props communication
+      this.$bus.$emit('lock-menu')
       this.$store.dispatch('projects/setCurrent', id).then(response => {
         this.loading = false
+        this.$bus.$emit('unlock-menu')
       }, error => {
         this.loading = false
+        this.$bus.$emit('unlock-menu')
         console.log(error)
         this.alert.message = error.body
         this.alert.variant = 'danger'
@@ -140,6 +165,7 @@ export default {
     deleteProject () {
       this.$store.dispatch('projects/deleteProject', this.deleted.id).then(response => {
         this.deleted = {} // Esborrem referencia
+        this.$refs.browser.search() //
       }, error => {
         this.deleted = {} // Esborrem referencia
         console.log(error)
