@@ -48,6 +48,7 @@ Path.prototype.findPathColor = function(status, type) {
   switch (status) {
     case 'over':
     case 'active':
+    case 'fiber':
     case 'grey':
       color = this.map_parent.type_path_colors[status][type_idx]
       break

@@ -26,6 +26,7 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   this.type_site_icon_over = []
   this.type_site_icon_active = []
   this.type_site_icon_grey = []
+  this.type_site_icon_fiber = []
   this.type_site_default = this.type_site[0]
 
   // Llistat tancat? (TODO: Passar-ho a una taula.)
@@ -35,6 +36,8 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   this.type_path_colors['over'] = ['#95b9c7', '#99C68E', '#AF9B60', '#E065E7']
   this.type_path_colors['active'] = ['#357ec7', '#7FE817', '#E8A317', '#D519A1']
   this.type_path_colors['grey'] = ['#2f2f2f', '#2f2f2f', '#2f2f2f', '#2f2f2f']
+  this.type_path_colors['fiber'] = ['#ff4000', '#ff4000', '#ff4000', '#ff4000']
+
   this.type_path_default = this.type_path[0]
 
   // Llistat de box (TODO: Passar-ho a una taula.)
@@ -152,16 +155,19 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
     var objectSiteIconOver = {}
     var objectSiteIconActive = {}
     var objectSiteIconGrey = {}
+    var objectSiteIconFiber = {}
 
     objectSiteIcon[name] = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath + name + '.png'}})
     objectSiteIconOver[name] = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath + name + '.over.png'}})
     objectSiteIconActive[name] = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath + name + '.active.png'}})
     objectSiteIconGrey[name] = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath + name + '.grey.png'}})
+    objectSiteIconFiber[name] = L.Icon.extend({ options : { iconUrl: L.Icon.Default.imagePath + name + '.fiber.png'}})
 
     this.type_site_icon[name] = new objectSiteIcon[name]()
     this.type_site_icon_over[name] = new objectSiteIconOver[name]()
     this.type_site_icon_active[name] = new objectSiteIconActive[name]()
     this.type_site_icon_grey[name] = new objectSiteIconGrey[name]()
+    this.type_site_icon_fiber[name] = new objectSiteIconFiber[name]()
 
   }
   // console.log(this);
@@ -451,7 +457,7 @@ Mapa.prototype.changeColor = function (option) { //TODO: Repassar
     if (option === 'civil') {
       f.clear()
     } else if (option === 'infra') {
-      f.draw()
+      // f.draw()
     }
   }
 }
@@ -677,7 +683,13 @@ Mapa.prototype.question = function(text, callback) {
 } */
 
 Mapa.prototype.getSite = function (id) {
-  return this.vue.$store.getters['projects/findSiteById'](id)
+  // return this.vue.$store.getters['projects/findSiteById'](id)
+  for (let x in this.sites) {
+    let site = this.sites[x]
+    if (site.id === id) {
+      return site
+    }
+  }
 }
 
 Mapa.prototype.getPath = function (id) {

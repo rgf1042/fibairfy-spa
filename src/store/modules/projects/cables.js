@@ -52,7 +52,7 @@ export default {
     loadCables (context) {
       return new Promise((resolve, reject) => {
         context.commit('resetCables')
-        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/cable/?project=' + context.getters.currentId + '&limit=1000000').then(response => {
+        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/cable/?project=' + context.getters.currentId + '&limit=1000000' + '&populate=intermedial').then(response => {
           for (let x in response.body) {
             let cable = response.body[x]
             context.commit('addNewCable', cable)
@@ -66,7 +66,7 @@ export default {
     addNewCable (context, cable) {
       return new Promise((resolve, reject) => {
         Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/cable/', cable).then(response => {
-          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/cable/' + response.body.id).then(response => {
+          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/cable/' + response.body.id, {params: {populate: 'intermedial'}}).then(response => {
             context.commit('addNewCable', response.body)
             resolve(response)
           }, error => {
@@ -90,8 +90,12 @@ export default {
     updateCable (context, cable) {
       return new Promise((resolve, reject) => {
         Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/cable/' + cable.id, cable).then(response => {
-          context.commit('updateCable', response.body)
-          resolve(response)
+          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/cable/' + response.body.id, {params: {populate: 'intermedial'}}).then(response => {
+            context.commit('updateCable', response.body)
+            resolve(response)
+          }, error => {
+            reject(error)
+          })
         }, error => {
           reject(error)
         })

@@ -35,7 +35,6 @@ Fiber.prototype.setFirstSite = function(b){
 };
 Fiber.prototype.setEndSite = function(b){
   this.end_site = b.id;
-  this.draw();
   this.map_parent.setIconInSiteById(this.first_site);
   this.map_parent.setIconInSiteById(this.end_site);
   this.map_parent.fibers.push(this);
@@ -70,15 +69,19 @@ Fiber.prototype.findFiberColor = function(status, type) {
   return color;
 };
 Fiber.prototype.clear = function() {
+  for (let x in this.paths) {
+    let path = this.map_parent.getPath(this.paths[0])
+    path.changeTypePath('')
+  }
   if (this.polyline)
     this.map_parent.map.removeLayer(this.polyline);
 };
 
 Fiber.prototype.getSites = function() {
 
-  var prePath = this.map_parent.getPath(this.paths[0]);
+  var prePath = this.map_parent.getPath(this.paths[0].id);
   for(var x = 1; x < this.paths.length; x++){
-    var actPath = this.map_parent.getPath(this.paths[x]);
+    var actPath = this.map_parent.getPath(this.paths[x].id);
     if ((prePath.first_site.id === actPath.first_site.id) || (prePath.first_site.id === actPath.end_site.id)) {
       if (this.sites.length === 0){
         // Només pot passar la primer vegada
@@ -154,27 +157,9 @@ Fiber.prototype.getAllDots = function () { // TODO: Repassar
   return dots;
 };
 
-Fiber.prototype.draw = function() {
-   /* var that = this;
-  // Pintar el Tram
-  if (this.polyline) {
-    this.clear();
-  }
-
-  var color = (this.end_site) ? this.findFiberColor('active') : this.findFiberColor();
-
-  var dots = this.getAllDots();
-  this.polyline = new L.Polyline(dots, {
-      color: color,
-      weight: 5,
-      opacity: 0.5,
-      smoothFactor: 1
-  }).addTo(this.map_parent.map); */
-};
-
 Fiber.prototype.attachToPath = function () {
   for (let x in this.paths) {
-    let path = this.map_parent.getPath(this.paths[x])
+    let path = this.map_parent.getPath(this.paths[x].id || this.paths[x]) // Data model change
     path.drawCable(this.id)
   }
 }
@@ -184,7 +169,8 @@ Fiber.prototype.addPath = function (path) {
     if(this.first_site) {
       console.log(path);
       this.paths.push(path);
-      this.draw();
+      let pathInstance = this.map_parent.getPath(path)
+      pathInstance.changeTypePath('fiber')
     } else {
       console.log("Els trams comencen a una caixa.");
     }
@@ -224,12 +210,14 @@ Fiber.prototype.save = function (){
 
   this.map_parent.vue.$store.dispatch('projects/addNewCable', cable).then(response => {
     this.id = response.body.id
-    this.map_parent.active_fiber = null;
+    this.map_parent.active_fiber = null
+    this.changeSiteColor()
     this.attachToPath()
   }, error => {
-    this.clear();
-    this.map_parent.deleteFiberById(this.id);
-    alert("There was a problem. Please, try again.");
+    this.clear()
+    this.changeSiteColor()
+    this.map_parent.deleteFiberById(this.id)
+    alert("There was a problem. Please, try again.")
     console.log(error)
   })
 }
@@ -285,136 +273,11 @@ Fiber.prototype.getSegment = function (e){
 console.log("");
 };
 
-Fiber.prototype.drawColors = function (e) {
-  var that = this;
-  $('#div-fiber-colors').hide();
-
-  $('#div-fiber-colors-gui').html("");
-
-  if (this.colors) {
-    $.each(this.colors, function (itub,tub){
-        var label_tub = $('<label>').text("Tub")
-        var label_colors = $('<label>').text("Fibres")
-        var input_tub = $('<input class="tub-name" type="text" class="readonly">').attr('value',tub.name);
-        var remove_tub = $('<a>').html("X");
-        remove_tub.on('click', function(e) {
-          that.onRemoveTub(e,itub);
-        });
-        var this_tub = $('<div class="row">')
-                      .append($('<div class="col-s-12">')
-                        .append($('<div class="row">')
-                          .append($('<div class="col-s-1">')
-                            .append(label_tub)
-                          )
-                          .append($('<div class="col-s-10">')
-                            .append(input_tub)
-                          )
-                          .append($('<div class="col-s-1">')
-                            .append(remove_tub)
-                          )
-                        )
-                        .append($('<div class="row">')
-                          .append($('<div class="col-s-1">')
-                            .append(label_colors)
-                          )
-                        )
-                      );
-        var this_fibers = $('<div class="row">');
-
-        input_tub.on('change', function(e) { that.onChangeTub(e, itub); } )
-
-        $.each(tub.fibers, function (ifiber, fiber){
-          var this_remove_link = $('<a>')
-                              .html("X");
-          var input_fiber = $('<input class="fiber-name" type="text" class="readonly">').attr('value',fiber.color);
-          var col_line_Name = $('<div class="col-s-3">')
-              .append($('<div class="input-group">')
-                .append( input_fiber )
-                .append($('<span class="input-group-addon supplement input-close">')
-                  .append( this_remove_link )
-                )
-              )
-          this_remove_link.on('click', function(e) { that.onRemoveFiber(e, itub, ifiber); } )
-          input_fiber.on('change', function(e) { that.onChangeFiber(e, itub, ifiber); } )
-
-          this_fibers.append(col_line_Name);
-        })
-        var add_fiber = $('<div class="col-s-3">')
-                        .append($('<button>')
-                          .text('Afegir fibra...')
-                        );
-        add_fiber.on('click', function(e){ that.onAddFiber(e,itub);})
-
-        this_fibers.append(add_fiber);
-
-        $('#div-fiber-colors-gui').append(this_tub).append(this_fibers)
-    });
+Fiber.prototype.changeSiteColor = function () {
+  for (let x in this.sites) {
+    let site = this.map_parent.getSite(this.sites[x])
+    site.endFiberDeployment()
   }
-  var add_tub = $('<div class="row">')
-                .append($('<div class="col-s-12">')
-                  .append($('<button>')
-                    .text('Afegir tub...')
-                  )
-                );
-  add_tub.on('click', function(e){ that.onAddTub(e); })
-  $('#div-fiber-colors-gui').append(add_tub);
-
-}
-Fiber.prototype.onRemoveTub = function(e, itub) {
-    // Before remove, need check this tube is not fusion with other.
-    var that = this
-    delete that.colors[itub];
-    // delete mark item like "undefined", need clear array.
-    that.colors = $.grep(that.colors,function(n){ return n == 0 || n });
-    $('#fiber-colors').val(JSON.stringify(that.colors));
-    console.log(that.colors);
-    that.drawColors();
-    e.stopPropagation();
-    return false;
-}
-Fiber.prototype.onRemoveFiber = function(e, itub, ifiber) {
-    var that = this
-    delete that.colors[itub].fibers[ifiber];
-    // delete mark item like "undefined", need clear array.
-    that.colors[itub].fibers = $.grep(that.colors[itub].fibers,function(n){ return n == 0 || n });
-    $('#fiber-colors').val(JSON.stringify(that.colors));
-    that.drawColors();
-    e.stopPropagation();
-    return false;
-}
-Fiber.prototype.onChangeFiber = function(e, itub, ifiber) {
-    var that = this
-    that.colors[itub].fibers[ifiber].color =  $(e.currentTarget).val();
-    $('#fiber-colors').val(JSON.stringify(that.colors));
-    e.stopPropagation();
-    return false;
-}
-Fiber.prototype.onChangeTub = function(e, itub) {
-    var that = this
-    that.colors[itub].name =  $(e.currentTarget).val();
-    $('#fiber-colors').val(JSON.stringify(that.colors));
-    e.stopPropagation();
-    return false;
-}
-Fiber.prototype.onAddTub = function(e) {
-  var that = this
-  if (that.colors == null || that.colors == "") {
-    that.colors = new Array({"name":"", "fibers":[]});
-  } else {
-    that.colors.push({"name":"", "fibers":[]});
-  }
-  $('#fiber-colors').val(JSON.stringify(that.colors));
-  that.drawColors();
-  e.stopPropagation();
-  return false;
-}
-Fiber.prototype.onAddFiber = function(e, itub) {
-  var that = this
-  that.colors[itub].fibers.push({"color":""});
-  $('#fiber-colors').val(JSON.stringify(that.colors));
-  that.drawColors();
-  e.stopPropagation();
-  return false;
 }
 
 export default Fiber
