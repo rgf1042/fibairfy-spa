@@ -118,7 +118,6 @@ Site.prototype.onSiteMouseOver = function (e) {
       default:
         this.map_parent.info.update('Site ' + this.name + '(' + this.id + ')')
         this.changeTypeIcon('over')
-        // $('#make_site').text('Edita Lloc')
         break
     }
   } else if (this.map_parent.layerActive === 'infra') {
@@ -171,7 +170,7 @@ Site.prototype.onSiteMouseOut = function (e) {
   }
 }
 
-Site.prototype.onSiteClick = function (e){
+Site.prototype.onSiteClick = function (e) {
   switch(this.map_parent.status){
     case "path":
       // Hi ha algun path actiu?
