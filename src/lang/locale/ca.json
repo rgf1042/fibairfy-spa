@@ -28,7 +28,10 @@
     "zone": "Zona",
     "loading": "Carregant",
     "search": "Buscar",
-    "download": "Descarregar"
+    "download": "Descarregar",
+    "metrics": {
+      "meters": "metres"
+    }
   },
   "content": {
     "siteTypes": {

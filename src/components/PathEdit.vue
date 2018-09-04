@@ -54,6 +54,15 @@
                                   required="true"
                                   v-model="form.last"/>
           </b-form-group>
+          <b-form-group id="distanceInputGroup"
+                        label="Distància:"
+                        label-for="distanceInput">
+            <b-form-input id="distanceInput"
+                          type="text"
+                          v-model="distance"
+                          disabled>
+            </b-form-input>
+          </b-form-group>
           <b-form-group id="typeInputGroup"
                         label="Tipus:"
                         label-for="typeInput">
@@ -85,6 +94,7 @@ export default {
   },
   data () {
     return {
+      distance: null,
       form: {
         id: 0,
         name: '',
@@ -111,6 +121,7 @@ export default {
       this.form.last = path.last.id
       this.form.type = path.type
       this.form.observations = path.observations
+      this.distance = path.distance + ' ' + this.$t('general.metrics.meters')
     }, error => {
       this.alert.message = error
       this.alert.show = true

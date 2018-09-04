@@ -27,7 +27,10 @@
     "zone": "Zone",
     "loading": "Loading",
     "search": "Search",
-    "download": "Download"
+    "download": "Download",
+    "metrics": {
+      "meters": "meters"
+    }
   },
   "content": {
     "siteTypes": {
