@@ -32,6 +32,7 @@
 </template>
 <script>
 import BoxEdit from '@/components/BoxesEdit/box-edit'
+import uuidv1 from 'uuid/v1'
 
 export default {
   name: 'BoxesEdit',
@@ -75,8 +76,10 @@ export default {
       let box = {}
       box.inputFO = 0
       box.outputFO = 0
+      box.name = 'box-' + uuidv1()
       box.type = 'splitter'
       box.site = this.id
+      box.status = 'Planned'
       box.project = this.$store.state.projects.current.id
       this.$store.dispatch('projects/addNewBox', box).then(response => {
 

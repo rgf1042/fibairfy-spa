@@ -30,6 +30,15 @@
     "download": "Download",
     "metrics": {
       "meters": "meters"
+    },
+    "statusList": {
+      "Planned": "Planned",
+      "Reserved": "Reserved",
+      "Building": "Building",
+      "Testing": "Testing",
+      "Working": "Working",
+      "Dropped": "Dropped",
+      "Inactive": "Inactive"
     }
   },
   "content": {

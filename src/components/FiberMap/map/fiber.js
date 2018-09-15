@@ -10,6 +10,7 @@ function Fiber(id, name, first_site, end_site, paths, colors, template, m){
   this.polyline = null;
   this.paths = paths;
   this.sites = [];
+  this.status = 'Planned';
   this.colors = colors;
   this.color_building = "red";
   this.color_did = "blue";
@@ -203,8 +204,10 @@ Fiber.prototype.addSite = function (site){
 Fiber.prototype.save = function (){
   let cable = {
     project: this.map_parent.active_project.id,
+    name: this.name,
     first: this.first_site,
     last: this.end_site,
+    status: this.status,
     intermedial: this.paths
   }
 

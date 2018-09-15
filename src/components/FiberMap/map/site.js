@@ -1,8 +1,9 @@
 /* eslint-disable */
-// var Box = require('./box');
 import Path from './path'
 import Fiber from './fiber'
 import L from 'leaflet'
+
+var uuidv1 = require('uuid/v1')
 // =====================
 // Site
 
@@ -183,7 +184,7 @@ Site.prototype.onSiteClick = function (e) {
         // No n'hi ha cap actiu, el creem.
         console.log('inici tram.')
         this.changeTypeIcon('active')
-        this.map_parent.active_path = new Path(null, null, null, null, new Array(), this.map_parent.type_path_default, this.map_parent)
+        this.map_parent.active_path = new Path(null, 'path-' + uuidv1(), null, null, new Array(), this.map_parent.type_path_default, this.map_parent)
         this.map_parent.active_path.setFirstSite(this)
         this.map_parent.vue.$emit('active-path', Boolean(true))
       }
@@ -210,7 +211,7 @@ Site.prototype.onSiteClick = function (e) {
         console.log('inici fibra.')
         this.changeTypeIcon('fiber')
         this.deploying_fibers = true
-        this.map_parent.active_fiber = new Fiber(null, null, null, null, new Array(), null, this.map_parent.type_path_default, this.map_parent)
+        this.map_parent.active_fiber = new Fiber(null, 'cable-' + uuidv1(), null, null, new Array(), null, this.map_parent.type_path_default, this.map_parent)
         this.map_parent.active_fiber.setFirstSite(this)
       }
       break;

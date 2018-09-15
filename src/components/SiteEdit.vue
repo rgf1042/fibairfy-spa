@@ -57,6 +57,11 @@
                         label-for="typeInput">
             <b-form-select id="typeInput" v-model="form.type" :options="types" class="mb-3" />
           </b-form-group>
+          <b-form-group id="statusInputGroup"
+                        :label="this.$t('general.status')+':'"
+                        label-for="statusInput">
+            <b-form-select id="statusInput" v-model="form.status" :options="statusList" class="mb-3" />
+          </b-form-group>
           <b-form-group id="zoneInputGroup"
                         :label="this.$t('general.zone')+':'"
                         label-for="zoneInput">
@@ -98,6 +103,7 @@ export default {
         latitude: '',
         longitude: '',
         type: '',
+        status: '',
         zone: '',
         observations: ''
       },
@@ -119,6 +125,7 @@ export default {
       this.form.latitude = site.latitude
       this.form.longitude = site.longitude
       this.form.type = site.type
+      this.form.status = site.status
       this.form.zone = site.zone
       this.form.observations = site.observations
     }, error => {
@@ -135,6 +142,17 @@ export default {
         output[x] = {
           value: types[x],
           text: this.$t('content.siteTypes.' + types[x])
+        }
+      }
+      return output
+    },
+    statusList () {
+      let output = []
+      let statusList = this.$store.state.templates.statusList
+      for (let x in statusList) {
+        output[x] = {
+          value: statusList[x],
+          text: this.$t('general.statusList.' + statusList[x])
         }
       }
       return output

@@ -61,7 +61,7 @@ export default {
       form: {
         data: '',
         defaultZone: '',
-        defaultSiteType: 'manhole'
+        defaultSiteType: 'notdefined'
       },
       alert: {
         show: false,
@@ -71,7 +71,7 @@ export default {
     }
   },
   mounted () {
-
+    this.form.defaultZone = this.project.defaultZone
   },
   computed: {
     project () {

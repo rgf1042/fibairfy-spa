@@ -101,14 +101,25 @@ export default {
           }
         },
         {
-          name: 'Guifi.net nodes (test)',
-          tiles: 'http://localhost:9000/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
+          name: 'Punts fibra òptica guifi.net',
+          tiles: 'http://localhost:9090/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
           options: {
             format: 'image/png',
             transparent: true,
             version: '1.1.1',
             uppercase: true,
-            layers: 'Nodes'
+            layers: 'Sites'
+          }
+        },
+        {
+          name: 'Trams fibra òptica guifi.net',
+          tiles: 'http://localhost:9090/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
+          options: {
+            format: 'image/png',
+            transparent: true,
+            version: '1.1.1',
+            uppercase: true,
+            layers: 'Paths'
           }
         },
         {
@@ -208,7 +219,16 @@ export default {
   },
   templates () {
     return {
-      fiberTemplates: []
+      fiberTemplates: [],
+      statusList: [
+        'Planned',
+        'Reserved',
+        'Building',
+        'Testing',
+        'Working',
+        'Dropped',
+        'Inactive'
+      ]
     }
   }
 }

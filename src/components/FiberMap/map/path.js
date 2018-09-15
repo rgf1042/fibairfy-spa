@@ -8,6 +8,7 @@ function Path(id, name, first_site, end_site, intermedial, type, m) {
   this.end_site = end_site || {}
   this.type = !type ? m.type_path_default : type
   this.polyline = null
+  this.status = 'Planned'
   // We add first_site and end_site to dots array
   this.intermedial = intermedial || []
   this.color_building = 'red'
@@ -116,9 +117,11 @@ Path.prototype.addPoint = function(point) {
 Path.prototype.save = function () {
   let path = {
     project: this.map_parent.active_project.id,
+    name: this.name,
     first: this.first_site.id,
     last: this.end_site.id,
     intermedial: this.intermedial,
+    status: this.status,
     type: this.type
   }
   this.map_parent.vue.$store.dispatch('projects/addNewPath', path).then(response => {

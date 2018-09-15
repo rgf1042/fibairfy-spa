@@ -18,7 +18,7 @@
                     <label>{{$t('general.status')}}:</label>
                   </b-col>
                   <b-col cols="4">
-                    <label>{{current.status}}</label>
+                    <label>{{status}}</label>
                   </b-col>
                 </b-row>
                 <b-row>
@@ -62,6 +62,9 @@ export default {
     },
     current () {
       return this.$store.state.projects.current
+    },
+    status () {
+      return this.$t('general.statusList.' + this.current.status) || ''
     }
   },
   data () {

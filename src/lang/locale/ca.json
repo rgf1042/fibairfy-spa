@@ -31,6 +31,15 @@
     "download": "Descarregar",
     "metrics": {
       "meters": "metres"
+    },
+    "statusList": {
+      "Planned": "Projectat",
+      "Reserved": "Reservat",
+      "Building": "En construcció",
+      "Testing": "En proves",
+      "Working": "Operatiu",
+      "Dropped": "Esborrat",
+      "Inactive": "Inactiu"
     }
   },
   "content": {

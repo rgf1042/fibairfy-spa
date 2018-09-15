@@ -90,7 +90,6 @@ export default {
         defaultZone: 2413,
         status: 'Planned'
       },
-      statusList: ['Planned'],
       zoneUrl: fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/zone/', // eslint-disable-line
       alert: {
         show: false,
@@ -102,7 +101,17 @@ export default {
 
   },
   computed: {
-
+    statusList () {
+      let output = []
+      let statusList = this.$store.state.templates.statusList
+      for (let x in statusList) {
+        output[x] = {
+          value: statusList[x],
+          text: this.$t('general.statusList.' + statusList[x])
+        }
+      }
+      return output
+    }
   },
   methods: {
     onSubmit (evt) {

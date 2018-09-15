@@ -51,6 +51,11 @@
                         label-for="typeInput">
             <b-form-select id="typeInput" v-model="form.type" :options="types" class="mb-3" />
           </b-form-group>
+          <b-form-group id="statusInputGroup"
+                        :label="this.$t('general.status')+':'"
+                        label-for="statusInput">
+            <b-form-select id="statusInput" v-model="form.status" :options="statusList" class="mb-3" />
+          </b-form-group>
           <b-form-group id="observationsInputGroup"
                         label="Observacions:"
                         label-for="observationsInput">
@@ -83,6 +88,7 @@ export default {
         inputFO: 0,
         outputFO: 0,
         type: '',
+        status: '',
         observations: ''
       },
       deleted: {
@@ -97,6 +103,7 @@ export default {
     this.form.inputFO = box.inputFO
     this.form.outputFO = box.outputFO
     this.form.type = box.type
+    this.form.status = box.status
     this.form.observations = box.observations
     this.$bus.$once('update-boxes', this.onSubmit)
   },
@@ -108,6 +115,17 @@ export default {
         output[x] = {
           value: types[x],
           text: this.$t('content.boxTypes.' + types[x])
+        }
+      }
+      return output
+    },
+    statusList () {
+      let output = []
+      let statusList = this.$store.state.templates.statusList
+      for (let x in statusList) {
+        output[x] = {
+          value: statusList[x],
+          text: this.$t('general.statusList.' + statusList[x])
         }
       }
       return output

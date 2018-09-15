@@ -3,16 +3,12 @@
 import L from 'leaflet'
 // Internal modules
 import Site from './site'
-// var Box = require('./box')
 import Path from './path'
 import Fiber from './fiber'
-// var Pfusion = require('./pfusion')
-// var Projecte = require('./projecte')
-// var Config = require('./config')
-// var IOGeoJSON = require('./iogeojson')
-// requier leaflet-search
-var LeafletSearch = require('leaflet-search')
 
+// External modules
+var LeafletSearch = require('leaflet-search')
+var uuidv1 = require('uuid/v1')
 // =====
 // Mapa
 function Mapa (divMap, mapId, status, layerActive, vue) {
@@ -38,7 +34,7 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   this.type_path_colors['grey'] = ['#2f2f2f', '#2f2f2f', '#2f2f2f', '#2f2f2f']
   this.type_path_colors['fiber'] = ['#ff4000', '#ff4000', '#ff4000', '#ff4000']
 
-  this.type_path_default = this.type_path[0]
+  this.type_path_default = this.type_path[3]
 
   // Llistat de box (TODO: Passar-ho a una taula.)
   this.type_box = [
@@ -100,7 +96,7 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   this.active_project = this.vue.$store.state.projects.current // Apliquem el projecte actual amb el store de Vue
 
   // default zone
-  this.default_zone = this.vue.$store.state.projects.current.defaultZone.id
+  this.default_zone = this.vue.$store.state.projects.current.defaultZone
 
   // Map details
   this.map_data = this.vue.$store.state.projects.map // Apliquem el projecte actual amb el store de Vue
@@ -470,7 +466,7 @@ Mapa.prototype.onClick = function (e) {
     case 'site':
       var mysite = new Site(
         null,
-        'site' + Math.floor(Math.random() * 100000),
+        'site-' + uuidv1(),
         e.latlng,
         this.type_site_default,
         this.default_zone,

@@ -41,6 +41,11 @@
                           placeholder="Enter name">
             </b-form-input>
           </b-form-group>
+          <b-form-group id="statusInputGroup"
+                        :label="this.$t('general.status')+':'"
+                        label-for="statusInput">
+            <b-form-select id="statusInput" v-model="form.status" :options="statusList" class="mb-3" />
+          </b-form-group>
           <b-form-group id="observationsInputGroup"
                         label="Observacions:"
                         label-for="observationsInput">
@@ -86,6 +91,7 @@ export default {
       form: {
         id: 0,
         name: '',
+        status: '',
         observations: ''
       },
       template: 0,
@@ -103,6 +109,7 @@ export default {
     if (cable) {
       this.form.id = cable.id
       this.form.name = cable.name
+      this.form.status = cable.status
       this.form.observations = cable.observations
     } else {
       this.alert.message = 'No existeix' // TODO: Make lang templates
@@ -124,6 +131,17 @@ export default {
     },
     tubes () {
       return this.$store.getters['projects/tubesIndexes'](this.form.id)
+    },
+    statusList () {
+      let output = []
+      let statusList = this.$store.state.templates.statusList
+      for (let x in statusList) {
+        output[x] = {
+          value: statusList[x],
+          text: this.$t('general.statusList.' + statusList[x])
+        }
+      }
+      return output
     }
   },
   watch: {

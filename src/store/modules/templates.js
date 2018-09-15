@@ -14,6 +14,7 @@ export default {
     },
     reset (state) {
       state.fiberTemplates = InitialStates.templates().fiberTemplates
+      state.fiberTemplates = InitialStates.templates().statusList
     }
   },
   getters: {

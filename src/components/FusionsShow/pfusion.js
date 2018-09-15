@@ -152,8 +152,9 @@ Pfusion.prototype.drawCables = function () {
     let rectCable
     if (x % 2) { // odd
       // We draw it vertical
+      let length = this.tubesCables[cable] ? this.tubesCables[cable].length : 1
       width = this.defaultHeightCable
-      height = this.defaultWidthCable1Tube * this.tubesCables[cable].length
+      height = this.defaultWidthCable1Tube * length
       rectCable = new fabric.Rect({
         left: 0,
         top: top,
@@ -174,7 +175,8 @@ Pfusion.prototype.drawCables = function () {
       top += (this.defaultMarginCables + height)
     } else { // even
       // We draw it horizontal
-      width = this.defaultWidthCable1Tube * this.tubesCables[cable].length
+      let length = this.tubesCables[cable] ? this.tubesCables[cable].length : 1
+      width = this.defaultWidthCable1Tube * length
       height = this.defaultHeightCable
       rectCable = new fabric.Rect({
         left: left - width,
