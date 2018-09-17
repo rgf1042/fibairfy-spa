@@ -30,6 +30,9 @@
           <h2>Editar cable: {{form.id}}</h2>
         </b-col>
       </b-row>
+      <b-row>
+        <b-col><hr></b-col>
+      </b-row>
         <b-form>
           <b-form-group id="nameInputGroup"
                         label="Nom:"
@@ -62,13 +65,22 @@
             <b-form-select id="templateInput" v-model="template" :options="templates" class="mb-3" />
           </b-form-group>
         </b-form>
+
+        <b-row class="pt-2">
+          <b-col cols="10">
+            <h2>Editar tubs: {{form.id}}</h2>
+          </b-col>
+          <b-col>
+            <b-button type="button" variant="success"
+                                    @click="addTube">{{$t('general.add')}}</b-button>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col><hr></b-col>
+        </b-row>
         <div v-for="(tubeId, index) in tubes" :key="tubeId">
           <tube-edit :id="tubeId"></tube-edit>
         </div>
-        <b-row class="pt-4">
-          <b-button type="button" variant="success"
-                                  @click="addTube">{{$t('general.add')}}</b-button>
-        </b-row>
         <b-row class="pt-4">
           <b-button class="mr-1" type="button" variant="primary" @click="onSubmit">{{$t('general.update')}}</b-button>
           <b-button class="mr-1" type="button" variant="danger" @click="onDelete">{{$t('general.delete')}}</b-button>

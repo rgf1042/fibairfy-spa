@@ -11,18 +11,21 @@
           </b-alert>
         </b-col>
       </b-row>
-      <b-row>
-        <b-col cols="4" class="pt-2">
+      <b-row class="pt-2">
+        <b-col cols="10">
           <h2>{{$tc('components.editBoxes.title', 2)}}: {{id}}</h2>
         </b-col>
+        <b-col>
+          <b-button variant="success" v-on:click="addBox">{{$t('general.add')}}</b-button>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col><hr></b-col>
       </b-row>
       <b-row class="pt-2" v-for="boxId in boxesIds" :key="boxId">
         <b-col>
           <box-edit :id="boxId"></box-edit>
         </b-col>
-      </b-row>
-      <b-row class="pt-3">
-        <b-button variant="success" v-on:click="addBox">{{$t('general.add')}}</b-button>
       </b-row>
       <b-row class="pt-4">
         <b-button class="mr-1" type="button" variant="primary" @click="onSubmit">{{$t('general.update')}}</b-button>

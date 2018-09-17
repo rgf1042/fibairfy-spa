@@ -94,7 +94,7 @@ Pfusion.prototype.drawBoxes = function () {
       width: width,
       height: height
     })
-    let text = new fabric.Text(box.name, {
+    let text = new fabric.Text('box ' + box.id, {
       left: left,
       top: top + (height / 2),
       fontSize: 20,
@@ -148,7 +148,7 @@ Pfusion.prototype.drawCables = function () {
   let width, height
   for (let x in this.cables) {
     let cable = this.cables[x]
-    let name = this.vue.$store.getters['projects/findCableById'](cable).name
+    let name = 'cable ' + this.vue.$store.getters['projects/findCableById'](cable).id
     let rectCable
     if (x % 2) { // odd
       // We draw it vertical

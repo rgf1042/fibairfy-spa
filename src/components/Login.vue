@@ -23,7 +23,8 @@
                         type="text"
                         v-model="form.username"
                         required
-                        placeholder="Enter username">
+                        placeholder="Enter username"
+                        autofocus>
           </b-form-input>
         </b-form-group>
         <b-form-group id="passwordInputGroup"

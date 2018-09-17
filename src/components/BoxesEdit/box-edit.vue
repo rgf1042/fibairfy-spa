@@ -68,6 +68,9 @@
           </b-form-group>
           <b-button type="button" variant="danger" @click="onDelete">Eliminar</b-button>
         </b-form>
+        <b-row>
+          <b-col><hr></b-col>
+        </b-row>
     </b-container>
   </div>
 </template>

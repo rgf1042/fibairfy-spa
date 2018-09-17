@@ -30,6 +30,10 @@ export default {
   },
   data () {
     return {
+      original: {
+        color: null
+      },
+      changes: false,
       form: {
         id: null,
         color: null,
@@ -42,19 +46,25 @@ export default {
     }
   },
   mounted () {
-    let tub = this.$store.state.projects.fibers.fibers[this.id]
-    if (tub) {
-      this.form.id = tub.id
-      this.form.color = tub.color
+    let fiber = this.$store.state.projects.fibers.fibers[this.id]
+    if (fiber) {
+      this.form.id = fiber.id
+      this.form.color = fiber.color
+      this.original.color = fiber.color
     }
     this.$bus.$once('update-cable', this.onSubmit)
   },
   computed: {
 
   },
+  watch: {
+    'form.color': function (newVal, oldVal) { // watch it
+      this.changes = (newVal !== this.original.color)
+    }
+  },
   methods: {
     onSubmit () {
-      if (this.form.id) {
+      if (this.form.id && this.changes) {
         this.$store.dispatch('projects/updateFiber', this.form).then(response => {
         }, error => {
           console.log(error)

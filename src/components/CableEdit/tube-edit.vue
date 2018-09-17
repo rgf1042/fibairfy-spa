@@ -30,16 +30,17 @@
         </b-form-input>
       </b-col>
     </b-row>
-    <b-row class="pt-2">
-      <b-col cols="1"><label>Fibres:</label></b-col>
+    <b-row class="py-3">
+      <b-col cols="3"><h4>Fibres:</h4></b-col>
+      <b-col><b-button type="button" variant="success"
+                              @click="addFiber">{{$t('general.add')}}</b-button></b-col>
     </b-row>
     <b-row class="pt-2">
-      <fiber-edit v-for="(fiberId, index) in fibers" :key="fiberId"
-                  :id="fiberId" :tube="form.id"></fiber-edit>
-      <b-col cols="1">
-        <b-button type="button" variant="success"
-                                @click="addFiber">{{$t('general.add')}}</b-button>
-      </b-col>
+        <fiber-edit v-for="(fiberId, index) in fibers" :key="fiberId"
+                    :id="fiberId" :tube="form.id"></fiber-edit>
+    </b-row>
+    <b-row class="pt-4">
+      <b-col><hr></b-col>
     </b-row>
   </div>
 </template>
@@ -60,19 +61,23 @@ export default {
       form: {
         id: null,
         color: null,
-        project: this.$store.state.projects.current.id,
-        cable: this.cable
+        project: this.$store.state.projects.current.id
       },
+      original: {
+        color: null
+      },
+      changes: false,
       deleted: {
         id: 0
       }
     }
   },
   mounted () {
-    let tub = this.$store.state.projects.tubes.tubes[this.id]
-    if (tub) {
-      this.form.id = tub.id
-      this.form.color = tub.color
+    let tube = this.$store.state.projects.tubes.tubes[this.id]
+    if (tube) {
+      this.form.id = tube.id
+      this.form.color = tube.color
+      this.original.color = tube.color
     }
     this.$bus.$once('update-cable', this.onSubmit)
   },
@@ -81,15 +86,15 @@ export default {
       return this.$store.getters['projects/fibersIndexes'](this.form.id)
     }
   },
+  watch: {
+    'form.color': function (newVal, oldVal) { // watch it
+      this.changes = (newVal !== this.original.color)
+    }
+  },
   methods: {
     onSubmit () {
-      if (this.form.id) {
+      if (this.form.id && this.changes) {
         this.$store.dispatch('projects/updateTube', this.form).then(response => {
-        }, error => {
-          console.log(error)
-        })
-      } else {
-        this.$store.dispatch('projects/addNewTube', this.form).then(response => {
         }, error => {
           console.log(error)
         })

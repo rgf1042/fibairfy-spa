@@ -42,7 +42,7 @@ export default {
         },
         {
           name: 'Google Maps 1',
-          tiles: 'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+          tiles: 'https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
           options: {
             maxZoom: 20,
             subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -51,7 +51,7 @@ export default {
         },
         {
           name: 'Google Maps 2',
-          tiles: '  http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
+          tiles: '  https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',
           options: {
             maxZoom: 20,
             subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -60,7 +60,7 @@ export default {
         },
         {
           name: 'Google Maps 3',
-          tiles: 'http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
+          tiles: 'https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
           options: {
             maxZoom: 20,
             subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -69,7 +69,7 @@ export default {
         },
         {
           name: 'Google Maps 4',
-          tiles: 'http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+          tiles: 'https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
           options: {
             maxZoom: 20,
             subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -80,7 +80,7 @@ export default {
       overlayTiles: [
         {
           name: 'Guifi.net nodes',
-          tiles: 'https://guifi.net/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
+          tiles: 'https://guifimaps.guifi.net/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
           options: {
             format: 'image/png',
             transparent: true,
@@ -91,7 +91,7 @@ export default {
         },
         {
           name: 'Guifi.net links',
-          tiles: 'https://guifi.net/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
+          tiles: 'https://guifimaps.guifi.net/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
           options: {
             format: 'image/png',
             transparent: true,
@@ -102,7 +102,7 @@ export default {
         },
         {
           name: 'Punts fibra òptica guifi.net',
-          tiles: 'http://localhost:9090/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
+          tiles: 'https://guifimaps.guifi.net/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
           options: {
             format: 'image/png',
             transparent: true,
@@ -113,24 +113,13 @@ export default {
         },
         {
           name: 'Trams fibra òptica guifi.net',
-          tiles: 'http://localhost:9090/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
+          tiles: 'https://localhost:9090/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
           options: {
             format: 'image/png',
             transparent: true,
             version: '1.1.1',
             uppercase: true,
             layers: 'Paths'
-          }
-        },
-        {
-          name: 'Xarxa XOC Generalitat',
-          tiles: 'http://10.90.230.41/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/XOC.map',
-          options: {
-            format: 'image/png',
-            transparent: true,
-            version: '1.1.1',
-            uppercase: true,
-            layers: 'XOC'
           }
         }
       ],
