@@ -42,7 +42,7 @@
                       label-for="authInput">
           <b-form-select id="authInput" v-model="form.auth" :options="authTypes" class="mb-3" />
         </b-form-group>
-        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button type="submit" variant="primary">Login</b-button>
       </b-form>
   </b-container>
 </template>

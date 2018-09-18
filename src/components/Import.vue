@@ -12,7 +12,7 @@
     </b-row>
     <b-row>
       <b-col sm="2" class="pt-2">
-        <h2>{{$t('menu.import')}}</h2>
+        <h2>{{$t('components.import.title')}}</h2>
       </b-col>
     </b-row>
     <b-row>
@@ -21,12 +21,16 @@
       </b-col>
     </b-row>
     <b-form @submit="onSubmit">
-      <b-form-group id="typeInputGroup"
-                    label="Tipus llocs (per defecte):"
-                    label-for="typeInput">
-        <b-form-select id="typeInput" v-model="form.defaultSiteType"
-          :disabled="!project.id"
-          :options="siteTypes" class="mb-3" />
+      <b-form-group id="thresholdInputGroup"
+                    :label="this.$t('components.import.threshold') + ':'"
+                    label-for="thresholdInput">
+        <b-form-input id="thresholdInput"
+                      type="number"
+                      :disabled="!project.id"
+                      v-model="form.threshold"
+                      required
+                      placeholder="Enter threshold">
+        </b-form-input>
       </b-form-group>
       <b-form-group id="zoneInputGroup"
                     :label="this.$t('general.zone')+':'"
@@ -61,7 +65,7 @@ export default {
       form: {
         data: '',
         defaultZone: '',
-        defaultSiteType: 'notdefined'
+        threshold: 10
       },
       alert: {
         show: false,
@@ -76,17 +80,6 @@ export default {
   computed: {
     project () {
       return this.$store.state.projects.current
-    },
-    siteTypes () {
-      let output = []
-      let types = this.$store.state.projects.sites.types
-      for (let x in types) {
-        output[x] = {
-          value: types[x],
-          text: this.$t('content.siteTypes.' + types[x])
-        }
-      }
-      return output
     },
     pathTypes () {
       let output = []
@@ -106,7 +99,7 @@ export default {
       this.$store.dispatch('projects/importProject', this.form).then(response => {
         this.$router.go(-1)
       }, error => {
-        this.alert.message = error.msg
+        this.alert.message = error.body.msg
         this.alert.show = true
         console.log(error)
       })

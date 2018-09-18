@@ -104,6 +104,11 @@
       "fusion": "fusion",
       "fusions": "fusions"
     },
+    "import": {
+      "title": "Importa",
+      "threshold": "Threshold (in meters)",
+      "defaultType": "Site type (by default)"
+    },
     "projects": {
       "readonly": "read-only",
       "list": "Project list",

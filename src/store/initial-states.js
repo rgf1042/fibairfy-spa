@@ -33,7 +33,7 @@ export default {
       layer: 'civil',
       baseTiles: [
         {
-          name: 'Guifi.net OpenStreetMap',
+          name: 'OpenStreetMap',
           tiles: fiberfy.constants.DEFAULT_TILE_SERVER, // eslint-disable-line
           options: {
             maxZoom: 20,
@@ -80,7 +80,7 @@ export default {
       overlayTiles: [
         {
           name: 'Guifi.net nodes',
-          tiles: 'https://guifimaps.guifi.net/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
+          tiles: 'https://guifimaps.guifi.net/cgi-bin/mapserv?map=/var/www/guifimaps/GMap.map',
           options: {
             format: 'image/png',
             transparent: true,
@@ -91,7 +91,7 @@ export default {
         },
         {
           name: 'Guifi.net links',
-          tiles: 'https://guifimaps.guifi.net/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
+          tiles: 'https://guifimaps.guifi.net/cgi-bin/mapserv?map=/var/www/guifimaps/GMap.map',
           options: {
             format: 'image/png',
             transparent: true,
@@ -102,7 +102,7 @@ export default {
         },
         {
           name: 'Punts fibra òptica guifi.net',
-          tiles: 'https://guifimaps.guifi.net/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
+          tiles: 'https://guifimaps.guifi.net/cgi-bin/mapserv?map=/var/www/guifimaps/GMap.map',
           options: {
             format: 'image/png',
             transparent: true,
@@ -113,7 +113,7 @@ export default {
         },
         {
           name: 'Trams fibra òptica guifi.net',
-          tiles: 'https://localhost:9090/cgi-bin/mapserv?map=/home/guifi/maps.guifi.net/guifimaps/GMap.map',
+          tiles: 'https://guifimaps.guifi.net/cgi-bin/mapserv?map=/var/www/guifimaps/GMap.map',
           options: {
             format: 'image/png',
             transparent: true,

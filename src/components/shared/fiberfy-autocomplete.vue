@@ -2,7 +2,7 @@
   <div style="position:relative">
       <input class="form-control" type="text" v-model="selection"
         :required="required"
-        :disabled="disabled"
+        :disabled="disabled || loading"
         @keydown.enter ="enter"
         @keydown.down ="down"
         @keydown.up ="up"
@@ -28,7 +28,8 @@ export default {
       remoteData: [],
       open: false,
       current: 0,
-      id: this.value
+      id: this.value,
+      loading: false
     }
   },
   mounted () {
@@ -70,11 +71,16 @@ export default {
   methods: {
     loadSelectionById (id) {
       if (this.type === 'remote') {
+        this.loading = true
+        this.selection = 'loading...'
         this.$http.get(this.url + id)
                   .then(response => {
                     this.selection = response.body[this.selectedField]
+                    this.loading = false
                   }, error => {
                     console.log(error)
+                    this.loading = false
+                    this.selection = ''
                   })
       } else {
         let item = this.display.find(item => item.id === id)

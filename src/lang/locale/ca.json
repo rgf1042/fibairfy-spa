@@ -105,6 +105,11 @@
       "fusion": "fusió",
       "fusions": "fusions"
     },
+    "import": {
+      "title": "Importar",
+      "threshold": "Tolerància (en metres)",
+      "defaultType": "Tipus de lloc (per defecte)"
+    },
     "projects": {
       "readonly": "només lectura",
       "list": "Llistat de projectes",
