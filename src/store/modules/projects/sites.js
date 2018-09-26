@@ -67,27 +67,21 @@ export default {
       return new Promise((resolve, reject) => {
         let index = context.getters.findSiteIndexById(id)
         if (index !== -1) {
-          let paths
-          Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/path/', { params: { where: { or: [{ first: id },{ last: id}]}}}).then(response => {
-            paths = response.body
-            let promises = []
-            for (let x in paths) {
-              promises.push(context.dispatch('deletePath', paths[x].id))
-            }
-            Promise.all(promises).then(response => {
+            Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/path/', { params: { where: { or: [{ first: id },{ last: id}]}}}).then(response => {
+              let paths = response.body
               Vue.http.delete(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/site/' + id).then(response => {
+                for (let x in paths) {
+                  let index = context.getters.findPathIndexById(paths[x].id)
+                  context.commit('deletePath', index)
+                }
                 context.commit('deleteSite', index)
                 resolve(response)
               }, error => {
                 reject(error)
               })
             }, error => {
-              reject(error)
-            })
-          }, error => {
             reject(error)
           })
-
         }
         else {
           reject({ msg: 'This site doesnt exist'})

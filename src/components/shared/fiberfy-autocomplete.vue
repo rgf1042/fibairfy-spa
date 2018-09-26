@@ -33,7 +33,7 @@ export default {
     }
   },
   mounted () {
-    this.loadSelectionById(this.value) // We load existing text
+    // this.loadSelectionById(this.value) // We load existing text
   },
   computed: {
     openSuggestion () {
