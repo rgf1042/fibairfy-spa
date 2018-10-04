@@ -32,8 +32,8 @@ export default {
       loading: false
     }
   },
-  mounted () {
-    // this.loadSelectionById(this.value) // We load existing text
+  async created () {
+    await this.loadSelectionById(this.value) // We load existing text
   },
   computed: {
     openSuggestion () {
@@ -61,30 +61,31 @@ export default {
     }
   },
   watch: {
-    value: function (newVal, oldVal) {
+    value: async function (newVal, oldVal) {
       if (newVal !== this.id) {
         this.id = newVal
-        this.loadSelectionById(newVal)
+        await this.loadSelectionById(newVal)
       }
     }
   },
   methods: {
-    loadSelectionById (id) {
-      if (this.type === 'remote') {
-        this.loading = true
-        this.selection = 'loading...'
-        this.$http.get(this.url + id)
-                  .then(response => {
-                    this.selection = response.body[this.selectedField]
-                    this.loading = false
-                  }, error => {
-                    console.log(error)
-                    this.loading = false
-                    this.selection = ''
-                  })
-      } else {
-        let item = this.display.find(item => item.id === id)
-        if (item) this.selection = item.text
+    async loadSelectionById (id) {
+      if (id) {
+        if (this.type === 'remote') {
+          this.loading = true
+          this.selection = 'loading...'
+          try {
+            let response = await this.$http.get(this.url + id)
+            this.selection = response.body[this.selectedField]
+          } catch (error) {
+            console.log(error)
+            this.selection = ''
+          }
+          this.loading = false
+        } else {
+          let item = this.display.find(item => item.id === id)
+          if (item) this.selection = item.text
+        }
       }
     },
     fetchData () {
