@@ -104,7 +104,7 @@ export default {
         longitude: '',
         type: '',
         status: '',
-        zone: '',
+        zone: null,
         observations: ''
       },
       alert: {
