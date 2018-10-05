@@ -214,6 +214,7 @@ export default {
         formData.append('project', context.getters.currentId)
         formData.append('data', form.data, form.data.name)
         formData.append('defaultZone', form.defaultZone)
+        formData.append('threshold', form.threshold)
         Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/import/', formData).then(response => {
           // We reload current project
           context.dispatch('setCurrent', context.getters.currentId).then(response => {
