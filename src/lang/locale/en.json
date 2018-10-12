@@ -25,6 +25,8 @@
     "longitude": "Longitude",
     "zoom": "Zoom",
     "zone": "Zone",
+    "observations": "Observations",
+    "distance": "Distance",
     "loading": "Loading",
     "search": "Search",
     "download": "Download",
@@ -39,6 +41,9 @@
       "Working": "Working",
       "Dropped": "Dropped",
       "Inactive": "Inactive"
+    },
+    "messages": {
+      "deleteEntity": "Are you sure to delete"
     }
   },
   "content": {
@@ -98,6 +103,20 @@
       },
       "tube": "tube",
       "tubes": "tubes"
+    },
+    "editSites": {
+      "title": "@:general.edit @:components.editSites.site",
+      "site": "site",
+      "deleteMsg": " @:general.messages.deleteEntity @:components.editSites.site",
+      "deleteTitle": "@:general.delete @:components.editSites.site"
+    },
+    "editPaths": {
+      "title": "@:general.edit @:components.editPaths.path",
+      "path": "path",
+      "first": "First @:components.editSites.site",
+      "second": "Second @:components.editSites.site",
+      "deleteMsg": " @:general.messages.deleteEntity @:components.editPaths.path",
+      "deleteTitle": "@:general.delete @:components.editPaths.path"
     },
     "editFusions": {
       "title": "@:general.edit @:components.editFusions.fusions",

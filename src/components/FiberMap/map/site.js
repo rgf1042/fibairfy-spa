@@ -117,7 +117,7 @@ Site.prototype.onSiteMouseOver = function (e) {
         this.changeTypeIcon('active')
         break
       default:
-        this.map_parent.info.update('Site ' + this.name + '(' + this.id + ')')
+        this.map_parent.info.update(this.map_parent.vue.$t('components.editSites.site') + ': ' + this.name + '(' + this.id + ')')
         this.changeTypeIcon('over')
         break
     }
