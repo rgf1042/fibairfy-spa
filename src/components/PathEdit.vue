@@ -6,8 +6,8 @@
       @esc="noDeletePath"
       @backdrop="noDeletePath"
       @headerclose="noDeletePath"
-      title="Esborrar path">
-      <p class="my-4">Segur que vol esborrar el path: {{deleted.name}}</p>
+      :title="$t('components.editPaths.deleteTitle')">
+      <p class="my-4">{{$t('components.editPaths.deleteMsg')}}: {{deleted.name}}</p>
     </b-modal>
     <b-container>
       <b-row>
@@ -22,12 +22,12 @@
       </b-row>
       <b-row>
         <b-col cols="4" class="pt-2">
-          <h2>Editar path: {{form.id}}</h2>
+          <h2>{{$t('components.editPaths.title')}}: {{form.id}}</h2>
         </b-col>
       </b-row>
         <b-form @submit="onSubmit">
           <b-form-group id="nameInputGroup"
-                        label="Nom:"
+                        :label="this.$t('general.name') +':'"
                         label-for="nameInput">
             <b-form-input id="nameInput"
                           type="text"
@@ -37,7 +37,7 @@
             </b-form-input>
           </b-form-group>
           <b-form-group id="iniSiteInputGroup"
-                        label="Primer site:"
+                        :label="this.$t('components.editPaths.first') +':'"
                         label-for="iniSiteInput">
             <fiberfy-autocomplete type="local"
                                   :inputData="this.sites"
@@ -46,7 +46,7 @@
                                   v-model="form.first"/>
           </b-form-group>
           <b-form-group id="lastSiteInputGroup"
-                        label="Segon site:"
+                        :label="this.$t('components.editPaths.second') +':'"
                         label-for="lastSiteInput">
             <fiberfy-autocomplete type="local"
                                   :inputData="this.sites"
@@ -55,7 +55,7 @@
                                   v-model="form.last"/>
           </b-form-group>
           <b-form-group id="distanceInputGroup"
-                        label="Distància:"
+                        :label="this.$t('general.distance') +':'"
                         label-for="distanceInput">
             <b-form-input id="distanceInput"
                           type="text"
@@ -64,7 +64,7 @@
             </b-form-input>
           </b-form-group>
           <b-form-group id="typeInputGroup"
-                        label="Tipus:"
+                        :label="this.$t('general.type') +':'"
                         label-for="typeInput">
             <b-form-select id="typeInput" v-model="form.type" :options="types" class="mb-3" />
           </b-form-group>
@@ -74,7 +74,7 @@
             <b-form-select id="statusInput" v-model="form.status" :options="statusList" class="mb-3" />
           </b-form-group>
           <b-form-group id="observationsInputGroup"
-                        label="Observacions:"
+                        :label="this.$t('general.observations') +':'"
                         label-for="observationsInput">
             <b-form-textarea id="observationsInput"
                        v-model="form.observations"
@@ -83,8 +83,8 @@
                        :max-rows="6">
             </b-form-textarea>
           </b-form-group>
-          <b-button type="submit" variant="primary">Actualitzar</b-button>
-          <b-button type="button" variant="danger" @click="onDelete">Eliminar</b-button>
+          <b-button type="submit" variant="primary">{{$t('general.update')}}</b-button>
+          <b-button type="button" variant="danger" @click="onDelete">{{$t('general.delete')}}</b-button>
         </b-form>
     </b-container>
   </div>

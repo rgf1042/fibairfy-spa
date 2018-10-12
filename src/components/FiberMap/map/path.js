@@ -155,7 +155,7 @@ Path.prototype.onPathClick = function(e) {
 }
 Path.prototype.onPathMouseOver = function(e) {
   if (this.map_parent.layerActive === 'civil' && this.id) {
-    this.map_parent.info.update('Tram ' + this.name + '(' + this.id + ')')
+    this.map_parent.info.update(this.map_parent.vue.$t('components.editPaths.path') + ': ' + this.name + '(' + this.id + ')')
     this.changeTypePath('over')
   }
 }

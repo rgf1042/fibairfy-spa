@@ -6,8 +6,8 @@
       @esc="noDeleteSite"
       @backdrop="noDeleteSite"
       @headerclose="noDeleteSite"
-      title="Esborrar site">
-      <p class="my-4">Segur que vol esborrar el site: {{deleted.name}}</p>
+      :title="this.$t('components.editSites.deleteTitle')">
+      <p class="my-4">{{$t('components.editSites.deleteMsg')}}: {{deleted.name}}</p>
     </b-modal>
     <b-container>
       <b-row>
@@ -22,12 +22,12 @@
       </b-row>
       <b-row>
         <b-col cols="4" class="pt-2">
-          <h2>Editar site: {{form.id}}</h2>
+          <h2>{{$t('components.editSites.title')}}: {{form.id}}</h2>
         </b-col>
       </b-row>
         <b-form @submit="onSubmit">
           <b-form-group id="nameInputGroup"
-                        label="Nom:"
+                        :label="this.$t('general.name') +':'"
                         label-for="nameInput">
             <b-form-input id="nameInput"
                           type="text"
@@ -37,7 +37,7 @@
             </b-form-input>
           </b-form-group>
           <b-form-group id="locationInputGroup"
-                        label="Localització:"
+                        :label="this.$t('general.location') +':'"
                         label-for="latitudeInput">
             <b-form-input id="latitudeInput"
                           type="text"
@@ -53,7 +53,7 @@
             </b-form-input>
           </b-form-group>
           <b-form-group id="typeInputGroup"
-                        label="Tipus:"
+                        :label="this.$t('general.type') +':'"
                         label-for="typeInput">
             <b-form-select id="typeInput" v-model="form.type" :options="types" class="mb-3" />
           </b-form-group>
@@ -72,7 +72,7 @@
                                   v-model="form.zone"/>
           </b-form-group>
           <b-form-group id="observationsInputGroup"
-                        label="Observacions:"
+                        :label="this.$t('general.observations') +':'"
                         label-for="observationsInput">
             <b-form-textarea id="observationsInput"
                        v-model="form.observations"
@@ -81,8 +81,8 @@
                        :max-rows="6">
             </b-form-textarea>
           </b-form-group>
-          <b-button type="submit" variant="primary">Actualitzar</b-button>
-          <b-button type="button" variant="danger" @click="onDelete">Eliminar</b-button>
+          <b-button type="submit" variant="primary">{{$t('general.update')}}</b-button>
+          <b-button type="button" variant="danger" @click="onDelete">{{$t('general.delete')}}</b-button>
         </b-form>
     </b-container>
   </div>

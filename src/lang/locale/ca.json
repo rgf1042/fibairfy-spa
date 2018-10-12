@@ -26,6 +26,8 @@
     "longitude": "Longitud",
     "zoom": "Zoom",
     "zone": "Zona",
+    "observations": "Observacions",
+    "distance": "Distància",
     "loading": "Carregant",
     "search": "Buscar",
     "download": "Descarregar",
@@ -40,6 +42,9 @@
       "Working": "Operatiu",
       "Dropped": "Esborrat",
       "Inactive": "Inactiu"
+    },
+    "messages": {
+      "deleteEntity": "Segur que vol esborrar"
     }
   },
   "content": {
@@ -99,6 +104,20 @@
       },
       "tube": "tub",
       "tubes": "tubs"
+    },
+    "editSites": {
+      "title": "@:general.edit @:components.editSites.site",
+      "site": "lloc",
+      "deleteMsg": " @:general.messages.deleteEntity @:components.editSites.site",
+      "deleteTitle": "@:general.delete @:components.editSites.site"
+    },
+    "editPaths": {
+      "title": "@:general.edit @:components.editPaths.path",
+      "path": "tram",
+      "first": "Primer @:components.editSites.site",
+      "second": "Segon @:components.editSites.site",
+      "deleteMsg": " @:general.messages.deleteEntity @:components.editPaths.path",
+      "deleteTitle": "@:general.delete @:components.editPaths.path"
     },
     "editFusions": {
       "title": "@:general.edit @:components.editFusions.fusions",
