@@ -138,131 +138,172 @@
 
 	Aquí l'usuari podrà modificar aspectes com el nom del projecte, el punt de referència del mapa (Localització + zoom), status (el mateix que hi ha a la web de Guifi.net) i finalment la zona per defecte. La zona ve donada per la base de dades de Guifi.net (la mateixa que la web), l'usuari la pot seleccionar d'un desplegable a mesura que va escrivint.
 	
+	\newpage
 	\section{Obra civil}
-	\subsection{Gestió de sites}
-	Els \emph{sites} dins de l'aplicació simbolitzen els punts físics d'obra civil on s'ubicaran les caixes i sistemes de telecomunicacions. Contenen unes coordenades i atribut físic que ens indica el tipus d'element. També permeten afegir comentaris i modificar-ne el nom.
+	\subsection{Gestió de llocs}
+	Els llocs dins de l'aplicació simbolitzen els punts físics d'obra civil on s'ubicaran les caixes i sistemes de telecomunicacions. Contenen unes coordenades i atribut físic que ens indica el tipus d'element. També permeten afegir comentaris i modificar-ne el nom.
 	
 	\subsubsection{Creació}
-	Sobre el mapa inicial podem crear diferents \emph{sites} on s'ubicaran els equips de fibra òptica. Per tal de crear nous \emph{sites} hem de seleccionar la pestanya \emph{Crea Lloc} del menú superior. Aleshores hem d'anar marcant amb el botó esquerra del ratolí els punts on hi volem col·locar un nou \emph{site}. Per sortir del menú de creació de nous \emph{sites} podem clicar a qualsevol \emph{site} existent.
+	Sobre el mapa inicial podem crear diferents llocs on s'ubicaran els equips de fibra òptica. Per tal de crear nous llocs hem de seleccionar el botó \emph{Nou lloc} situat a la barra inferior dreta\footnote{És necessari seleccionar la capa d'Obra Cívil}. Aleshores hem d'anar marcant amb el botó esquerre del ratolí els punts on hi volem col·locar un nou lloc. Per sortir del menú de creació de nous llocs podem clicar un altre cop sobre el botó \emph{Nou lloc} o prémer la fletxa enrere verda.
 	
 	\begin{figure}[H]
 		\centering
-		%\includegraphics[width=0.7\textwidth]{menu_lloc_fiberfy.png}
-		\caption{Menú de creació \emph{sites}}
+		\includegraphics[width=0.7\textwidth]{images/newsite_menu.png}
+		\caption{Menú de creació llocs}
+		\label{fig:newsite-menu}
 	\end{figure}
-
-	Els \emph{sites} creats se simbolitzaran utilitzant uns quadrats de color vermell.
+	
+	% Aquí s'ha d'afegir una llegenda dels símbols
+	Els llocs creats se simbolitzaran amb els següents marcadors:
+	\begin{figure}[H]
+		\centering
+		\begin{tabular}{|c|p{5cm}|} \hline
+			\textbf{Símbol} & \textbf{Explicació} \\ \hline
+			\includegraphics{images/simbols/notdefined.png} & Símbol no definit, quan no coneixem el tipus. \\ \hline
+			\includegraphics{images/simbols/manhole.png} & Arqueta situada al sòl. \\ \hline
+			\includegraphics{images/simbols/pole.png} & Poste \\ \hline
+			\includegraphics{images/simbols/hook.png} & Ganxo \\ \hline
+			\includegraphics{images/simbols/poe.png} & Poe \\ \hline
+			\includegraphics{images/simbols/cabinet.png} & Armari \\ \hline
+			\includegraphics{images/simbols/room.png} & Cambra \\ \hline
+			\includegraphics{images/simbols/jump.png} & Salt \\ \hline
+		\end{tabular}
+	\end{figure}
+	
+	Per defecte tots els llocs creats seran de tipus \textbf{No Definit}.
 	
 	\begin{figure}[H]
 		\centering
-		%\includegraphics[width=0.7\textwidth]{sites_fiberfy.png}
-		\caption{Mapa amb \emph{sites}}
+		\includegraphics[width=0.8\textwidth]{images/sites_map.png}
+		\caption{Mapa amb llocs}
 	\end{figure}
 
 	\subsubsection{Edició}
-	Per editar un \emph{site} des del menú d'\emph{Obra Civil} hem de clicar sobre el \emph{site} del mapa que volem modificar. Aleshores s'ens projectarà un formulari amb tots els atributs rellevants pel \emph{site}. Els atributs modificables són: les coordenades, el nom, el tipus de \emph{site} i la possible observació(comentari).
+	Per editar un lloc des de la capa d'\emph{Obra Civil} hem de clicar sobre el lloc del mapa que volem modificar. Aleshores s'ens projectarà un formulari amb tots els atributs rellevants pel lloc. Els atributs modificables són: les coordenades, el nom, el tipus de lloc, observacions i l'estatus en que es troba. També ens mostrarà la distància en metres que cobreix.
 	
 	\begin{figure}[H]
 		\centering
-		%\includegraphics[width=0.7\textwidth]{lloc_form_fiberfy.png}
-		\caption{Formulari de \emph{sites}}
+		\includegraphics[width=0.8\textwidth]{images/sites_edit.png}
+		\caption{Formulari d'edició de llocs}
 	\end{figure}
 
-	Si hem realitzat qualsevol modificació que volem guardar abans de tornar al mapa haurem de clicar el botó \emph{Update}.
+	Si hem realitzat qualsevol modificació que volem guardar abans de tornar al mapa haurem de clicar el botó \emph{Actualitzar}.
 	
-	Si volem eliminar el \emph{site} haurem de clicar el botó \emph{Delete} i automàticament serem redirigits al mapa.
+	Si volem eliminar el lloc haurem de clicar el botó \emph{Eliminar}; aleshores s'ens demanarà confirmació i en cas afirmatiu eliminarà el lloc i ens redirigirà al mapa.
 	
 	\subsection{Gestió de trams}
-	Els \emph{trams} dins de l'aplicació ens indicaran l'obra civil encarregada d'unir uns determinats \emph{sites}. Podrem definir com serà aquest \emph{tram} i escriure alguna anotació(observation).
+	Els trams dins de l'aplicació ens indicaran l'obra civil encarregada d'unir uns determinats llocs. Podrem definir com serà aquest tram i escriure alguna anotació(observació).
 	
 	\subsubsection{Creació}
-	Per tal de crear \emph{trams} haurem de seleccionar la pestanya \emph{Crea Tram} del menú superior. Un cop seleccionada la pestanya hem de clicar sobre el primer \emph{site} que volem unir i anar clicant sobre els següents \emph{sites} adjacents tot traçant una línia.
+	Per tal de crear trams haurem de seleccionar el botó \emph{Crea Tram} del menú d'Obra Civil\footnote{És necessari seleccionar la capa d'Obra Cívil}. Un cop seleccionat el botó hem de clicar sobre el primer lloc que volem unir i anar clicant sobre els següents llocs adjacents tot traçant una línia.
+	
+	En cas de voler desfer la creació del tram només hem de prémer el botó verd amb la fletxa enrera.
+	
 	
 	\begin{figure}[H]
 		\centering
-		%\includegraphics[width=0.7\textwidth]{trams_fiberfy.png}
-		\caption{Mapa amb \emph{trams}}
+		\includegraphics[width=0.7\textwidth]{images/path_map_straight.png}
+		\caption{Mapa amb un tram}
 	\end{figure}
 	
-	Si volem unir diferents \emph{sites} amb un recorregut no recte, podem afegir punts al traçat marcant els punts de vèrtex sobre el mapa després d'haver marcat el primer \emph{site} i tancant el traçat al marcar el segon \emph{site}
+	Si volem unir diferents llocs amb un recorregut no recte, podem afegir punts al traçat marcant els punts de vèrtex sobre el mapa després d'haver marcat el primer lloc i tancant el traçat al marcar el segon lloc
 	
 	\begin{figure}[H]
 		\centering
-		%\includegraphics[width=0.7\textwidth]{trams_curve_fiberfy.png}
-		\caption{Mapa amb \emph{trams} no rectes}
+		\includegraphics[width=0.7\textwidth]{images/path_map_curve.png}
+		\caption{Mapa amb trams no rectes}
 	\end{figure}
 
-	Per sortir del menú de creació de nous \emph{trams} podem clicar a qualsevol \emph{tram} existent.
+	Per sortir del menú de creació de nous trams podem clicar a qualsevol tram existent.
 	
 	\subsubsection{Edició}
-	Per editar un \emph{tram} haurem de marcar la pestanya \emph{Crear Tram} com si volguéssim afegir nous trams i llavors haurem de clicar sobre el tram a modificar. Aleshores ens apareixerà un formulari amb tots els atributs que podem alterar.
+	Per editar un simplement haurem de col·locar el punter a sobre i clicar. Aleshores ens apareixerà un formulari amb tots els atributs que podem alterar.
 	
 	\begin{figure}[H]
 		\centering
-		%\includegraphics[width=0.7\textwidth]{tram_form_fiberfy.png}
-		\caption{Formulari d'edició de \emph{trams}}
+		\includegraphics[width=0.8\textwidth]{images/path_edit.png}
+		\caption{Formulari d'edició de trams}
 	\end{figure}
-
-	Si hem fet alguna modificació i la volem guardar haurem de clicar el botó \emph{Update}.
-	Si volem eliminar el tram haurem de clicar el botó \emph{Delete} i automàticament serem redirigits al mapa.
+	Aquí podem modificar tots els atributs del tram. En cas de voler alterar el lloc d'inici i lloc final ens apareixerà un auto-completat que ens permetrà seleccionar entitats de dins del projecte; tot-hi així no se'n recomana el seu ús per evitar possibles desajustos en els camins.
+	
+	Si hem fet alguna modificació i la volem guardar haurem de clicar el botó \emph{Actualitzar}.
+	Si volem eliminar el tram haurem de clicar el botó \emph{Eliminar} i automàticament serem redirigits al mapa.
+	
+	\newpage
 	\section{Cablejat}
 	\subsection{Gestió de caixes}
 	Les caixes són els elements de telecomunicacions per tal de connectar i distribuir les diferents fibres. Aquests elements són necessaris al inici i final d'una fibra.
 	
 	\subsubsection{Creació}
-	Per tal de crear \emph{caixes} necessitarem haver definit prèviament un \emph{site} al punt on vulguem col·locar la \emph{caixa}. Un cop complert aquest requisit seleccionarem la pestanya \emph{Cablejat} i accedirem al menú de material de telecomunicació. Allà clicarem la pestanya de \emph{Crea Caixa} i marcarem el Site on anirà col·locada.
+	Per tal de crear \emph{caixes} necessitarem haver definit prèviament llocs (d'obra civil). Un cop complert aquest requisit seleccionarem la capa \emph{Xarxa}. Després ja podem clicar qualsevol dels llocs creats anteriorment. Si no contenen \emph{caixes} apareixeran pintats en gris; en cas contrari estaran pintats en taronja. Aleshores s'ens mostrarà el següent formulari:
 	
 	\begin{figure}[H]
 		\centering
-		%\includegraphics[width=0.7\textwidth]{menu_caixa_buit_fiberfy.png}
+		\includegraphics[width=0.8\textwidth]{images/boxes_edit_void.png}
 		\caption{Menú de \emph{caixa} buit}
 	\end{figure}
 
-	Un cop ens aparegui el menú anterior haurem de triar el botó \emph{Nou} per tal de crear una nova \emph{caixa} en aquell \emph{site}. En un determinat \emph{site} s'hi poden col·locar tantes caixes com es desitgi.
-	
-	\subsubsection{Edició}
-	Per tal de modificar els atributs d'una \emph{caixa} existent només caldrà clicar sobre la capsa en qüestió des del menú de cablejat de l'eina. Aleshores ens apareixarà el formulari de creació de \emph{caixes} amb les caixes existents en aquell \emph{site}. Per tal de modificar els atributs haurem de validar els canvis utilitzant el botó \emph{Update} del formulari. Per eliminar caixes haurem d'apretar el botó \emph{Delete}.
-	
-	Dins d'aquest formulari també podrem establir el tipus de capça que és i el nombre de fibres d'entrada i sortida que passaran per elles. Aquestes dades seran importants a l'hora de realitzar les fusions de fibres.
-	
-	\subsection{Gestió de fibra}
-	Un cop les diferents caixes instal·lades ja podem fer passar les diferents fibres.
-	
-	\subsubsection{Creació}
-	Per desplegar fibra entre dos punts del mapa necessitem que aquests estiguin units a través de diferents \emph{sites} i \emph{trams} i que continguin almenys una \emph{caixa}.
-	Per començar hem de seleccionar el menú de \emph{Tirar Fibra} que trobarem al seleccionar la pestanya de \emph{Cablejat} que trobarem a la barra superior.
+	Per tal de seguir amb el procés haurem de prémer el botó verd \emph{Afegir}. Aleshores ja tindrem una \emph{caixa} creada amb la següent aparença:
 	
 	\begin{figure}[H]
 		\centering
-		%\includegraphics[width=0.7\textwidth]{menu_cablejat_fiberfy.png}
-		\caption{Menú de \emph{Cablejat} fiberfy}
+		\includegraphics[width=0.8\textwidth]{images/boxes_edit_full.png}
+		\caption{Menú de \emph{caixa} omplert}
 	\end{figure}
 
-	El següent pas serà clicar la pestanya de \emph{Tirar Fibra} del menú superior i marcar la caixa on anirà un dels extrems de la fibra. Aleshores anirem marcant un a un els \emph{sites} per on la fibra anira passant \footnote{Els extrems sempre han de contenir alguna \emph{caixa}}. Un cop acabada la trama de fibra per tal de validar-la haurem de marcar una segona vegada sobre l'últim \emph{site}.
+	
+	\subsubsection{Edició}
+	Per tal de modificar els atributs d'una \emph{caixa} existent només caldrà clicar sobre la capsa en qüestió des de la capa de Xarxa de l'eina. Aleshores ens apareixerà el formulari de creació de \emph{caixes} amb les caixes existents en aquell lloc. Per tal de modificar els atributs haurem de validar els canvis utilitzant el botó \emph{Actualitzar} del formulari. Per eliminar caixes haurem de prémer el botó \emph{Eliminar}.
+	
+	Dins d'aquest formulari també podrem establir el tipus de \emph{caixa} que és i el nombre de fibres d'entrada i sortida que passaran per elles. Aquestes dades seran importants a l'hora de realitzar les fusions de fibres.
+	
+	\subsection{Gestió de fibres/tubs/cables}
+	Un cop les diferents caixes es troben instal·lades ja podem tirar cables amb tubs i fibres.
+	
+	\subsubsection{Creació}
+	Per desplegar fibra entre dos punts del mapa necessitem que aquests estiguin units a través de diferents llocs i trams i que continguin almenys una \emph{caixa} a l'inici i al final del recorregut.
+	Per començar hem de seleccionar el menú de \emph{Nou Cable} que trobarem al seleccionar la capa de \emph{Xarxa}.
+	
+	El següent pas serà marcar la primera \emph{caixa} on anirà un dels extrems del cable. Aleshores anirem marcant un a un els llocs per on la fibra anirà passant \footnote{Els extrems sempre han de contenir alguna \emph{caixa}}; el camí que es va fent es mostrarà d'un color vermellós (trams i llocs). Un cop acabada la trama de cable per tal de validar-la haurem de clicar una segona vegada sobre l'últim lloc.
 	
 	\begin{figure}[H]
 		\centering
-		%\includegraphics[width=0.7\textwidth]{fibres_fiberfy.png}
-		\caption{Mapa amb \emph{fibres}}
+		\includegraphics[width=0.7\textwidth]{images/cable_creation.png}
+		\caption{Creació de \emph{cables}}
 	\end{figure}
 	
 	\subsubsection{Edició}
 	
-	Un cop tenim les \emph{fibres} creades i des del menú de \emph{Cablejat} podem clicar directament les fibres per tal de modificar-ne els atributs i afegir o treure línies de dins de la \emph{fibra}. Aquí també podrem seleccionar una configuració de \emph{fibra} des d'una \emph{Template} determinada. El formulari d'edició de fibres tindrà un format semblant al següent:
+	Un cop tenim els \emph{cables} creats i sempre des de la capa de \emph{Xarxa}, aleshores podem clicar directament els trams que contenen \emph{cables} (sempre de color blau) i ens apareixerà el següent \emph{popup}:
 	
 	\begin{figure}[H]
 		\centering
-		%\includegraphics[width=0.7\textwidth]{fibres_form_fiberfy.png}
-		\caption{Formulari d'edició de \emph{fibres}}
+		\includegraphics[width=0.7\textwidth]{images/cable_edit_popup.png}
+		\caption{\emph{Popup} selecció de \emph{cables}}
 	\end{figure}
 	
-	Per tal de guardar els canvis fets haurem de prémer el botó \emph{Update}. Si volem borrar la fibra haurem d'apretar el botó \emph{Delete}.
+	Un cop seleccionat el \emph{cable} desitjat s'ens mostrarà un formulari com el següent:
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.8\textwidth]{images/cable_edit_form.png}
+		\caption{Formulari d'edició de \emph{cables/tubs/fibres}}
+	\end{figure}
+
+	Aquí podrem afegir \emph{tubs} i \emph{fibres} de forma manual (utilitzant els botons d'\emph{Afegir} o seleccionant una plantilla de pre-establerta)
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.8\textwidth]{images/cable_edit_form_template.png}
+		\caption{Formulari d'edició de \emph{cables/tubs/fibres} amb plantilla}
+	\end{figure}
+	
+	Per tal de guardar els canvis fets haurem de prémer el botó \emph{Update}. Si volem esborrar \emph{fibres/tubs/cable} haurem de prémer els botons d'\emph{Eliminar}.
 	
 	\subsection{Gestió de fusions}
-	Les fusions són les unions entre diferents fibres d'un cable fibra òptica. Per tal de poder realitzar fusions necessitem com a mínim un cable que contingui fibres tot-hi que el cas d'ús habitual és el d'unir diferents cables.
+	Les fusions són les unions entre diferents fibres d'un cable fibra òptica. Per tal de poder realitzar fusions necessitem com a mínim un cable que contingui fibres tot-hi que el cas d'ús habitual és el d'unir diferents \emph{fibres}.
 	
 	\subsubsection{Creació i edició}
-	Per tal de crear \emph{fusions} entre fibres hem d'accedir al menú de \emph{Cablejat} i clicar sobre la \emph{caixa} on volem practicar la \emph{fusió}. Al formulari de \emph{caixa} seleccionarem el botó de \emph{Fusió}.
+	Per tal de crear \emph{fusions} entre fibres des de la capa de \emph{Xarxa} hem de prémer el botó d'\emph{Editar Fusions}. Aleshores ens apareixarà un formulari amb un llistat de totes les fibres i les relacions entre elles. Per tal de crear \emph{fusions} simplement hem de seleccionar una \emph{fibra} qualsevol i unir-la amb una altra disponible al desplegable.
 	
 	\begin{figure}[H]
 		\centering
@@ -270,7 +311,7 @@
 		\caption{Formulari d'edició de \emph{caixes}}
 	\end{figure}
 
-	Aleshores ens apareixerà un formulari que ens indicarà pels diferents \emph{sites} quines \emph{fibres} passen. Aquí podrem seleccionar una a una les fibres que volem unir \footnote{A la llista de fibres que apareixerà a cada desplegable les que comencen per un número diferent pertanyen a cables diferents}.
+	Aleshores ens apareixerà un formulari que ens indicarà pels diferents llocs quines \emph{fibres} passen. Aquí podrem seleccionar una a una les fibres que volem unir \footnote{A la llista de fibres que apareixerà a cada desplegable les que comencen per un número diferent pertanyen a cables diferents}.
 	
 	\begin{figure}[H]
 		\centering
