@@ -32,11 +32,11 @@ export default {
     },
     deleteCable (state, id) {
       let idsSites = [state.cables[id].first, state.cables[id].last]
-      for (let id in idsSites) {
-        let cables = state.sites[idsSites[id]]
-        for (let x in cables) {
-          if (cables[x] === id) {
-            boxes.splice(x, 1)
+      for (let x in idsSites) {
+        let cables = state.sites[idsSites[x]]
+        for (let y in cables) {
+          if (cables[y] === id) {
+            cables.splice(y, 1)
             break
           }
         }
