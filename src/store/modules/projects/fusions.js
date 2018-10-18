@@ -232,7 +232,7 @@ export default {
         if (data.sdata.type === 'fiber') {
           context.commit('deleteFiberFusion', data.sdata.id)
         } else if (data.sdata.type === 'box') {
-          this.commit('deleteBoxFusion', data.sdata)
+          context.commit('deleteBoxFusion', data.sdata)
         }
         Vue.http.delete(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/fusion/' + fusion).then(response => {
           context.commit('deleteFusion', fusion)
