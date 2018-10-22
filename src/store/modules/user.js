@@ -35,9 +35,10 @@ export default {
     login (context, form) {
       return new Promise((resolve, reject) => {
         // Do something here... lets say, a http call using vue-resource
+        let formPost = Object.assign({}, form) // make a copy to avoid edit form actual state
+        delete formPost.auth // clean unnecessary data before posting it
         if (form.auth === 'Local') {
-          delete form.auth
-          Vue.http.post(fiberfy.constants.BASE_URL + '/auth/login', form).then(response => {
+          Vue.http.post(fiberfy.constants.BASE_URL + '/auth/login', formPost).then(response => {
             // success callback
             if (response.body.flag) {
               context.commit('setToken', response.body.token)
@@ -52,8 +53,7 @@ export default {
           })
         }
         else {
-          delete form.auth
-          Vue.http.post(fiberfy.constants.BASE_URL + '/auth/loginLDAP', form).then(response => {
+          Vue.http.post(fiberfy.constants.BASE_URL + '/auth/loginLDAP', formPost).then(response => {
             // success callback
             if (response.body.flag) {
               context.commit('setToken', response.body.token)
