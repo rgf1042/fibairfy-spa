@@ -31,6 +31,19 @@ export default {
       longitude: 0.0,
       zoom: 1,
       layer: 'civil',
+      base: {
+        tiles: [
+
+        ],
+        wms: [
+
+        ]
+      },
+      overlay: {
+        wms: [
+
+        ]
+      },
       baseTiles: [
         {
           name: 'OpenStreetMap',
@@ -102,7 +115,7 @@ export default {
         },
         {
           name: 'Punts fibra òptica guifi.net',
-          tiles: 'https://guifimaps.guifi.net/cgi-bin/mapserv?map=/var/www/guifimaps/GMap.map',
+          tiles: 'http://localhost:1337/api/v1/maps/wms/1?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNTQwNTUxMDQwLCJleHAiOjE1NDA2Mzc0NDB9.OB2ZrlsRjcBQP7St1SA_PcWcZVb7MYqEm1y8kPH8Pxc',
           options: {
             format: 'image/png',
             transparent: true,
