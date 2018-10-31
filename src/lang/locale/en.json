@@ -17,6 +17,7 @@
     "delete": "Delete",
     "edit": "Edit",
     "file": "File",
+    "import": "Import",
     "name": "Name",
     "type": "Type",
     "status": "Status",
@@ -124,7 +125,7 @@
       "fusions": "fusions"
     },
     "import": {
-      "title": "Importa",
+      "title": "Import",
       "threshold": "Threshold (in meters)",
       "defaultType": "Site type (by default)"
     },

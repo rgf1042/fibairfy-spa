@@ -6,6 +6,7 @@ Vue.use(VueI18n)
 
 const messages = {
   ca: require('./locale/ca.json'),
+  es: require('./locale/es.json'),
   en: require('./locale/en.json')
 }
 
