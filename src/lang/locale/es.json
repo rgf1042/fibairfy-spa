@@ -1,0 +1,159 @@
+{
+  "menu": {
+    "map": "Mapa",
+    "projects": "Proyectos",
+    "export": "Exporta",
+    "import": "Importa",
+    "profile": "Perfil",
+    "logout": "Salir",
+    "back": "Volver atrás",
+    "boxes": "Cajas",
+    "editFusions": "Editar fusiones",
+    "showFusions": "Gráfico de fusiones"
+  },
+  "general": {
+    "add": "Añadir",
+    "update": "Actualizar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "file": "Fichero",
+    "import": "Importar",
+    "name": "Nombre",
+    "type": "Tipo",
+    "status": "Estado",
+    "location": "Localización",
+    "latitude": "Latitud",
+    "longitude": "Longitud",
+    "zoom": "Zoom",
+    "zone": "Zona",
+    "observations": "Observaciones",
+    "distance": "Distancia",
+    "loading": "Cargando",
+    "search": "Buscar",
+    "download": "Descargar",
+    "metrics": {
+      "meters": "metros"
+    },
+    "statusList": {
+      "Planned": "Projectado",
+      "Reserved": "Reservado",
+      "Building": "En construcción",
+      "Testing": "En pruebas",
+      "Working": "Operativo",
+      "Dropped": "Borrado",
+      "Inactive": "Inactivo"
+    },
+    "messages": {
+      "deleteEntity": "Seguro que quiere eliminar"
+    }
+  },
+  "content": {
+    "siteTypes": {
+      "manhole": "Arqueta",
+      "pole": "Poste",
+      "room": "Cámara",
+      "cabinet": "Armario",
+      "poe": "Poe",
+      "hook": "Gancho",
+      "jump": "Salto",
+      "notdefined": "No definido"
+    },
+    "pathTypes": {
+      "aerial": "Aéreo",
+      "facade": "Fachada",
+      "underground": "Soterrado",
+      "notdefined": "No definido"
+    },
+    "boxTypes": {
+      "mainline": "Troncal",
+      "CTO": "CTO",
+      "splitter": "Splitter",
+      "patchpanel": "PatchPanel"
+    }
+  },
+  "components": {
+    "map": {
+      "layerMenu": {
+        "name": "Capa",
+        "civil": "Civil",
+        "network": "Red"
+      },
+      "civilMenu": {
+        "name": "Obra civil",
+        "newSite": "Nuevo sitio",
+        "newPath": "Nuevo tramo"
+      },
+      "networkMenu": {
+        "name": "Infraestructura de red",
+        "editFusions": "Editar fusiones",
+        "newCable": "Nuevo Cable"
+      }
+    },
+    "editBoxes": {
+      "title": "@:general.edit @:components.editBoxes.boxes",
+      "editBox": {
+        "title": "@:general.edit @:components.editBoxes.box"
+      },
+      "box": "caja",
+      "boxes": "cajas"
+    },
+    "editTubes": {
+      "title": "@:general.edit @:components.editTubes.tubes",
+      "editTube": {
+        "title": "@:general.edit @:components.editTubes.tube"
+      },
+      "tube": "tubo",
+      "tubes": "tubos"
+    },
+    "editSites": {
+      "title": "@:general.edit @:components.editSites.site",
+      "site": "sitio",
+      "deleteMsg": " @:general.messages.deleteEntity @:components.editSites.site",
+      "deleteTitle": "@:general.delete @:components.editSites.site"
+    },
+    "editPaths": {
+      "title": "@:general.edit @:components.editPaths.path",
+      "path": "tramo",
+      "first": "Primer @:components.editSites.site",
+      "second": "Segundo @:components.editSites.site",
+      "deleteMsg": " @:general.messages.deleteEntity @:components.editPaths.path",
+      "deleteTitle": "@:general.delete @:components.editPaths.path"
+    },
+    "editFusions": {
+      "title": "@:general.edit @:components.editFusions.fusions",
+      "fusion": "fusión",
+      "fusions": "fusiones"
+    },
+    "import": {
+      "title": "Importar",
+      "threshold": "Tolerancia (en metros)",
+      "defaultType": "Tipo de sitio (por defecto)"
+    },
+    "projects": {
+      "readonly": "sólo lectura",
+      "list": "Listado de proyectos",
+      "addProjectMenu": {
+        "name": "Añadir proyectos",
+        "addButton": "Añadir"
+      },
+      "projectButtons": {
+        "activate": "Activar",
+        "deactivate": "Desactivar",
+        "savePos": "Guardar pos.",
+        "delete": "Eliminar"
+      },
+      "projectSelected": {
+        "title": "Proyecto actual"
+      },
+      "projectAdd": {
+        "name": "Añadir proyecto"
+      },
+      "projectEdit": {
+        "name": "Editar proyecto"
+      }
+    },
+    "profile": {
+
+    }
+  }
+}
