@@ -140,6 +140,37 @@
 	
 	\newpage
 	\section{Obra civil}
+	\subsection{Importador}
+	Una de les novetats més importants del \emph{fiberfy-nt} és la possibilitat d'importar mapes existents de punts i línies i tractar-los com si de localitzacions i trams es tractessin. Per tal d'importar informació necessitem haver creat prèviament un projecte i tenir-lo activat. Un cop cumplim aquest requisit podem accedir a la pestanya d'\emph{Importa} i podrem veure un formulari com el següent:
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.8\textwidth]{images/import_form.png}
+		\caption{Formulari d'importació d'obra civil}
+		\label{fig:import-form}
+	\end{figure}
+
+	La tolerància és el marge que té l'algoritme per unir trams amb llocs. Els estàndards de \textbf{GIS} no contemplen la possibilitat d'acoplar punts i rectes, per tant a l'hora d'establir els enllaços l'aplicació els ha de predir. El marge de tolerància indica en metres la distància màxima d'unió de rectes en un únic punt.
+	La zona és la mateixa que s'introduiria al crear un node de Guifi (per defecte la del projecte).
+	Finalment hem de seleccionar el fitxer que volem importar. Els formats suportats són:
+	\begin{itemize}
+		\item \textbf{KML}
+		\item \textbf{KMZ}
+		\item \textbf{GeoJSON}
+	\end{itemize}
+	
+	En cas de disposar d'altres formats es poden convertir a qualsevol dels compatibles. Igualment sempre hi ha la possibilitat d'obrir un \emph{ticket} per tal de resoldre qualsevol incidència.
+	
+	\subsection{Exportador}
+	Aquesta funcionalitat ens permet exportar tota l'obra civil d'un projecte en el format \textbf{GeoJSON}. Per tal de fer-ho servir necessitem haver seleccionat un projecte prèviament i accedir a la pestanya \emph{Exporta}. Aleshores ens apareixerà un formulari amb un botó per descarregar el fitxer:
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.8\textwidth]{images/export_form.png}
+		\caption{Formulari d'exportació d'obra civil}
+		\label{fig:export-form}
+	\end{figure}
+	
 	\subsection{Gestió de llocs}
 	Els llocs dins de l'aplicació simbolitzen els punts físics d'obra civil on s'ubicaran les caixes i sistemes de telecomunicacions. Contenen unes coordenades i atribut físic que ens indica el tipus d'element. També permeten afegir comentaris i modificar-ne el nom.
 	
