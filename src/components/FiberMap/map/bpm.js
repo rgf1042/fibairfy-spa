@@ -210,21 +210,21 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   })
 
   this.map.on('baselayerchange', function (e) {
-    let index = that.map_data.baseTiles.findIndex(function (element) {
+    let index = that.map_data.base.tiles.findIndex(function (element) {
       return (e.name === element.name)
     })
     that.vue.$store.dispatch('projects/map/setSelectedBaseTile', index)
   })
 
   this.map.on('overlayadd', function (e) {
-    let index = that.map_data.overlayTiles.findIndex(function (element) {
+    let index = that.map_data.overlay.wms.findIndex(function (element) {
       return (e.name === element.name)
     })
     that.vue.$store.dispatch('projects/map/addSelectedOverlayTile', index)
   })
 
   this.map.on('overlayremove', function (e) {
-    let index = that.map_data.overlayTiles.findIndex(function (element) {
+    let index = that.map_data.overlay.wms.findIndex(function (element) {
       return (e.name === element.name)
     })
     that.vue.$store.dispatch('projects/map/removeSelectedOverlayTile', index)
