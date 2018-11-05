@@ -29,6 +29,9 @@ export default {
   getters: {
     currentId: state => {
       return state.user.id
+    },
+    token: state => {
+      return state.user.token
     }
   },
   actions: {
@@ -44,9 +47,14 @@ export default {
               context.commit('setToken', response.body.token)
               context.commit('setUserId', response.body.user.id)
               context.commit('setUserName', response.body.user.username)
-              resolve(response)  // Let the calling function know that http is done. You may send some data back
+              context.dispatch('projects/map/getMapLayers', null, { root: true }).then(response => {
+                resolve(response)  // Let the calling function know that http is done. You may send some data back
+              }, error => {
+                reject(error)
+              })
+            } else {
+              reject(response)
             }
-            reject(response)
           }, error => {
             // http failed, let the calling function know that action did not work out
             reject(error)
@@ -59,9 +67,14 @@ export default {
               context.commit('setToken', response.body.token)
               context.commit('setUserId', response.body.user.id)
               context.commit('setUserName', response.body.user.username)
-              resolve(response)  // Let the calling function know that http is done. You may send some data back
+              context.dispatch('projects/map/getMapLayers', null, { root: true }).then(response => {
+                resolve(response)  // Let the calling function know that http is done. You may send some data back
+              }, error => {
+                reject(error)
+              })
+            } else {
+              reject(response)
             }
-            reject(response)
           }, error => {
             // http failed, let the calling function know that action did not work out
             reject(error)

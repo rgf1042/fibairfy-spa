@@ -17,8 +17,7 @@ module.exports = {
         'PROJECT_DEFAULT_NAME': JSON.stringify('default'),
         'PROJECT_DEFAULT_LATITUDE': JSON.stringify('41.66060124302088'),
         'PROJECT_DEFAULT_LONGITUDE': JSON.stringify('1.571044921875'),
-        'PROJECT_DEFAULT_ZOOM': JSON.stringify('8'),
-        'DEFAULT_TILE_SERVER': JSON.stringify('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+        'PROJECT_DEFAULT_ZOOM': JSON.stringify('8')
       }
     })
   ],

@@ -1,5 +1,6 @@
 import VueResource from 'vue-resource'
 import Vue from 'vue'
+
 import InitialStates from '../../initial-states.js'
 
 Vue.use(VueResource)
@@ -14,6 +15,12 @@ export default {
     },
     currentLayer: state => {
       return state.layer
+    },
+    baseLayers: state => {
+      return state.base
+    },
+    overlayLayers: state => {
+      return state.base
     }
   },
   mutations: {
@@ -41,11 +48,19 @@ export default {
       })
       state.selectedOverlayTiles.splice(index, 1)
     },
+    addNewBaseLayerTiles (state, layer) {
+      state.base.tiles.push(layer)
+    },
+    addNewOverlayLayerWMS (state, layer) {
+      state.overlay.wms.push(layer)
+    },
     reset (state) {
       state.latitude = InitialStates.map().latitude,
       state.longitude = InitialStates.map().longitude,
       state.zoom = InitialStates.map().zoom
       state.layer = InitialStates.map().layer
+      state.base = InitialStates.map().base
+      state.overlay = InitialStates.map().overlay
     }
   },
   actions: {
@@ -67,6 +82,30 @@ export default {
     },
     removeSelectedOverlayTile (context, overlay) {
       context.commit('removeSelectedOverlayTile', overlay)
+    },
+    getMapLayers (context) {
+      return new Promise((resolve, reject) => {
+        context.commit('reset')
+        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/maps/').then(response => {
+          for (let x in response.body) {
+            let source = response.body[x]
+            for (let y in source.layers) {
+              let layer = source.layers[y]
+              let output = {
+                name: source.name + ' - ' + layer.name,
+                tiles: source.url + (layer.options.path || ''),
+                options: layer.options
+              }
+              if (source.internal) output.tiles += '?token=' + context.rootGetters['user/token']
+              if (layer.isBase && source.type === 'tiles') context.commit('addNewBaseLayerTiles', output)
+              else if (!layer.isBase && source.type === 'wms') context.commit('addNewOverlayLayerWMS', output)
+            }
+          }
+          resolve(response)
+        }, error => {
+          reject(error)
+        })
+      })
     }
   }
 }

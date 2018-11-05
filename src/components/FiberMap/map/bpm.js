@@ -210,21 +210,21 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   })
 
   this.map.on('baselayerchange', function (e) {
-    let index = that.map_data.baseTiles.findIndex(function (element) {
+    let index = that.map_data.base.tiles.findIndex(function (element) {
       return (e.name === element.name)
     })
     that.vue.$store.dispatch('projects/map/setSelectedBaseTile', index)
   })
 
   this.map.on('overlayadd', function (e) {
-    let index = that.map_data.overlayTiles.findIndex(function (element) {
+    let index = that.map_data.overlay.wms.findIndex(function (element) {
       return (e.name === element.name)
     })
     that.vue.$store.dispatch('projects/map/addSelectedOverlayTile', index)
   })
 
   this.map.on('overlayremove', function (e) {
-    let index = that.map_data.overlayTiles.findIndex(function (element) {
+    let index = that.map_data.overlay.wms.findIndex(function (element) {
       return (e.name === element.name)
     })
     that.vue.$store.dispatch('projects/map/removeSelectedOverlayTile', index)
@@ -270,8 +270,8 @@ Mapa.prototype.rollTiles = function () {
 Mapa.prototype.tileLayer = function (tiles) {
   let baseMaps = {}
 
-  for (let x in this.map_data.baseTiles) {
-    let tile = this.map_data.baseTiles[x]
+  for (let x in this.map_data.base.tiles) {
+    let tile = this.map_data.base.tiles[x]
     let tileLayer = L.tileLayer(tile.tiles, tile.options)
     baseMaps[tile.name] = tileLayer
     if (this.map_data.selectedBaseTile === parseInt(x)) {
@@ -280,8 +280,8 @@ Mapa.prototype.tileLayer = function (tiles) {
   }
 
   let overlayMaps = {}
-  for (let x in this.map_data.overlayTiles) {
-    let tile = this.map_data.overlayTiles[x]
+  for (let x in this.map_data.overlay.wms) {
+    let tile = this.map_data.overlay.wms[x]
     tile.options['crs'] = L.CRS.EPSG4326
     let tileLayer = L.tileLayer.wms(tile.tiles, tile.options)
     overlayMaps[tile.name] = tileLayer
