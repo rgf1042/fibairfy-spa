@@ -10,14 +10,12 @@
         </b-alert>
       </b-col>
     </b-row>
-    <b-row>
-      <b-col sm="2" class="pt-2">
+    <b-row class="pt-2">
+      <b-col sm="2">
         <h2>{{$t('components.import.title')}}</h2>
       </b-col>
-    </b-row>
-    <b-row>
-      <b-col sm="1" class="pt-2">
-
+      <b-col sm="1">
+        <spinner-loading :loading="loading"></spinner-loading>
       </b-col>
     </b-row>
     <b-form @submit="onSubmit">
@@ -54,11 +52,13 @@
 </template>
 <script>
 import FiberfyAutocomplete from '@/components/shared/fiberfy-autocomplete'
+import SpinnerLoading from '@/components/shared/spinner-loading'
 
 export default {
   name: 'Import',
   components: {
-    'fiberfy-autocomplete': FiberfyAutocomplete
+    'fiberfy-autocomplete': FiberfyAutocomplete,
+    'spinner-loading': SpinnerLoading
   },
   data () {
     return {
@@ -72,6 +72,7 @@ export default {
         message: ''
       },
       zoneUrl: fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/zone/', // eslint-disable-line
+      loading: false
     }
   },
   mounted () {
@@ -96,9 +97,12 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
+      this.loading = true
       this.$store.dispatch('projects/importProject', this.form).then(response => {
+        this.loading = false
         this.$router.go(-1)
       }, error => {
+        this.loading = false
         this.alert.message = error.body.msg
         this.alert.show = true
         console.log(error)
