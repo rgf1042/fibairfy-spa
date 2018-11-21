@@ -86,7 +86,7 @@ export default {
     getMapLayers (context) {
       return new Promise((resolve, reject) => {
         context.commit('reset')
-        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/maps/').then(response => {
+        Vue.http.get(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/maps/auth').then(response => {
           for (let x in response.body) {
             let source = response.body[x]
             for (let y in source.layers) {
