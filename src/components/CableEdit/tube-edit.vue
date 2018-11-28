@@ -14,7 +14,8 @@
         <h3>{{$tc('components.editTubes.editTube.title', 1)}}: {{form.id}}</h3>
       </b-col>
       <b-col cols="1">
-        <b-button type="button" variant="danger" @click="onDelete">{{$t('general.delete')}}</b-button>
+        <b-button type="button" variant="danger" :disabled="!this.current.writable"
+            @click="onDelete">{{$t('general.delete')}}</b-button>
       </b-col>
     </b-row>
     <b-row class="pt-2">
@@ -33,7 +34,7 @@
     <b-row class="py-3">
       <b-col cols="3"><h4>Fibres:</h4></b-col>
       <b-col><b-button type="button" variant="success"
-                              @click="addFiber">{{$t('general.add')}}</b-button></b-col>
+                  @click="addFiber" :disabled="!this.current.writable">{{$t('general.add')}}</b-button></b-col>
     </b-row>
     <b-row class="pt-2">
         <fiber-edit v-for="(fiberId, index) in fibers" :key="fiberId"
@@ -84,6 +85,9 @@ export default {
   computed: {
     fibers () {
       return this.$store.getters['projects/fibersIndexes'](this.form.id)
+    },
+    current () {
+      return this.$store.getters['projects/current']
     }
   },
   watch: {

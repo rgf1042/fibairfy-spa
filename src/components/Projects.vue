@@ -57,7 +57,7 @@
         <span v-if="!project.writable">({{$t('components.projects.readonly')}})</span>
       </b-col>
       <b-col sm="4">
-        <project-buttons :projectId="project.id" :current="current" :loading="loading">
+        <project-buttons :project="project" :current="current" :loading="loading">
         </project-buttons>
       </b-col>
     </b-row>
@@ -105,7 +105,7 @@ export default {
   },
   computed: {
     current () {
-      return this.$store.state.projects.current.id
+      return this.$store.state.projects.current
     },
     list () {
       if (this.searchList) {

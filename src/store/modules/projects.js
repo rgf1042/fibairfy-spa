@@ -78,7 +78,7 @@ export default {
             status: response.body.status
           }
           // Comprovem si el projecte es writable
-          project.writable = (typeof(response.body.users.find(item => item.user === context.rootGetters['user/currentId'])) === 'object')
+          project.writable = (typeof(response.body.users.find(item => item.id === context.rootGetters['user/currentId'])) === 'object')
           context.commit('setCurrentProject', project)
           context.dispatch('map/setLocation', { latitude: project.latitude, longitude: project.longitude })
           context.dispatch('map/setZoom', project.zoom)
@@ -184,7 +184,13 @@ export default {
         Vue.http.delete(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/' + project).then(response => {
           let index = context.getters.findIndexById(project)
           context.commit('deleteListProject', index)
-          resolve(response)
+          if (context.getters.current.id === project) {
+            context.dispatch('unsetCurrent').then(response => {
+              resolve(response)
+            }, error => {
+              reject(error)
+            })
+          }
         }, error => {
           reject(error)
         })

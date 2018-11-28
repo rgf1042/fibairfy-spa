@@ -62,7 +62,8 @@
           <b-form-group id="templateInputGroup"
                         label="Template:"
                         label-for="templateInput">
-            <b-form-select id="templateInput" v-model="template" :options="templates" class="mb-3" />
+            <b-form-select id="templateInput" v-model="template"
+                :disabled="!this.current.writable" :options="templates" class="mb-3" />
           </b-form-group>
         </b-form>
 
@@ -72,7 +73,7 @@
           </b-col>
           <b-col>
             <b-button type="button" variant="success"
-                                    @click="addTube">{{$t('general.add')}}</b-button>
+                  :disabled="!this.current.writable" @click="addTube">{{$t('general.add')}}</b-button>
           </b-col>
         </b-row>
         <b-row>
@@ -82,8 +83,8 @@
           <tube-edit :id="tubeId"></tube-edit>
         </div>
         <b-row class="pt-4">
-          <b-button class="mr-1" type="button" variant="primary" @click="onSubmit">{{$t('general.update')}}</b-button>
-          <b-button class="mr-1" type="button" variant="danger" @click="onDelete">{{$t('general.delete')}}</b-button>
+          <b-button class="mr-1" type="button" variant="primary" :disabled="!this.current.writable" @click="onSubmit">{{$t('general.update')}}</b-button>
+          <b-button class="mr-1" type="button" variant="danger" :disabled="!this.current.writable" @click="onDelete">{{$t('general.delete')}}</b-button>
         </b-row>
     </b-container>
   </div>
@@ -154,6 +155,9 @@ export default {
         }
       }
       return output
+    },
+    current () {
+      return this.$store.getters['projects/current']
     }
   },
   watch: {

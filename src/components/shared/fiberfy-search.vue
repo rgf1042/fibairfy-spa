@@ -43,7 +43,7 @@ export default {
   },
   data () {
     return {
-      selection: null
+      selection: ''
     }
   },
   mounted () {

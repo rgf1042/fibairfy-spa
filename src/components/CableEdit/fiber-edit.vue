@@ -13,7 +13,8 @@
       <b-input-group :prepend="String(form.id)">
         <b-form-input type="text" v-model="form.color"></b-form-input>
         <b-input-group-append>
-          <b-btn variant="danger" @click="onDelete">{{$t('general.delete')}}</b-btn>
+          <b-btn variant="danger" :disabled="!this.current.writable"
+              @click="onDelete">{{$t('general.delete')}}</b-btn>
         </b-input-group-append>
       </b-input-group>
     </b-col>
@@ -55,7 +56,9 @@ export default {
     this.$bus.$once('update-cable', this.onSubmit)
   },
   computed: {
-
+    current () {
+      return this.$store.getters['projects/current']
+    }
   },
   watch: {
     'form.color': function (newVal, oldVal) { // watch it

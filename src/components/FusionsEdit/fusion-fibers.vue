@@ -9,8 +9,10 @@
       title="Esborrar fusió">
       <p class="my-4">Segur que vol esborrar la fusió: {{id}}</p>
     </b-modal>
-    <b-form-select id="fusionInput" v-model="select" :options="options" class="mb-3" :disabled="(select !== null)"/>
-    <b-button variant="danger" v-on:click="onDelete" v-if="select">{{$t('general.delete')}}</b-button>
+    <b-form-select id="fusionInput" v-model="select" :options="options"
+        class="mb-3" :disabled="(select !== null) || !this.current.writable"/>
+    <b-button variant="danger" :disabled="!this.current.writable"
+        v-on:click="onDelete" v-if="select">{{$t('general.delete')}}</b-button>
   </div>
 </template>
 <script>
@@ -118,6 +120,9 @@ export default {
         }
       }
       return result
+    },
+    current () {
+      return this.$store.getters['projects/current']
     }
   },
   methods: {

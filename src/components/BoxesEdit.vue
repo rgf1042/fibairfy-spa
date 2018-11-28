@@ -16,7 +16,8 @@
           <h2>{{$tc('components.editBoxes.title', 2)}}: {{id}}</h2>
         </b-col>
         <b-col>
-          <b-button variant="success" v-on:click="addBox">{{$t('general.add')}}</b-button>
+          <b-button variant="success" :disabled="!this.current.writable"
+              v-on:click="addBox">{{$t('general.add')}}</b-button>
         </b-col>
       </b-row>
       <b-row>
@@ -28,7 +29,7 @@
         </b-col>
       </b-row>
       <b-row class="pt-4">
-        <b-button class="mr-1" type="button" variant="primary" @click="onSubmit">{{$t('general.update')}}</b-button>
+        <b-button class="mr-1" type="button" variant="primary" :disabled="!this.current.writable" @click="onSubmit">{{$t('general.update')}}</b-button>
       </b-row>
     </b-container>
   </div>
@@ -71,6 +72,9 @@ export default {
   computed: {
     boxesIds () {
       return this.$store.getters['projects/boxesIndexes'](this.id)
+    },
+    current () {
+      return this.$store.getters['projects/current']
     }
   },
   methods: {

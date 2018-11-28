@@ -32,7 +32,7 @@
               </b-col>
               <b-col>
                 <!-- Here we will put the buttons-->
-                <project-buttons :projectId="this.current.id" :current="this.current.id"></project-buttons>
+                <project-buttons :project="this.current" :current="this.current"></project-buttons>
               </b-col>
             </b-row>
           </div>

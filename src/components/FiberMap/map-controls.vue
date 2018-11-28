@@ -20,14 +20,14 @@
         </b-input-group>
         <b-input-group class="mx-1" :prepend="this.$t('components.map.civilMenu.name')" v-if="this.isCivil">
           <b-input-group-append>
-            <b-button :pressed="this.status === 'site'" @click="testActive({ status: 'site'}, $event)" :disabled="!this.hasProject">{{$t('components.map.civilMenu.newSite')}}</b-button>
-            <b-button :pressed="this.status === 'path'" @click="testActive({ status: 'path'}, $event)" :disabled="!this.hasProject">{{$t('components.map.civilMenu.newPath')}}</b-button>
+            <b-button :pressed="this.status === 'site'" @click="testActive({ status: 'site'}, $event)" :disabled="!this.hasProject || !this.current.writable">{{$t('components.map.civilMenu.newSite')}}</b-button>
+            <b-button :pressed="this.status === 'path'" @click="testActive({ status: 'path'}, $event)" :disabled="!this.hasProject || !this.current.writable">{{$t('components.map.civilMenu.newPath')}}</b-button>
           </b-input-group-append>
         </b-input-group>
         <b-input-group class="mx-1" :prepend="this.$t('components.map.networkMenu.name')" v-if="!this.isCivil">
           <b-input-group-append>
-            <b-button :pressed="this.status === 'editFusions'" @click="testActive({ status: 'editFusions'}, $event)" :disabled="!this.hasProject">{{$t('components.map.networkMenu.editFusions')}}</b-button>
-            <b-button :pressed="this.status === 'fiber'" @click="testActive({ status: 'fiber'}, $event)" :disabled="!this.hasProject">{{$t('components.map.networkMenu.newCable')}}</b-button>
+            <b-button :pressed="this.status === 'editFusions'" @click="testActive({ status: 'editFusions'}, $event)" :disabled="!this.hasProject || !this.current.writable">{{$t('components.map.networkMenu.editFusions')}}</b-button>
+            <b-button :pressed="this.status === 'fiber'" @click="testActive({ status: 'fiber'}, $event)" :disabled="!this.hasProject || !this.current.writable">{{$t('components.map.networkMenu.newCable')}}</b-button>
           </b-input-group-append>
         </b-input-group>
         <b-button variant="info "v-if="this.status" @click="resetStatus($event)"><div v-html="octicons['arrow-left'].toSVG()"></div></b-button>
@@ -47,6 +47,9 @@ export default {
     },
     hasProject () {
       return this.$store.getters['projects/currentId']
+    },
+    current () {
+      return this.$store.getters['projects/current']
     }
   },
   data () {

@@ -83,8 +83,8 @@
                        :max-rows="6">
             </b-form-textarea>
           </b-form-group>
-          <b-button type="submit" variant="primary">{{$t('general.update')}}</b-button>
-          <b-button type="button" variant="danger" @click="onDelete">{{$t('general.delete')}}</b-button>
+          <b-button type="submit" variant="primary" :disabled="!this.current.writable">{{$t('general.update')}}</b-button>
+          <b-button type="button" variant="danger" :disabled="!this.current.writable" @click="onDelete">{{$t('general.delete')}}</b-button>
         </b-form>
     </b-container>
   </div>
@@ -160,6 +160,9 @@ export default {
         }
       }
       return output
+    },
+    current () {
+      return this.$store.getters['projects/current']
     }
   },
   methods: {
