@@ -127,19 +127,18 @@ export default {
       context.commit('resetTubes')
       context.commit('resetFibers')
     },
-    updateCurrent (context, project) {
-      return new Promise((resolve, reject) => {
-        Vue.http.put(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/' + project.id + '?populate=null', project).then(response => {
-          context.commit('setCurrentProject', project)
-          context.dispatch('loadProjectsList').then(response => {
-            resolve(response)
-          }, error => {
-            reject(error)
-          })
-        }, error => {
-          reject(error)
-        })
-      })
+    async updateCurrent (context, project) {
+      try {
+        let current = context.getters.current
+        let response = await Vue.http.patch(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/' + project.id + '?populate=null', project)
+        if (current.status !== project.status) {
+          await context.dispatch('changeStatusGlobally', project.status)
+        }
+        context.commit('setCurrentProject', project)
+        await context.dispatch('loadProjectsList')
+      } catch (err) {
+        throw err
+      }
     },
     loadProjectsList (context) {
       return new Promise((resolve, reject) => {
@@ -222,6 +221,21 @@ export default {
         formData.append('defaultZone', form.defaultZone)
         formData.append('threshold', form.threshold)
         Vue.http.post(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/import/', formData).then(response => {
+          // We reload current project
+          context.dispatch('setCurrent', context.getters.currentId).then(response => {
+            resolve(response)
+          }, error => {
+            reject(error)
+          })
+        }, error => {
+          reject(error)
+        })
+      })
+    },
+    changeStatusGlobally (context, status) {
+      return new Promise((resolve, reject) => {
+        let current = context.getters.current
+        Vue.http.patch(fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/project/globalStatus/', {id: current.id, status: status}).then(response => {
           // We reload current project
           context.dispatch('setCurrent', context.getters.currentId).then(response => {
             resolve(response)

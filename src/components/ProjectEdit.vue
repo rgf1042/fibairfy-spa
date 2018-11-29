@@ -11,9 +11,12 @@
           </b-alert>
         </b-col>
       </b-row>
-      <b-row>
-        <b-col cols="4" class="pt-2">
+      <b-row class="pt-2">
+        <b-col sm="3">
           <h2>{{$t('components.projects.projectEdit.name')}}</h2>
+        </b-col>
+        <b-col sm="1">
+          <spinner-loading :loading="loading"></spinner-loading>
         </b-col>
       </b-row>
         <b-form @submit="onSubmit">
@@ -74,11 +77,13 @@
 </template>
 <script>
 import FiberfyAutocomplete from '@/components/shared/fiberfy-autocomplete'
+import SpinnerLoading from '@/components/shared/spinner-loading'
 
 export default {
   name: 'ProjectEdit',
   components: {
-    'fiberfy-autocomplete': FiberfyAutocomplete
+    'fiberfy-autocomplete': FiberfyAutocomplete,
+    'spinner-loading': SpinnerLoading
   },
   data () {
     return {
@@ -89,13 +94,15 @@ export default {
         longitude: null, // eslint-disable-line
         zoom: null, // eslint-disable-line
         defaultZone: null,
-        status: null
+        status: null,
+        writable: null
       },
       zoneUrl: fiberfy.constants.BASE_URL + fiberfy.constants.API_VERSION + '/zone/', // eslint-disable-line
       alert: {
         show: false,
         message: ''
-      }
+      },
+      loading: false
     }
   },
   mounted () {
@@ -107,6 +114,7 @@ export default {
     this.form.zoom = project.zoom
     this.form.defaultZone = project.defaultZone
     this.form.status = project.status
+    this.form.writable = project.writable
   },
   computed: {
     statusList () {
@@ -124,11 +132,14 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
+      this.loading = true
       this.$store.dispatch('projects/updateCurrent', this.form).then(response => {
         this.$router.go(-1)
+        this.loading = false
       }, error => {
         this.alert.message = error.msg
         this.alert.show = true
+        this.loading = false
         console.log(error)
       })
     }
