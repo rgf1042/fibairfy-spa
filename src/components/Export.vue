@@ -44,7 +44,9 @@ export default {
           let link = document.createElement('a')
           link.href = data
           link.download = this.project.name + '.geojson'
+          document.body.appendChild(link)
           link.click()
+          document.body.removeChild(link)
         }, error => {
           console.log(error)
         })
