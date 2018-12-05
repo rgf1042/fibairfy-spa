@@ -1,6 +1,8 @@
 // Leaflet
 /* eslint-disable */
 import L from 'leaflet'
+import 'proj4leaflet'
+
 // Internal modules
 import Site from './site'
 import Path from './path'
@@ -192,11 +194,6 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   // Event de click
   this.map.on('click', function (e) {
     that.onClick(e)
-    /* if (that.map.scrollWheelZoom.enabled()) {
-      that.map.scrollWheelZoom.disable()
-    } else {
-      that.map.scrollWheelZoom.enable()
-    } */
   })
 
   this.map.on('move', function (e) {
@@ -210,10 +207,17 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
   })
 
   this.map.on('baselayerchange', function (e) {
-    let index = that.map_data.base.tiles.findIndex(function (element) {
-      return (e.name === element.name)
-    })
-    that.vue.$store.dispatch('projects/map/setSelectedBaseTile', index)
+    if (that.map_data.baseSelected === 'wms') {
+      let index = that.map_data.base.wms.findIndex(function (element) {
+        return (e.name === element.name)
+      })
+      that.vue.$store.dispatch('projects/map/setSelectedBaseWMS', index)
+    } else { // It's a TMS
+      let index = that.map_data.base.tiles.findIndex(function (element) {
+        return (e.name === element.name)
+      })
+      that.vue.$store.dispatch('projects/map/setSelectedBaseTile', index)
+    }
   })
 
   this.map.on('overlayadd', function (e) {
@@ -274,15 +278,32 @@ Mapa.prototype.tileLayer = function (tiles) {
     let tile = this.map_data.base.tiles[x]
     let tileLayer = L.tileLayer(tile.tiles, tile.options)
     baseMaps[tile.name] = tileLayer
-    if (this.map_data.selectedBaseTile === parseInt(x)) {
-      tileLayer.addTo(this.map)
+    if (this.map_data.baseSelected === 'tiles') {
+      if (this.map_data.selectedBaseTile === parseInt(x)) {
+        tileLayer.addTo(this.map)
+      }
     }
+  }
+
+  for (let x in this.map_data.base.wms) {
+    let tile = this.map_data.base.wms[x]
+    tile.options.crs = L.CRS.EPSG3857
+    let tileLayer = L.tileLayer.wms(tile.tiles, tile.options)
+    baseMaps[tile.name] = tileLayer
+    if (this.map_data.baseSelected === 'wms') {
+      if (this.map_data.selectedBaseWMS === parseInt(x)) {
+        tileLayer.addTo(this.map)
+      }
+    }
+    /* if (this.map_data.selectedBaseTile === parseInt(x)) {
+      tileLayer.addTo(this.map)
+    }*/
   }
 
   let overlayMaps = {}
   for (let x in this.map_data.overlay.wms) {
     let tile = this.map_data.overlay.wms[x]
-    tile.options['crs'] = L.CRS.EPSG4326
+    tile.options.crs = L.CRS.EPSG3857
     let tileLayer = L.tileLayer.wms(tile.tiles, tile.options)
     overlayMaps[tile.name] = tileLayer
     let index = this.map_data.selectedOverlayTiles.find(function (selected) {

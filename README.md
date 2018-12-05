@@ -1,30 +1,29 @@
 # fiberfy-nt
 
-> fiberfy client SPA app
+Fiberfy client SPA App
 
 ## Build Setup
 
-``` bash
-# install dependencies
-npm install
+You need to have installed those dependencies in your system:
+  - libcairo2-dev
+  - libjpeg-dev
+  - libgif-dev
 
-# serve with hot reload at localhost:3000
-npm run dev
+If you use a Debian based system you can install them with the next command:
 
-# build for production with minification
-npm run build
+> sudo apt-get install libcairo2-dev libjpeg-dev libgif-dev
 
-# build for production and view the bundle analyzer report
-npm run build --report
 
-# run unit tests
-npm run unit
+After you need to install nodejs dependencies:
 
-# run e2e tests
-npm run e2e
+### install dependencies
+> npm install
 
-# run all tests
-npm test
-```
+### serve with hot reload at localhost:3000
+> npm run dev
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+### build for production with minification
+> npm run build
+
+### build for production and view the bundle analyzer report
+> npm run build --report

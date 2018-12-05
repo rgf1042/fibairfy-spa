@@ -47,7 +47,9 @@ export default {
       selectedOverlayTiles: [
 
       ],
-      selectedBaseTile: 0
+      selectedBaseTile: 0,
+      selectedBaseWMS: 0,
+      baseSelected: 'tiles'
     }
   },
   paths () {

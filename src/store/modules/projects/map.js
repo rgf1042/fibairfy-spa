@@ -38,6 +38,11 @@ export default {
     },
     setSelectedBaseTile (state, base) {
       state.selectedBaseTile = base
+      state.baseSelected = 'tiles'
+    },
+    setSelectedBaseWMS (state, base) {
+      state.selectedBaseWMS = base
+      state.baseSelected = 'wms'
     },
     addSelectedOverlayTile (state, overlay) {
       state.selectedOverlayTiles.push(overlay)
@@ -51,6 +56,9 @@ export default {
     addNewBaseLayerTiles (state, layer) {
       state.base.tiles.push(layer)
     },
+    addNewBaseLayerWMS (state, layer) {
+      state.base.wms.push(layer)
+    },
     addNewOverlayLayerWMS (state, layer) {
       state.overlay.wms.push(layer)
     },
@@ -61,6 +69,9 @@ export default {
       state.layer = InitialStates.map().layer
       state.base = InitialStates.map().base
       state.overlay = InitialStates.map().overlay
+      state.selectedBaseWMS = InitialStates.map().selectedBaseWMS
+      state.selectedBaseTile = InitialStates.map().selectedBaseTile
+      state.baseSelected = InitialStates.map().baseSelected
     }
   },
   actions: {
@@ -97,8 +108,15 @@ export default {
                 options: layer.options
               }
               if (source.internal) output.tiles += '?token=' + context.rootGetters['user/token']
-              if (layer.isBase && source.type === 'tiles') context.commit('addNewBaseLayerTiles', output)
-              else if (!layer.isBase && source.type === 'wms') context.commit('addNewOverlayLayerWMS', output)
+              if (layer.isBase) {
+                if (source.type === 'tiles') context.commit('addNewBaseLayerTiles', output)
+                else if (source.type === 'wms') {
+                  context.commit('addNewBaseLayerWMS', output)
+                }
+              }
+              else if (!layer.isBase && source.type === 'wms') {
+                context.commit('addNewOverlayLayerWMS', output)
+              }
             }
           }
           resolve(response)
