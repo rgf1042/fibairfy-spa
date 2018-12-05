@@ -1,7 +1,6 @@
 // Leaflet
 /* eslint-disable */
 import L from 'leaflet'
-import 'proj4leaflet'
 
 // Internal modules
 import Site from './site'
