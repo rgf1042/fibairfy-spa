@@ -122,7 +122,7 @@ function Mapa (divMap, mapId, status, layerActive, vue) {
 
   // Declare new red Icon & blue icon.
 
-  L.Icon.Default.imagePath = 'static/images/'
+  L.Icon.Default.imagePath = 'images/'
   var RedIcon = L.Icon.extend({
     options: {
       iconUrl: L.Icon.Default.imagePath + 'red-marker-icon.png'
