@@ -1,5 +1,5 @@
 import { fabric } from 'fabric'
-
+import { forEach } from 'lodash-es'
 /* eslint-disable */
 
 function Pfusion(cnvs, vue) {
@@ -295,62 +295,137 @@ Pfusion.prototype.drawFibers = function (tube, rectTube) {
 }
 
 Pfusion.prototype.drawFusions = function () {
-  for (let x in this.fusions) {
-    if (this.fusions.hasOwnProperty(x)) {
-      let fusion = this.fusions[x]
-      let x1, y1, x2, y2
-      let color1, color2
-      let direction1, direction2
-      let number1, number2
-      let flag = true // TODO: Remove in future
-      if (fusion[0].type === 'fiber') {
-        let id = fusion[0].id
-        x1 = this.fibers[id].lineFiber.x2
-        y1 = this.fibers[id].lineFiber.y2
-        color1 = this.fibers[id].color
-        direction1 = this.fibers[id].direction
-        number1 = this.fibers[id].number
-      } else if (fusion[0].type === 'box') {
-        let id = fusion[0].id
-        let inout = (fusion[0].in) ? 'inputs' : 'outputs'
-        let number1 = (fusion[0].in) ? fusion[0].in : fusion[0].out
-        x1 = this.fibersBoxesGraphics[id][inout][number1].x2
-        y1 = this.fibersBoxesGraphics[id][inout][number1].y2
-        color1 = this.fibersBoxesGraphics[id][inout][number1].stroke
-        direction1 = 'box'
-      }
+  forEach(this.fusions, (fusion, i, fusions) => {
+    let x1, y1, x2, y2
+    let color1, color2
+    let direction1, direction2
+    let number1, number2
 
-      if (fusion[1].type === 'fiber') {
-        let id = fusion[1].id
-        x2 = this.fibers[id].lineFiber.x2
-        y2 = this.fibers[id].lineFiber.y2
-        color2 = this.fibers[id].color
-        direction2 = this.fibers[id].direction
-        number2 = this.fibers[id].number
-      } else if (fusion[1].type === 'box') {
-        let id = fusion[1].id
-        let inout = (fusion[1].in) ? 'inputs' : 'outputs'
-        let number2 = (fusion[1].in) ? fusion[1].in : fusion[1].out
-        x2 = this.fibersBoxesGraphics[id][inout][number2].x2
-        y2 = this.fibersBoxesGraphics[id][inout][number2].y2
-        color2 = this.fibersBoxesGraphics[id][inout][number2].stroke
-        direction2 = 'box'
-      }
-      if (flag) {
-        if (direction1 === direction2) { // They are parallel
-          let line1x2, line1y2, line2x2, line2y2
-          if (direction1 === 'horizontal') {
-            line1x2 = x1
-            line1y2 = y1 - ((this.defaultFusionChunk * number1) + this.defaultFusionOffset)
+    let flag = true // TODO: I don't know the meaning of this
+    
+    const first = fusion[0] // First endpoint
+    if (first.type === 'fiber') {
+      x1 = this.fibers[first.id].lineFiber.x2
+      y1 = this.fibers[first.id].lineFiber.y2
+      color1 = this.fibers[first.id].color
+      direction1 = this.fibers[first.id].direction
+      number1 = this.fibers[first.id].number
+    } else if (first.type === 'box') {
+      const inout = (first.in) ? 'inputs' : 'outputs'
+      number1 = (first.in) ? first.in : first.out
+      x1 = this.fibersBoxesGraphics[first.id][inout][number1].x2
+      y1 = this.fibersBoxesGraphics[first.id][inout][number1].y2
+      color1 = this.fibersBoxesGraphics[first.id][inout][number1].stroke
+      direction1 = 'box'
+    }
 
-            line2x2 = x2
-            line2y2 = y2 - ((this.defaultFusionChunk * number1) + this.defaultFusionOffset)
-          } else if (direction1 === 'vertical') {
-            line1x2 = x1 + (this.defaultFusionChunk * number1) + this.defaultFusionOffset
+    const last = fusion[1] // Second endpoint
+    if (last.type === 'fiber') {
+      x2 = this.fibers[last.id].lineFiber.x2
+      y2 = this.fibers[last.id].lineFiber.y2
+      color2 = this.fibers[last.id].color
+      direction2 = this.fibers[last.id].direction
+      number2 = this.fibers[last.id].number
+    } else if (last === 'box') {
+      const inout = (last.in) ? 'inputs' : 'outputs'
+      number2 = (last.in) ? last.in : last.out
+      x2 = this.fibersBoxesGraphics[last.id][inout][number2].x2
+      y2 = this.fibersBoxesGraphics[last.id][inout][number2].y2
+      color2 = this.fibersBoxesGraphics[last.id][inout][number2].stroke
+      direction2 = 'box'
+    }
+
+    if (flag) {
+      if (direction1 === direction2) { // They are parallel
+        let line1x2, line1y2, line2x2, line2y2
+        if (direction1 === 'horizontal') {
+          line1x2 = x1
+          line1y2 = y1 - ((this.defaultFusionChunk * number1) + this.defaultFusionOffset)
+
+          line2x2 = x2
+          line2y2 = y2 - ((this.defaultFusionChunk * number1) + this.defaultFusionOffset)
+        } else if (direction1 === 'vertical') {
+          line1x2 = x1 + (this.defaultFusionChunk * number1) + this.defaultFusionOffset
+          line1y2 = y1
+
+          line2x2 = x2 + (this.defaultFusionChunk * number1) + this.defaultFusionOffset
+          line2y2 = y2
+        }
+
+        let lineFusion1 = new fabric.Line([x1, y1, line1x2, line1y2], {
+          stroke: color1,
+          backgroundColor: color2,
+          strokeDashArray: [5, 5],
+          strokeWidth: this.defaultWidthStrokeFiber
+        })
+
+        let lineFusion2 = new fabric.Line([x2, y2, line2x2, line2y2], {
+          stroke: color1,
+          backgroundColor: color2,
+          strokeDashArray: [5, 5],
+          strokeWidth: this.defaultWidthStrokeFiber
+        })
+
+        let lineFusion3 = new fabric.Line([line1x2, line1y2, line2x2, line2y2], {
+          stroke: color1,
+          backgroundColor: color2,
+          strokeDashArray: [5, 5],
+          strokeWidth: this.defaultWidthStrokeFiber
+        })
+
+        this.canvas.add(lineFusion1)
+        this.canvas.add(lineFusion2)
+        this.canvas.add(lineFusion3)
+      }
+      else {
+        if (direction1 === 'box' && direction2 === 'horizontal'
+            || direction2 === 'box' && direction1 === 'horizontal') { // TODO
+
+            let avg
+            let line1y2
+            let line2y2
+            let random = number1 * this.defaultFusionChunk * (Math.random() * 4)
+            if (direction1 === 'box') {
+              avg = (y2 - y1) / 2
+              line1y2 = y1 + avg + random
+              line2y2 = y2 - (avg - random)
+            } else {
+              avg = (y1 - y2) / 2
+              line1y2 = y1 - (avg - random)
+              line2y2 = y2 + avg + random
+            }
+            let lineFusion1 = new fabric.Line([x1, y1, x1, line1y2], {
+              stroke: color1,
+              backgroundColor: color2,
+              strokeDashArray: [5, 5],
+              strokeWidth: this.defaultWidthStrokeFiber
+            })
+
+            let lineFusion2 = new fabric.Line([x2, y2, x2, line2y2], {
+              stroke: color1,
+              backgroundColor: color2,
+              strokeDashArray: [5, 5],
+              strokeWidth: this.defaultWidthStrokeFiber
+            })
+
+            let lineFusion3 = new fabric.Line([x1, line1y2, x2, line2y2], {
+              stroke: color1,
+              backgroundColor: color2,
+              strokeDashArray: [5, 5],
+              strokeWidth: this.defaultWidthStrokeFiber
+            })
+
+            this.canvas.add(lineFusion1)
+            this.canvas.add(lineFusion2)
+            this.canvas.add(lineFusion3)
+        } else {
+          let line1x2, line1y2
+          if (direction1 === 'vertical') {
+            line1x2 = x2
             line1y2 = y1
-
-            line2x2 = x2 + (this.defaultFusionChunk * number1) + this.defaultFusionOffset
-            line2y2 = y2
+          } else {
+            line1x2 = x1
+            line1y2 = y2
           }
 
           let lineFusion1 = new fabric.Line([x1, y1, line1x2, line1y2], {
@@ -360,14 +435,7 @@ Pfusion.prototype.drawFusions = function () {
             strokeWidth: this.defaultWidthStrokeFiber
           })
 
-          let lineFusion2 = new fabric.Line([x2, y2, line2x2, line2y2], {
-            stroke: color1,
-            backgroundColor: color2,
-            strokeDashArray: [5, 5],
-            strokeWidth: this.defaultWidthStrokeFiber
-          })
-
-          let lineFusion3 = new fabric.Line([line1x2, line1y2, line2x2, line2y2], {
+          let lineFusion2 = new fabric.Line([x2, y2, line1x2, line1y2], {
             stroke: color1,
             backgroundColor: color2,
             strokeDashArray: [5, 5],
@@ -376,80 +444,10 @@ Pfusion.prototype.drawFusions = function () {
 
           this.canvas.add(lineFusion1)
           this.canvas.add(lineFusion2)
-          this.canvas.add(lineFusion3)
         }
-        else {
-          if (direction1 === 'box' && direction2 === 'horizontal'
-              || direction2 === 'box' && direction1 === 'horizontal') { // TODO
-
-              let avg
-              let line1y2
-              let line2y2
-              let random = number1 * this.defaultFusionChunk * (Math.random() * 4)
-              if (direction1 === 'box') {
-                avg = (y2 - y1) / 2
-                line1y2 = y1 + avg + random
-                line2y2 = y2 - (avg - random)
-              } else {
-                avg = (y1 - y2) / 2
-                line1y2 = y1 - (avg - random)
-                line2y2 = y2 + avg + random
-              }
-              let lineFusion1 = new fabric.Line([x1, y1, x1, line1y2], {
-                stroke: color1,
-                backgroundColor: color2,
-                strokeDashArray: [5, 5],
-                strokeWidth: this.defaultWidthStrokeFiber
-              })
-
-              let lineFusion2 = new fabric.Line([x2, y2, x2, line2y2], {
-                stroke: color1,
-                backgroundColor: color2,
-                strokeDashArray: [5, 5],
-                strokeWidth: this.defaultWidthStrokeFiber
-              })
-
-              let lineFusion3 = new fabric.Line([x1, line1y2, x2, line2y2], {
-                stroke: color1,
-                backgroundColor: color2,
-                strokeDashArray: [5, 5],
-                strokeWidth: this.defaultWidthStrokeFiber
-              })
-
-              this.canvas.add(lineFusion1)
-              this.canvas.add(lineFusion2)
-              this.canvas.add(lineFusion3)
-          } else {
-            let line1x2, line1y2
-            if (direction1 === 'vertical') {
-              line1x2 = x2
-              line1y2 = y1
-            } else {
-              line1x2 = x1
-              line1y2 = y2
-            }
-
-            let lineFusion1 = new fabric.Line([x1, y1, line1x2, line1y2], {
-              stroke: color1,
-              backgroundColor: color2,
-              strokeDashArray: [5, 5],
-              strokeWidth: this.defaultWidthStrokeFiber
-            })
-
-            let lineFusion2 = new fabric.Line([x2, y2, line1x2, line1y2], {
-              stroke: color1,
-              backgroundColor: color2,
-              strokeDashArray: [5, 5],
-              strokeWidth: this.defaultWidthStrokeFiber
-            })
-
-            this.canvas.add(lineFusion1)
-            this.canvas.add(lineFusion2)
-          }
-        }
-
       }
+
     }
-  }
+  })
 }
 export default Pfusion
