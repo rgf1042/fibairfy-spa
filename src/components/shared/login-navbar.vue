@@ -1,7 +1,6 @@
-<template>
-</template>
+<template> </template>
 <script>
 export default {
-  name: 'login-navbar'
-}
+    name: 'login-navbar',
+};
 </script>
