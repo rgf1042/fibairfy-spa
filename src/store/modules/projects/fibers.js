@@ -46,13 +46,13 @@ export default {
     actions: {
         loadFibers(context) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 context.commit('resetFibers');
                 let tubes = context.getters.tubes; // We load existing tubes
                 for (let x in tubes) context.commit('addSiteToFiber', tubes[x]);
                 Vue.http
                     .get(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/fiber/?project=' +
                             context.getters.currentId +
                             '&limit=10000'
@@ -73,10 +73,10 @@ export default {
         },
         addNewFiber(context, fiber) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .post(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/fiber/',
                         fiber
                     )
@@ -84,8 +84,7 @@ export default {
                         response => {
                             Vue.http
                                 .get(
-                                    fiberfy.constants.BASE_URL +
-                                        fiberfy.constants.API_VERSION +
+                                    baseUrl +
                                         '/fiber/' +
                                         response.body.id
                                 )
@@ -110,10 +109,10 @@ export default {
         },
         deleteFiber(context, id) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .delete(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/fiber/' +
                             id
                     )
@@ -130,10 +129,10 @@ export default {
         },
         updateFiber(context, fiber) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .put(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/fiber/' +
                             fiber.id,
                         fiber

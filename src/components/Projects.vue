@@ -67,9 +67,8 @@
         </b-row>
         <b-row
             class="pt-3"
-            v-for="(project, index) in list"
+            v-for="(project) in list"
             :key="project.id"
-            v-if="list"
         >
             <b-col sm="2">
                 <span>{{ project.name }}</span>
@@ -126,8 +125,7 @@ export default {
             },
             searchList: null,
             projectUrl:
-                fiberfy.constants.BASE_URL +
-                fiberfy.constants.API_VERSION +
+                this.$store.getters['constants/constants']['baseUrl'] +
                 '/project/', // eslint-disable-line
         };
     },

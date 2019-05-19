@@ -66,10 +66,10 @@ export default {
         setCurrent(context, id) {
             return new Promise((resolve, reject) => {
                 // Do something here... lets say, a http call using vue-resource
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .get(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/project/' +
                             id,
                         { params: { populate: 'defaultZone, users' } }
@@ -198,9 +198,9 @@ export default {
         async updateCurrent(context, project) {
             try {
                 let current = context.getters.current;
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 let response = await Vue.http.patch(
-                    fiberfy.constants.BASE_URL +
-                        fiberfy.constants.API_VERSION +
+                    baseUrl +
                         '/project/' +
                         project.id +
                         '?populate=null',
@@ -220,10 +220,10 @@ export default {
         },
         loadProjectsList(context) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .get(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/project/',
                         { params: { populate: 'defaultZone, users' } }
                     )
@@ -252,6 +252,7 @@ export default {
         },
         addNewProject(context, form) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 let project = {
                     name: form.name,
                     status: form.status,
@@ -262,8 +263,7 @@ export default {
                 };
                 Vue.http
                     .post(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/project/',
                         project
                     )
@@ -271,8 +271,7 @@ export default {
                         response => {
                             Vue.http
                                 .get(
-                                    fiberfy.constants.BASE_URL +
-                                        fiberfy.constants.API_VERSION +
+                                    baseUrl +
                                         '/project/' +
                                         response.body.id,
                                     {
@@ -310,10 +309,10 @@ export default {
         },
         deleteProject(context, project) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .delete(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/project/' +
                             project
                     )
@@ -343,8 +342,7 @@ export default {
                 let loc = context.getters['map/currentLocation'];
                 Vue.http
                     .put(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/project/' +
                             context.getters.currentId,
                         loc
@@ -369,6 +367,7 @@ export default {
         },
         importProject(context, form) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 let formData = new FormData();
                 formData.append('project', context.getters.currentId);
                 formData.append('data', form.data, form.data.name);
@@ -376,8 +375,7 @@ export default {
                 formData.append('threshold', form.threshold);
                 Vue.http
                     .post(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/import/',
                         formData
                     )
@@ -407,10 +405,10 @@ export default {
         changeStatusGlobally(context, status) {
             return new Promise((resolve, reject) => {
                 let current = context.getters.current;
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .patch(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/project/globalStatus/',
                         { id: current.id, status: status }
                     )

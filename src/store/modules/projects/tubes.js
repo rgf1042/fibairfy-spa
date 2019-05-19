@@ -47,14 +47,14 @@ export default {
     actions: {
         loadTubes(context) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 context.commit('resetTubes');
                 let cables = context.getters.cables; // We load existing cables
                 for (let x in cables)
                     context.commit('addSiteToTube', cables[x]);
                 Vue.http
                     .get(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/tube/?project=' +
                             context.getters.currentId +
                             '&limit=10000'
@@ -75,10 +75,10 @@ export default {
         },
         addNewTube(context, tube) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .post(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/tube/',
                         tube
                     )
@@ -86,8 +86,7 @@ export default {
                         response => {
                             Vue.http
                                 .get(
-                                    fiberfy.constants.BASE_URL +
-                                        fiberfy.constants.API_VERSION +
+                                    baseUrl +
                                         '/tube/' +
                                         response.body.id
                                 )
@@ -112,10 +111,10 @@ export default {
         },
         deleteTube(context, id) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .delete(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/tube/' +
                             id
                     )
@@ -132,10 +131,10 @@ export default {
         },
         updateTube(context, tube) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .put(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/tube/' +
                             tube.id,
                         tube

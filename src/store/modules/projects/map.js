@@ -100,11 +100,11 @@ export default {
         },
         getMapLayers(context) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 context.commit('reset');
                 Vue.http
                     .get(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/maps/auth'
                     )
                     .then(

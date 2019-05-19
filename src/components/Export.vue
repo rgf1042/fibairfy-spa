@@ -36,8 +36,7 @@ export default {
         getGeoJSON() {
             this.$http
                 .get(
-                    fiberfy.constants.BASE_URL +
-                        fiberfy.constants.API_VERSION +
+                    this.$store.getters['constants/constants']['baseUrl'] +
                         '/export/' +
                         this.project.id
                 ) // eslint-disable-line

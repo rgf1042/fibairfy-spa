@@ -48,13 +48,13 @@ export default {
     actions: {
         loadBoxes(context) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 context.commit('resetBoxes');
                 let sites = context.getters.sites; // We load existing sites
                 for (let x in sites) context.commit('addSiteToBox', sites[x]);
                 Vue.http
                     .get(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/box/?project=' +
                             context.getters.currentId +
                             '&limit=10000'
@@ -75,10 +75,10 @@ export default {
         },
         addNewBox(context, box) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .post(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/box/',
                         box
                     )
@@ -86,8 +86,7 @@ export default {
                         response => {
                             Vue.http
                                 .get(
-                                    fiberfy.constants.BASE_URL +
-                                        fiberfy.constants.API_VERSION +
+                                    baseUrl +
                                         '/box/' +
                                         response.body.id
                                 )
@@ -112,10 +111,10 @@ export default {
         },
         deleteBox(context, id) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .delete(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/box/' +
                             id
                     )
@@ -132,10 +131,10 @@ export default {
         },
         updateBox(context, box) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .put(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/box/' +
                             box.id,
                         box

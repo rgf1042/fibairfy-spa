@@ -51,11 +51,11 @@ export default {
     actions: {
         loadCables(context) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 context.commit('resetCables');
                 Vue.http
                     .get(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/cable/?project=' +
                             context.getters.currentId +
                             '&limit=1000000' +
@@ -77,10 +77,10 @@ export default {
         },
         addNewCable(context, cable) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .post(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/cable/',
                         cable
                     )
@@ -88,8 +88,7 @@ export default {
                         response => {
                             Vue.http
                                 .get(
-                                    fiberfy.constants.BASE_URL +
-                                        fiberfy.constants.API_VERSION +
+                                    baseUrl +
                                         '/cable/' +
                                         response.body.id,
                                     { params: { populate: 'intermedial' } }
@@ -115,10 +114,10 @@ export default {
         },
         deleteCable(context, id) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .delete(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/cable/' +
                             id
                     )
@@ -135,10 +134,10 @@ export default {
         },
         updateCable(context, cable) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .put(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/cable/' +
                             cable.id,
                         cable
@@ -147,8 +146,7 @@ export default {
                         response => {
                             Vue.http
                                 .get(
-                                    fiberfy.constants.BASE_URL +
-                                        fiberfy.constants.API_VERSION +
+                                    baseUrl +
                                         '/cable/' +
                                         response.body.id,
                                     { params: { populate: 'intermedial' } }

@@ -36,14 +36,16 @@ export default {
     },
     actions: {
         login(context, form) {
+            console.log(Vue);
             return new Promise((resolve, reject) => {
                 // Do something here... lets say, a http call using vue-resource
                 let formPost = Object.assign({}, form); // make a copy to avoid edit form actual state
                 delete formPost.auth; // clean unnecessary data before posting it
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 if (form.auth === 'Local') {
                     Vue.http
                         .post(
-                            fiberfy.constants.BASE_URL + '/auth/login',
+                            baseUrl + '/auth/login',
                             formPost
                         )
                         .then(
@@ -88,7 +90,7 @@ export default {
                 } else {
                     Vue.http
                         .post(
-                            fiberfy.constants.BASE_URL + '/auth/loginLDAP',
+                            baseUrl + '/auth/loginLDAP',
                             formPost
                         )
                         .then(

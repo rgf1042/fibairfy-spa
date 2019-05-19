@@ -211,11 +211,11 @@ export default {
     actions: {
         loadFusions(context, site) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 context.commit('resetFusions');
                 Vue.http
                     .get(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/fusion/?project=' +
                             context.getters.currentId +
                             '&limit=10000&site=' +
@@ -263,12 +263,12 @@ export default {
         },
         addNewFusion(context, fusion) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 fusion.project = context.getters.currentId;
                 fusion.site = context.getters.currentSite;
                 Vue.http
                     .post(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/fusion/',
                         fusion
                     )
@@ -276,8 +276,7 @@ export default {
                         response => {
                             Vue.http
                                 .get(
-                                    fiberfy.constants.BASE_URL +
-                                        fiberfy.constants.API_VERSION +
+                                    baseUrl +
                                         '/fusion/' +
                                         response.body.id
                                 )
@@ -302,6 +301,7 @@ export default {
         },
         deleteFusion(context, data) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 let fusion;
                 if (data.fdata.type === 'fiber') {
                     fusion = context.getters.getFusionIdByFiber(data.fdata.id);
@@ -317,8 +317,7 @@ export default {
                 }
                 Vue.http
                     .delete(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/fusion/' +
                             fusion
                     )

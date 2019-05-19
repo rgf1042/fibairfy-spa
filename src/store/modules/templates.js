@@ -25,10 +25,10 @@ export default {
     actions: {
         loadFiberTemplates(context) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .get(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/fibertemplate/?limit=1000000'
                     )
                     .then(

@@ -121,8 +121,7 @@ export default {
                 status: 'Planned',
             },
             zoneUrl:
-                fiberfy.constants.BASE_URL +
-                fiberfy.constants.API_VERSION +
+                this.$store.getters['constants/constants']['baseUrl'] +
                 '/zone/', // eslint-disable-line
             alert: {
                 show: false,

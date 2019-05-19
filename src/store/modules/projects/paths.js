@@ -36,11 +36,11 @@ export default {
     actions: {
         loadPaths(context) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 context.commit('resetPaths');
                 Vue.http
                     .get(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/path/?project=' +
                             context.getters.currentId +
                             '&limit=1000000',
@@ -59,10 +59,10 @@ export default {
         },
         addNewPath(context, path) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .post(
-                        fiberfy.constants.BASE_URL +
-                            fiberfy.constants.API_VERSION +
+                        baseUrl +
                             '/path/',
                         path
                     )
@@ -70,8 +70,7 @@ export default {
                         response => {
                             Vue.http
                                 .get(
-                                    fiberfy.constants.BASE_URL +
-                                        fiberfy.constants.API_VERSION +
+                                    baseUrl +
                                         '/path/' +
                                         response.body.id,
                                     { params: { populate: 'first,last' } }
@@ -97,12 +96,12 @@ export default {
         },
         deletePath(context, id) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 let index = context.getters.findPathIndexById(id);
                 if (index !== -1) {
                     Vue.http
                         .delete(
-                            fiberfy.constants.BASE_URL +
-                                fiberfy.constants.API_VERSION +
+                            baseUrl +
                                 '/path/' +
                                 id
                         )
@@ -122,12 +121,12 @@ export default {
         },
         updatePath(context, path) {
             return new Promise((resolve, reject) => {
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 let index = context.getters.findPathIndexById(path.id);
                 if (index !== -1) {
                     Vue.http
                         .put(
-                            fiberfy.constants.BASE_URL +
-                                fiberfy.constants.API_VERSION +
+                            baseUrl +
                                 '/path/' +
                                 path.id,
                             path
@@ -136,8 +135,7 @@ export default {
                             response => {
                                 Vue.http
                                     .get(
-                                        fiberfy.constants.BASE_URL +
-                                            fiberfy.constants.API_VERSION +
+                                        baseUrl +
                                             '/path/' +
                                             response.body.id,
                                         { params: { populate: 'first,last' } }
