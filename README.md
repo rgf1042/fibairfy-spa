@@ -33,4 +33,4 @@ After you need to install nodejs dependencies:
 ## Copyright
 This software is licensed under the terms of GNU AGPLv3 License included in this repository.
 
-Copyright Roger Garcia 2017-2019
+Copyright Roger Garcia 2017-2019, Sergio Edo 2018 (Spanish translations)
