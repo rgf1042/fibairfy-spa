@@ -5,7 +5,6 @@ services:
 - docker
 before_install:
 - sudo apt update
-- sudo apt dist-upgrade -y
 - sudo apt install libcairo2-dev libjpeg-dev libgif-dev
 - npm install
 script:
