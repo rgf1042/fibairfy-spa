@@ -1,6 +1,8 @@
-# fiberfy-nt
+# fibairfy-spa
 
-Fiberfy client SPA App
+[![Build Status](https://travis-ci.org/rgf1042/fibairfy-spa.svg?branch=master)](https://travis-ci.org/rgf1042/fibairfy-spa)
+
+Fibairfy client SPA App
 
 ## Build Setup
 
@@ -27,3 +29,8 @@ After you need to install nodejs dependencies:
 
 ### build for production and view the bundle analyzer report
 > npm run build --report
+
+## Copyright
+This software is licensed under the terms of GNU AGPLv3 License included in this repository.
+
+Copyright Roger Garcia 2017-2019
