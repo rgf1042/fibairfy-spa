@@ -340,6 +340,7 @@ export default {
         savePos(context) {
             return new Promise((resolve, reject) => {
                 let loc = context.getters['map/currentLocation'];
+                const baseUrl = context.rootGetters['constants/constants']['baseUrl'];
                 Vue.http
                     .put(
                         baseUrl +
